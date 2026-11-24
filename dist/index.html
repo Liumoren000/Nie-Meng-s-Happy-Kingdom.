@@ -6,9 +6,39 @@
 .castle{margin-top:20px;padding:18px}.castle-title{display:flex;align-items:start;justify-content:space-between;gap:12px}.castle-title h2{font-family:serif}.castle-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px;margin-top:14px}.castle-card{min-width:0;background:#f8efd5;border:1px solid var(--line);border-radius:12px;padding:13px}.castle-card h3{margin-bottom:6px}.castle-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:12px;padding:8px;border-radius:10px;background:#607c57}.castle-board button{background:#e8ddaf;border:1px solid #a39875;border-radius:6px;padding:7px 3px;min-height:48px;font-size:12px;font-weight:bold}.castle-board button[aria-pressed=true]{outline:2px solid #fff4b7;background:#fff1c6}.castle-lane{text-align:center;color:#fffbe7;font-size:12px}.castle-log{margin-top:10px;padding:8px;border-radius:8px;background:#eee2bb;font-size:13px}.castle-alert{color:#813c23;font-weight:bold}.castle-plan{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.castle-plan [aria-pressed=true]{background:#d9e7c0;border-color:#6b8056}.castle-command{grid-column:1/-1;background:#f1e5bf}.castle-command blockquote{margin:6px 0;font-size:14px;color:#4f482f}.castle-target{display:grid;gap:6px;margin-top:10px}.castle-target .button{text-align:left}.castle-target .primary{text-align:center}.castle-details{min-height:54px}@media(max-width:700px){.castle-layout{grid-template-columns:1fr}}
 
 .royal-head{display:flex;gap:14px;align-items:center;margin-bottom:12px}.royal-portrait{flex:0 0 74px;display:grid;place-items:center;aspect-ratio:1;border-radius:50%;font-size:43px;color:#fff6dd;background:radial-gradient(circle at 50% 30%,#796391,#3d345c 68%);border:3px solid #c3a156;box-shadow:0 0 0 3px #efe0ae}.royal-sections{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px;margin-top:12px}.royal-section{padding:10px;border:1px solid #d7c493;background:#fff7de;border-radius:9px}.royal-section h4{margin:0 0 4px}.royal-judgment{padding:9px;border-left:3px solid #8b6a37;background:#fffae7;margin-top:10px}.castle-command{background:linear-gradient(125deg,#f3e4ba,#eadced)}
+
+.heading h2{color:#263b2a;text-shadow:2px 2px #ddcda2}.map-panel{align-self:start}.map-top{flex-wrap:wrap}.map-top a{color:#31563d;text-underline-offset:3px}.landscape{background:#3e6349;padding:12px;border-top:4px solid #789056;border-bottom:4px solid #314e3c}
+.map{gap:0;border:4px solid #2d4b37;border-radius:0;background:#9aba5b;box-shadow:0 3px #273e32}.map .tile{aspect-ratio:1;border:0;border-radius:0;box-shadow:inset 0 0 0 1px #263b2a19;background-color:#9aba5b;background-size:100% 100%;image-rendering:pixelated}.map .tile.water{background-color:#4b93a5;box-shadow:none}.map .tile.locked{background-color:#7f9a57;background-blend-mode:multiply}.map .tile.road{background-color:#9aba5b}.map .tile.selected{outline:3px solid #fff2b1;outline-offset:-3px}.map .tile:hover{filter:brightness(1.08);box-shadow:inset 0 0 0 2px #fff2b1bd}
+.pixel-sprite{position:absolute;inset:0;pointer-events:none;background-size:100% 100%;image-rendering:pixelated}.pixel-road{background-size:100% 80%;background-position:center;background-repeat:no-repeat}.pixel-grove{opacity:.95}.pixel-lock{inset:16%}.tile.locked .pixel-forest{opacity:.45}.tile.locked:nth-child(3n) .pixel-forest{transform:scaleX(-1)}
+.tile .ready{top:4px;right:4px;padding:1px 3px;line-height:1.2;background:#ffe194;color:#513b25;border-radius:0;border:1px solid #654a2e;font-size:10px;z-index:1}.tile .tile-progress{position:absolute;bottom:5px;left:12%;width:76%;height:6px;z-index:1;background:#334638;border:1px solid #f0dfa7}.tile-progress>i{display:block;height:100%;background:#ffe2a1}.work-progress{margin-top:8px}.work-progress label{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:bold}.work-progress progress{appearance:none;width:100%;height:10px;vertical-align:top;border:none;border-radius:0;background:#e2d8b6}.work-progress progress::-webkit-progress-bar{background:#e2d8b6}.work-progress progress::-webkit-progress-value{background:#527f4a}.work-progress progress::-moz-progress-bar{background:#527f4a}
+@media(max-width:490px){.landscape{padding:6px}.map .tile.selected{outline-width:2px;outline-offset:-2px}.tile .tile-progress{bottom:3px;height:4px}.tile .ready{font-size:8px;top:2px;right:2px}}
+.tile.terrain-0{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAo0lEQVR4nGOYtSv6P7G4cl4A0WqJxQykWA7DA+IAauD1J7PJcwCtfE/3EBg6DqBFUKOnBRjGcAByfGNLNMM/Cmgd/FQJAeQ4HH5RQEuMrTAbWSEw6gCqO4Du2ZAWRTMDtQqUkZkGCGFi6hWaOYDYZhzcAdjSAj3Sx+BIA9Rq9SKHGLqZuKrwwREClPiW1DSCrm/ohQC1cwZBB1Cz/UfVNEAtDABFcbhXxBF2qAAAAABJRU5ErkJggg==)}
+.tile.terrain-1{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAm0lEQVR4nGNYfzL7/6xd0XBcOS8AjpHFsWGQXmRMSD26PhCbgVhNtMKjDhh+DiAm8dLMAaTkIKo5AJSd0C0lJVuS7QByfEu2A8gpbAYkDZDjcIqiYMBCAF/8Uy0bUiuRDWgaINkBtErpQycEBoUDRqOAHhg5a4/MEKCpA+jeIEHG5OSg4RcFow6guwOIrUFxtS+oFgLk1iEDHgUA+1+1841QV9gAAAAASUVORK5CYII=)}
+.tile.terrain-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAm0lEQVR4nGOYtSv6/0BihlEHDFkHVM4LoI4DQAaRahhMD0wfJY6hahSgO2x4pwFqpYXBEwLUStVkOYDYxENOjsGF15/MBmOqRwHMYBAeWmmAFN9REhrofLwOINVCqoQAqXGIDxOTYGmWBojNWUMrEY46gNy4xpeoh34IDFkH0KwyGjIhMOAOgOUashxATuuXZiFAacU1ctMADAMAcLO1Y0F8jdEAAAAASUVORK5CYII=)}
+.tile.terrain-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAqUlEQVR4nGOYtSv6P61w5bwAOMalhgGZs/5kNs0cQ5QDBgIPPweAohGGR2YIDIgDKMk9OB1AalwOyijAVwDR3AHElII0D4EBj4JRB1DdAcSkapo5gNhUTdMQQC+cqFFY4XUAOb4m1TEUJUKahwCuUCHHkSQ5gBapnWgH0Cq10yQN0MwB6KFAyzYBzUIAOYeQnAjJsWjQhcDQcQApQUjNhirMjIEPgYF2AADe/rkbudsoUwAAAABJRU5ErkJggg==)}
+.tile.water-0{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAkklEQVR4nGOwqOj7j4y9Jy+lKb6/rRKMK+cFgDEDTKL08H4UTHcH0AuPTAfA0he65XQPgaHvAPQsS2r2pVoIoGdZYrIuNsvpGgWjDhhwB+ByyPB1AK7sSvcQQM+qAxoFQ78oHnUAtS3HcAAtG6gklYTk1HZUdcCARcFAOGTUAUPXAeQ0UGlSEFHaMB05RTEuBwAA9f0kEYLp3+EAAAAASUVORK5CYII=)}
+.tile.water-8{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAjklEQVR4nGPwnrz0Pz3w/W2VYFw5LwAFM4w6YMQ4AJdDRpYDLCr6RngIYEuIow4YOQ4guyACZR1cmC4OgOHSw/tRMN1CYMCjgFKMHm0DVhDBom5kF8U0dwC+LIst/mkWAuhZFlf8D96imFqlH9kOIBSU1LJ8ZJSEow4g5JCh7wBCpR969qVZCBCbVdEdAADV/yDWo3Pt4gAAAABJRU5ErkJggg==)}
+.tile.water-16{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAjUlEQVR4nGPwnrz0P73w/W2VYFw5LwCOGahluEVFHwqmuwNguPTwfhRMdwcMWBSQYznZDkCPb1yYZg7AFd/Y4p2mDhiwKKCmQ0YdMLIcMLJLQoodQE7pR5MQIKbUI9bykVUSjjoAl0OGpwNIaZjQNASwNVZG64JRBwzefgG5NRzVHADD5NZ2VHMAvaMAAAKeIWQ7tQrhAAAAAElFTkSuQmCC)}
+.tile.water-24{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAmElEQVR4nGPwnrz0PzK2qOgjCqPrIxbf31YJxpXzAsCYAZfC0sP7UTC5FpLtAFrhke0AdMtHHUCxA0jNmjQLAfQsiy3rYrOcrlEw6oABdwAuh4wcB8Cy6sgNAWyWk+UAShomVC0JyWmwDL/KiFLLCTqAmg1UikpCYmo7mjpgwKKAUowtugakIEKOtpFdFA+4A0Z2SThoHQAADyEiRGrjqUIAAAAASUVORK5CYII=)}
+.tile.water-32{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAi0lEQVR4nGPwnrz0Pz3w/W2VYFw5LwAFMwxaB1hU9KHgAQuB0sP7UfCQjQJcDhkcDkCPb1yY5iGAHt+UxvugiwJsCZEqDiA22mjmAGKjkOYOGLAoINfyUQeMLAfgcsioA0aWA0Z2SUiRA6jVMKE4BChpsAx4QTTqgAF3AC6HDD8HEGqg0i0EiG2YAgC+CiP/1ihNAQAAAABJRU5ErkJggg==)}
+.tile.water-40{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAeElEQVR4nGPwnrz0/0BiBloZbFHRRxSmmQNguPTwfhRMtxAY8CgYdcDQdAB6FhmwEEDPOriy0PCLglEHjDqAFIyvhqNrCFCaVQc+Cgai9MMaAvQo9QZnFIwIBwxooxQZY6thh1YUUKv0ozgNULPBMrSiYNQBw9IBAGM5Czihte2iAAAAAElFTkSuQmCC)}
+.tile.water-41{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAm0lEQVR4nGOonBfwfyAxA7rA/W2VKJiQAZSqJ+gAQhZQqp4BXcB78lIUTMgCUtVbVPShYIIOIGQBqepLD++HY5A8AyEDaI1HHTDqAJwOQM8uAxYCyNkGPQsN7ygYdcCoA0jB6FmWlOxL1RAgJ6sOriigV+lHMARoVeoN/igYEQ7AaJQOlM9h6WvoRgElpR9V0wClDZahGwXDxgEAjJsnldUN3KsAAAAASUVORK5CYII=)}
+.tile.water-42{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAo0lEQVR4nGOonBfwfyAxw/1tlf+RMSEN1FaP4QBCGqitnsF78tL/yJiQBmqrx3AAIQ2UqMcWSgQdQE086oABdQDObDjqgCHhAIuKPhRMTYeQFAKlh/djxXRzAC2iYmQ5YGSXhHRzAHqWRcZ0DQH0rDr0SkJqln5kOQBXUNLdAbSOisHhAHxZh5rpgGAIUKO2G9RRQLOCiNhoo3lJSCgKB2VlBAA7yD0nbFsPIwAAAABJRU5ErkJggg==)}
+.pixel-grove{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAmElEQVR4nGNgGAWjgAhgnu7zH4QHzPKAydFgTHdHIFtOd0cgW961MxyOYY7AFS1Uiy58DkB2BC49FDsCOdixOQDdEVSNLmyGYcPIUUFOdNHFAbiii6oOIDW6qOIAbL4nRj1JoUAsxmfx+0PpYDz0HIAMJic7/UfG6A4lJbqo7gBSQ2t4OoBctTQBow4YcAeMglEwCkYBqQAASb8kLpZ+tOIAAAAASUVORK5CYII=)}
+.pixel-lock{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAVUlEQVR4nGNgGAWjYBQMNWCe7vMfHx6+DkC3aP3JbBRMc4eMOmDUAQPugMnJTv9JwTRxwPtD6URhujkA5ttRBwyYAwY8DdDdAQOaDUfBKBgFo4BWAACFZsNgtQoIjAAAAABJRU5ErkJggg==)}
+.pixel-road{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAeklEQVR4nGNgGAWjYKDB/W2V/+mNB9wBKI4YdA74eq6HZhirIwYqBOCOIFUDPh+NDAcMeBSQg/EmRFoH8aBwwIBHAV0cQG7IDR8HDHgU0NwBtModQ8cBpGJiHYzVAZOTnSjGyA6AiWF1wKBsFdHdAQPhCKo370fBkAUAyqOUIoEDsIkAAAAASUVORK5CYII=)}
+.pixel-farm{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAoklEQVR4nGNgGAWjYBSMglGABwRMjv4PwoTEyBHHAJOTnf7DcNfOcDjGJ0aOOAzjcYALGJun+8DZ+MRIFx8kDsBwBExwW00wGIM0w9j4xEgVJ+gAZNfCEhAhMdLEiXAAagJywSlGjjhWB6Cm0AFIA4PKAfRKhDgLIXolQrwOoEciJBgCdC0J6e0AjGKY3iUhXgfQA2N1AD0dgdMBo2AUDAQAAPOTGrlKFy4mAAAAAElFTkSuQmCC)}
+.pixel-mine{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAtklEQVR4nGNgGAWjYBSMAhJBWFT6f2IwzR3Q2taDgWnuCGTDsTkAm2Poavm6javhmOqOIMcBVHMEKUFP1ejAlrrvb6skCxPtCGyWIvuGXAcQHRKEgnpyshMYmzrbEYVh6omOjgF1ADEJbcg7AOaIAXcAhiOQLUcuUJALlZHhABBGdwCyHLkOILrKhlmI7ggYHhAHIPPJdQBWy3ABdNfRtIUDA4kt7v9hGGQhPj6lmOaeGQVDCgAA3dbKuFHrBy0AAAAASUVORK5CYII=)}
+.pixel-bakery{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA3klEQVR4nGNgGAWjYDiCyclO/2GY6oaX2jv/x4dp6gCYJasDfbFimDxNHEDIcmRHUN0BxFoOw1R1ALrl9ysScGKaOYBYn2NzACxh0s1yqjmAXMtx5QyyLccX58SkB5IdQS2fkxUShEo5amGSHQAL1q/3V4AxKXySHIDLEdR0AFHpAAZA2YhUC9H5z/c2k18ggTSCDIhIKETBMEPRMUgcXT3VHPD+UDoYIxuKHLToDkBXO/QdgC1Y8TmAqlGADeNzADa1Q8sBiS3u/0EYW0onF8PMJMkBtMBDwwGjgJ4AAL8LM7GC/BavAAAAAElFTkSuQmCC)}
+.pixel-cafe{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA3klEQVR4nGNgGAWjYDiCyclO/2GY6oaX2jv/x4dp6gCYJVPKFmHFMHmaOICQ5ciOoLoDiLUchqnqAHTL71ck4MQ0cwCxPsfmAFjCpJvlVHMAuZbjyhlkW44vzolJDyQ7glo+JyskCJVy1MIkOwDmi6/3V4AxKXySHIDLEdR0AFHpAAZA2YhUC9H5z/c2k18ggTSCDIhIKETBMEPRMUgcXT3VHPD+UDoYIxuKHLToDkBXO/QdgC1Y8TmAqlGADeNzADa1Q8sBiS3u/0EYW0onF8PMJMkBtMBDwwGjgJ4AAAxqV8m0YhMhAAAAAElFTkSuQmCC)}
+.pixel-cottage{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAnElEQVR4nGNgGAWjYCiBUnvn/8Rgmlp8vyKBIKaaQ0i1mKqOINbir/dXwDFVHUKsrwk5gCxHkBvsVIkSWlhOsgOobTnRjsDme2LimJS0gdMRuIJ+wB1At2ighwMIFtfElvWUYoKJcMAcQAhMTnZCSVz4MEgt2RYR6wAQHxmPOmDUAcPTAYkt7v9hGN1CQhimj2oOIBcPbQeMAloDAKJEfJrHJNBDAAAAAElFTkSuQmCC)}
+.pixel-hall{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAp0lEQVR4nGNgGOpgcrLT//sVCTjxqAPo4gCaW4IO1m1c/R+GQQ5A5tPdAdj4I8sB6JiqhmPjg0BYVDpWy0HipJgz6gCCDsAVv8gOiEgoJOgAktIJPt8hY1wOwKYGVygNPQe0tvWAMaVqiHYAuu/IdQCudDLqgMGfBggZbupsB8d0dwCy5TA86oBRB1DFAeiOwYVxOQAbJtpCEEhscf9Pazy4HTAK6A0Au4xNT+2ZUAkAAAAASUVORK5CYII=)}
+.pixel-flowers{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA2UlEQVR4nGNgGAWjYBSMgqEMvt5f8R+ER54DYBa/P5QOxnR3CLEOgMlTZNn16u7/IIzPIbj0DpgDYBajY7IshmnG5hDzdJ//IAzjTylb9B+EaeqA+xUJYIzPAeghQZSFk5Od/mPDMIthfJgDQGyYA9B9js5HNo8oB9zfVgnH6D6HGQrjg9TgcgDMgTCzyHIA3BA8DoBhmMUYepEcgNMRBB0AE8Ni8aBxAIZaNIw3LeByACmWUM0B+DDMElLl0DHBaCDHAcRinDmBlJCgusW0dgTRlo+CUUBvAAAgu0dmULy9JwAAAABJRU5ErkJggg==)}
+.pixel-fountain{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAkElEQVR4nGNgGAWjYBQMZVB6eP9/EB45DvCevPQ/CONzALqaUQdQHazbuPo/PkwziweNA2Cgta3nPzKmm8XD2wFhUen/icXoDiBW39BwAKGUDsLoDiBGD15HILsSpgFWqGDD6A7ApxbdAVgdMeQcQAomygGkpgFyMNVzArkYrwNo7QiCltPSEURbPgpGAT0BAMZD7hm8uqLuAAAAAElFTkSuQmCC)}
+.pixel-forest{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAkUlEQVR4nO2VMQqAMAxFeyt3Zwc3B0cH7+La03i6ioXKR0JpIElR8uCv/ofh0xAc50sM+5TudCuf45pjLoHl5hJYfpzLkyKhfpaaAEqoCeBvpwRUJajbU0EBURmugPhSuALiS2kReJeLLwU/UIvaUjjl6kuJ25gwRZC7FBcwF1B/M1qX8l8BhDqTKS7QXcBxuFxHKBkiPEvL0gAAAABJRU5ErkJggg==)}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div id="resources" class="resources"></div></header>
-<main><div class="heading"><div><h2>苔芽溪谷</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
+<main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
 <div class="layout"><section class="panel map-panel"><div class="map-top"><span>王国地图</span><span><a href="#castle">🏰 王家城堡</a> · <span id="area"></span></span></div><div class="landscape"><div class="map" id="map" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
 <aside class="side"><section class="panel card quest" id="quest"></section><section class="panel card" id="inspect"></section><section class="panel card" id="residents"></section></aside></div>
 <section class="panel catalog"><div class="catalog-head"><h3>建造手册</h3><span class="muted">王室减免已计入建造费用</span><div class="tabs" id="tabs"></div></div><div class="choices" id="choices"></div></section>
@@ -238,8 +268,40 @@ const can=items=>Object.entries(items).every(([k,v])=>state.stock[k]>=v);
 const add=(items,m=1)=>Object.entries(items).forEach(([k,v])=>state.stock[k]+=v*m);
 const water=i=>[0,8,16,24,32,40,41,42].includes(i);
 const locked=i=>!state.expanded&&i%8>=6;
+const batchDuration=60_000;
 const planted=t=>t?.ready!==undefined;
-const isReady=t=>planted(t)&&t.ready<=state.day;
+const isReady=(t,now=Date.now())=>planted(t)&&(t.ready<=state.day||(t.batchStart!==undefined&&now-t.batchStart>=batchDuration));
+function batchProgress(t,now=Date.now()){
+ if(isReady(t,now))return 100;
+ if(!planted(t)||t.batchStart===undefined)return 0;
+ return Math.max(0,Math.floor((now-t.batchStart)*100/batchDuration));
+}
+function startBatch(t){
+ t.ready=state.day+1;
+ t.batchStart=Date.now();
+}
+function pixelSprite(name){return '<span class="pixel-sprite pixel-'+name+'" aria-hidden="true"></span>'}
+function workProgress(t){
+ const percent=batchProgress(t);
+ const label=isReady(t)?'可收取':planted(t)?percent+'%':'等待投入原料';
+ return '<div class="work-progress" data-detail-progress="'+selected+'"><label for="batch-progress">劳动进度 <span>'+label+'</span></label><progress id="batch-progress" max="100" value="'+percent+'"></progress></div>';
+}
+let progressReadySignature='';
+function refreshWorkProgress(){
+ const now=Date.now();
+ const signature=Object.entries(state.tiles).filter(([,t])=>isReady(t,now)).map(([i])=>i).join(',');
+ if(signature!==progressReadySignature){render();return}
+ for(const bar of document.querySelectorAll('[data-tile-progress]')){
+  bar.style.width=batchProgress(state.tiles[bar.dataset.tileProgress],now)+'%';
+ }
+ const detail=document.querySelector('[data-detail-progress]');
+ const t=detail&&state.tiles[detail.dataset.detailProgress];
+ if(t&&planted(t)&&!isReady(t,now)){
+  const value=batchProgress(t,now);
+  detail.querySelector('progress').value=value;
+  detail.querySelector('label span').textContent=value+'%';
+ }
+}
 function save(){try{localStorage.setItem(key,JSON.stringify(state));persistent=true}catch{persistent=false}}
 function tell(text){message=text;save();render()}
 function button(label,action,disabled=false,primary=false){return '<button class="button '+(primary?'primary':'')+'" data-action="'+action+'" '+(disabled?'disabled':'')+'>'+label+'</button>'}
@@ -254,6 +316,7 @@ function laborControls(index){
  (active?button('结束劳动指令','labor-end'):'')+'</div></div>';
 }
 function render(){
+ progressReadySignature=Object.entries(state.tiles).filter(([,t])=>isReady(t)).map(([i])=>i).join(',');
  renderCastle();
  $('resources').innerHTML=Object.keys(names).map(k=>'<span title="'+names[k]+'">'+icons[k]+' '+state.stock[k]+'</span>').join('');
  $('calendar').textContent=season()+'季 · 第 '+state.day+' 天 · 王国 Lv.'+level()+' · 👑 国王聂萌 · 无敌';
@@ -264,8 +327,10 @@ function render(){
  let cells='';
  for(let i=0;i<48;i++){
   const t=state.tiles[i],def=t&&catalog[t.type],closed=locked(i),wet=water(i),name=t?(def?.name??'王宫'):closed?'待开放花坡':wet?'溪水':'空地';
-  const content=closed?'🔒':t?(def?.icon??'🏰'):wet?'':i%7===0?'<span class="sprig">✿</span>':'<span class="sprig">·</span>';
-  cells+='<button class="tile '+(closed?'locked ':wet?'water ':t?.type==='road'?'road ':'')+(selected===i?'selected':'')+'" data-tile="'+i+'" aria-label="'+name+'，第'+(Math.floor(i/8)+1)+'行第'+(i%8+1)+'列'+(isReady(t)?'，可收取':'')+'">'+content+(isReady(t)?'<span class="ready">收</span>':'')+'</button>';
+  const content=closed?pixelSprite('forest')+(i%8===6&&i%16===6?pixelSprite('lock'):''):t?pixelSprite(t.type):!wet&&[5,13,29,43].includes(i)?pixelSprite('grove'):'';
+  const terrain=wet?'water water-'+i:'terrain-'+((i*7+Math.floor(i/8))%4);
+  const progress=def?.yield?'<span class="tile-progress" aria-hidden="true"><i data-tile-progress="'+i+'" style="width:'+batchProgress(t)+'%"></i></span>':'';
+  cells+='<button class="tile '+terrain+(closed?' locked':'')+(selected===i?' selected':'')+'" data-tile="'+i+'" aria-label="'+name+'，第'+(Math.floor(i/8)+1)+'行第'+(i%8+1)+'列'+(isReady(t)?'，可收取':planted(t)?'，生产中':'')+'">'+content+progress+(isReady(t)?'<span class="ready">收</span>':'')+'</button>';
  }
  $('map').innerHTML=cells;
  const q=jobs[state.quest], week=Math.floor((state.day-1)/7)+1;
@@ -274,13 +339,13 @@ function render(){
  if(selected!==null&&locked(selected)){
   $('inspect').innerHTML='<h3>🌼 东侧花坡</h3><p class="muted">'+format(expandCost)+' · 需 12 快乐值</p><div class="actions">'+button('开放花坡','expand',!can(expandCost)||state.stock.joy<12,true)+'</div>';
  }else if(def){
-  let detail=def.yield?(isReady(t)?'产物可以收取。':planted(t)?'下次产出在第 '+t.ready+' 天。':'需要投入 '+format(def.input)+'。'):(t.type==='cottage'?'小屋提供 1 个居民名额。':t.type==='road'?'连接溪谷里的设施。':'相邻生产设施可额外产出 1 份首项产物。');
+  let detail=def.yield?(isReady(t)?'产物可以收取。':planted(t)?'生产中，约一分钟或结束今天后可收取。':'需要投入 '+format(def.input)+'。'):(t.type==='cottage'?'小屋提供 1 个居民名额。':t.type==='road'?'连接溪谷里的设施。':'相邻生产设施可额外产出 1 份首项产物。');
   const work=Object.entries(state.people).find(([,p])=>p.job===selected);
   if(work)detail+=' '+people[work[0]].name+'在此协助生产，每批首项产物 +'+workerBonus(work[0])+'。';
   const crew=t.crew??0;
   if(def.yield)detail+=' 驻派奴仆 '+crew+'/'+maxCrew+' 人，每 '+crewSize+' 人使每批首项产物 +1。';
   const upgrade={gold:25*t.grade,ore:2*t.grade};
-  $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p><div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!state.stock.diamonds):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>'+(def.yield?laborControls(selected):'');
+  $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p>'+(def.yield?workProgress(t):'')+'<div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!state.stock.diamonds):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>'+(def.yield?laborControls(selected):'');
  }else{ $('inspect').innerHTML='<h3>'+(t?'🏰 王宫':'🧭 地块详情')+'</h3><p class="muted">'+(t?'聂萌的王座设在这里。<a href="#castle">前往王家城堡与聂萌商议</a>。建造金币费用减免 20%（向上取整）。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击东侧锁格查看拓地条件。')+'</p>'; }
  const p=state.people[person],who=people[person];
  $('residents').innerHTML='<h3>👑 王室与居民</h3><p class="muted">王室奴仆 '+royalRetinue+' 人 · '+idleRetinue()+' 人待命</p><p class="muted"><strong>劳动民心 '+state.labor.morale+'/100</strong> · 低于 '+lowMorale+' 时每批首项产物 −'+moralePenalty+'</p><div class="tabs">'+Object.keys(state.people).map(id=>button(people[id].name,'person-'+id,false,id===person)).join('')+'</div><div class="resident"><div class="portrait">'+who.icon+'</div><div><strong>'+who.name+'</strong>'+(person==='advisor'?'<p class="muted">忠诚 100% · 王国宰相</p>':'')+'<p class="muted">羁绊 Lv.'+(1+Math.floor(p.bond/4))+' · 心情 '+p.mood+(person==='hero'?' · 无限体力':' · 体力 '+(p.last===state.day?2:3)+'/3')+'</p></div></div>'+((p.bond>=4||person==='advisor'||person==='hero')?'<p class="muted">「'+who.line+'」</p>':'')+(person==='advisor'?'<p class="muted">'+(state.counselDay===state.day?'今日奏报已处理。':'每日可采纳一项奏报。')+'</p><div class="actions">'+Object.entries(counsel).map(([id,item])=>button(item.name+' · '+format(item.reward)+(id==='festival'?' · 民心 +'+relief:''),'counsel-'+id,state.counselDay===state.day,true)).join('')+'</div>':'')+'<div class="actions">'+button('打招呼','greet',p.last===state.day,true)+button('送礼 · '+icons[who.gift]+names[who.gift],'gift',!state.stock[who.gift]||p.giftDay===state.day)+'</div>';
@@ -295,7 +360,8 @@ function tileClick(i){
  const cost=constructionCost(d);
  if(!can(cost)){tell('资源不足，无法建造。');return}
  add(cost,-1);state.total.built+=plan==='road'?0:1;if(plan!=='road')state.xp++;
- state.tiles[i]={type:plan,grade:1,...(d.yield&&!d.input?{ready:state.day+1}:{})};
+ state.tiles[i]={type:plan,grade:1};
+ if(d.yield&&!d.input)startBatch(state.tiles[i]);
  plan=null;tell(d.name+'建成了！');
 }
 function act(a){
@@ -350,7 +416,7 @@ function act(a){
   t.crew=crew-crewSize;
   tell(crewSize+' 名王室奴仆已返回王宫。');return
  }
- if(a==='start'&&d.input&&!planted(t)&&can(d.input)){add(d.input,-1);t.ready=state.day+1;tell(d.name+'开始制作，明天可收取。');return}
+ if(a==='start'&&d.input&&!planted(t)&&can(d.input)){add(d.input,-1);startBatch(t);tell(d.name+'开始制作，劳动进度已开始。');return}
  if(a==='speed'&&planted(t)&&!isReady(t)&&state.stock.diamonds){state.stock.diamonds--;t.ready=state.day;tell('制作完成，可以收取了。');return}
  if(a==='assign'){
   const worker=Object.values(state.people).find(r=>r.job===selected);
@@ -373,7 +439,7 @@ function act(a){
   add(output);state.xp++;state.total.harvest++;
   if(pressed)adjustMorale(-pressureCost);
   state.weekHarvest??={};state.weekHarvest[week]=(state.weekHarvest[week]??0)+1;
-  if(d.input)delete t.ready;else t.ready=state.day+1;
+  if(d.input){delete t.ready;delete t.batchStart;}else startBatch(t);
   tell('收获 '+format(output)+'。'+(pressed?' 劳动民心 '+morale+' → '+state.labor.morale+'。':''));
  }
 }
@@ -390,5 +456,13 @@ document.addEventListener('click',e=>{
  if(b.dataset.plan){plan=b.dataset.plan;selected=null;const d=catalog[plan];tell('准备建造'+d.name+'，请选择空地。');return}
  if(b.dataset.action)act(b.dataset.action);
 });
+let batchesMigrated=false;
+for(const t of Object.values(state.tiles)){
+ if(planted(t)&&t.ready>state.day&&t.batchStart===undefined){
+  t.batchStart=Date.now();batchesMigrated=true;
+ }
+}
+if(batchesMigrated)save();
 render();
+if(typeof setInterval==='function')setInterval(refreshWorkProgress,500);
 </script></body></html>
