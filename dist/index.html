@@ -269,10 +269,13 @@ function focusCamera(){
   grid.style.transform='';
   return;
  }
- const actor=document.querySelector('[data-island-actor="'+walkingActor()+'"]');
- if(!actor||!view.clientWidth||!view.clientHeight)return;
- const x=Math.max(0,Math.min(grid.clientWidth-view.clientWidth,actor.offsetLeft+actor.offsetWidth/2-view.clientWidth/2));
- const y=Math.max(0,Math.min(grid.clientHeight-view.clientHeight,actor.offsetTop+actor.offsetHeight/2-view.clientHeight/2));
+ if(!view.clientWidth||!view.clientHeight)return;
+ const {q,r}=island[actorPosition(walkingActor())];
+ const size=radius*2+1;
+ const centerX=(q+Math.floor(r/2)+radius+.5)*grid.clientWidth/size;
+ const centerY=(r+radius+.47)*grid.clientHeight/size;
+ const x=Math.max(0,Math.min(grid.clientWidth-view.clientWidth,centerX-view.clientWidth/2));
+ const y=Math.max(0,Math.min(grid.clientHeight-view.clientHeight,centerY-view.clientHeight/2));
  grid.style.transform='translate('+(-x)+'px,'+(-y)+'px)';
  const previous=grid.querySelector('.facing-tile');
  if(previous)previous.classList.remove('facing-tile','placement-preview');
