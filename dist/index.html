@@ -88,13 +88,13 @@ main{max-width:1580px}.layout:not(.build-layout){display:block}.layout:not(.buil
 .map#land-grid .island-tile.weather-rain:after,.map#land-grid .island-tile.weather-snow:after{opacity:.56}
 
 .walking-map .island-view{height:clamp(330px,62vh,680px);position:relative;overflow:hidden;background:#2c657d;display:block;container-type:normal}
-.walking-map .map#land-grid{width:max(100%,1600px);height:auto;transform-origin:0 0;transition:transform .16s linear}
+.walking-map .map#land-grid{width:calc(max(100%,1600px)*var(--camera-zoom,1));height:auto;transform-origin:0 0;transition:transform .16s linear}
 .walking-map .map#land-grid .island-actor{transition:left .14s linear,top .14s linear}
 .walking-map .map#land-grid .facing-tile{box-shadow:inset 0 0 0 2px #f8e5a9ad;z-index:2}
 .walking-map .map#land-grid .placement-preview{background:#f8ecae45;box-shadow:inset 0 0 0 3px #fff2aa}
 .build-layout .walking-map .actor-toolbar{display:block}.walk-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.walk-controls .actions{margin-top:4px}.walk-controls .button{min-width:35px}.walk-controls p{margin:0}
 .map-panel.walking-map:fullscreen .island-view,.map-panel.walking-map.map-overlay .island-view{display:block}
-.map-panel.walking-map:fullscreen .map#land-grid,.map-panel.walking-map.map-overlay .map#land-grid{width:max(100%,1600px)}
+.map-panel.walking-map:fullscreen .map#land-grid,.map-panel.walking-map.map-overlay .map#land-grid{width:calc(max(100%,1600px)*var(--camera-zoom,1))}
 @media(prefers-reduced-motion:reduce){.walking-map .map#land-grid{transition:none}}
 
 .stage-hud{display:none}.button kbd{padding:1px 4px;background:#183832;border-radius:2px;color:#fff4cc}.map#land-grid .citadel-tile{z-index:3}.map#land-grid .citadel-tile .citadel-size{position:absolute;inset:-100%;z-index:1;pointer-events:none}.map#land-grid .citadel-tile .citadel-size .pixel-sprite{inset:0}.map#land-grid .citadel-tile:after{z-index:2}.map#land-grid .citadel-tile:hover{filter:brightness(1.06)}
@@ -148,6 +148,7 @@ body.game-stage{overflow:hidden;background:#2b483d}.game-stage>header,.game-stag
 .map#land-grid .parcel-path{position:absolute;inset:0;pointer-events:none;z-index:0}.path-arm{position:absolute;background:#d8b379;box-shadow:inset 0 0 0 1px #99744a70}.path-east,.path-west{height:18%;top:41%;width:59%}.path-east{right:0}.path-west{left:0}.path-north,.path-south{width:18%;left:41%;height:59%}.path-north{top:0}.path-south{bottom:0}.path-arm:after{content:'';position:absolute;inset:2px;background:repeating-linear-gradient(90deg,#f0ce9033 0 3px,transparent 3px 10px);pointer-events:none}.path-north:after,.path-south:after{background:repeating-linear-gradient(#f0ce9033 0 3px,transparent 3px 10px)}
 .lane-lamp{position:absolute;width:4%;height:19%;right:24%;top:27%;background:#503c38;z-index:2}.lane-lamp:before{content:'';position:absolute;width:270%;height:44%;left:-85%;top:0;background:#b19063;border:1px solid #513f39;box-sizing:border-box}.lane-lamp:after{content:'';position:absolute;inset:-11px -14px;opacity:0;background:radial-gradient(ellipse at 50% 28%,#ffe594b3,#f5c45a44 37%,transparent 69%);transition:opacity 1.4s;pointer-events:none}.map-panel[data-light="3"] .lane-lamp:after,.map-panel[data-light="2"] .lane-lamp:after{opacity:1}.map-panel[data-light="3"] .lane-lamp:before,.map-panel[data-light="2"] .lane-lamp:before{background:#ffeaa8;box-shadow:0 0 6px 2px #ffd868}
 .stage-top-right{display:flex;gap:6px;align-items:start}.stage-location{text-align:right}.stage-location strong{white-space:nowrap}.stage-location small{white-space:nowrap}@media(max-width:480px){.stage-top-right{gap:3px}.stage-location{font-size:12px;padding:5px 7px}.stage-top .stage-close{max-width:89px;white-space:normal}}
+.walking-map .island-view.map-zooming #land-grid{transition:none}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div class="header-resources"><div id="resources" class="resources"></div><button type="button" class="button unlimited-toggle" id="unlimited-toggle" data-action="toggle-unlimited" aria-pressed="false">∞ 无限资源</button></div></header>
 <main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
@@ -415,8 +416,48 @@ const animals={
 };
 let mapActor=null, stageMenu=false, stageToastUntil=0, stageOpeningView=true;
 let facing=0, cameraPan={x:0,y:0}, mapDrag=null, suppressMapClickUntil=0;
+let cameraZoom=1, zoomSettler;
+function nextCameraZoom(scale,delta){
+ return Math.min(2.25,Math.max(.45,scale*Math.exp(-delta*.0019)));
+}
+function boundedCameraOffset(world,viewport,offset){
+ return world<viewport?(world-viewport)/2:Math.max(0,Math.min(world-viewport,offset));
+}
+function cameraCenter(grid){
+ const {q,r}=island[actorPosition(walkingActor())];
+ const size=radius*2+1;
+ const x=q+Math.floor(r/2)+radius+.5,y=r+radius+.47;
+ const frameCastle=stageOpeningView&&Math.hypot(x-9.5,y-9.5)<5;
+ return {
+  x:(frameCastle?x*.35+9.5*.65:x)*grid.clientWidth/size,
+  y:(frameCastle?y*.35+9.5*.65:y)*grid.clientHeight/size
+ };
+}
+function zoomMapAtPointer(event,view){
+ if(!exploreMode||!event.deltaY||mapDrag?.moved)return;
+ event.preventDefault();
+ const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?view.clientHeight:1);
+ const scale=nextCameraZoom(cameraZoom,delta);
+ if(scale===cameraZoom)return;
+ const grid=$('land-grid'), bounds=grid.getBoundingClientRect(), frame=view.getBoundingClientRect();
+ if(!bounds.width||!bounds.height)return;
+ const anchorX=(event.clientX-bounds.left)/bounds.width;
+ const anchorY=(event.clientY-bounds.top)/bounds.height;
+ view.classList.add('map-zooming');
+ cameraZoom=scale;
+ grid.style.setProperty('--camera-zoom',cameraZoom);
+ const center=cameraCenter(grid);
+ cameraPan={
+  x:anchorX*grid.clientWidth-(event.clientX-frame.left)+view.clientWidth/2-center.x,
+  y:anchorY*grid.clientHeight-(event.clientY-frame.top)+view.clientHeight/2-center.y
+ };
+ focusCamera();
+ clearTimeout(zoomSettler);
+ zoomSettler=setTimeout(()=>view.classList.remove('map-zooming'),140);
+}
 function setupMapDrag(){
  const view=$('island-view');
+ view.addEventListener('wheel',event=>zoomMapAtPointer(event,view),{passive:false});
  view.addEventListener('pointerdown',event=>{
   if(!exploreMode||event.button!==0||event.pointerType!=='mouse')return;
   mapDrag={id:event.pointerId,x:event.clientX,y:event.clientY,panX:cameraPan.x,panY:cameraPan.y,moved:false};
@@ -453,14 +494,10 @@ function focusCamera(){
   return;
  }
  if(!view.clientWidth||!view.clientHeight)return;
- const {q,r}=island[actorPosition(walkingActor())];
- const size=radius*2+1;
- const xTile=q+Math.floor(r/2)+radius+.5,yTile=r+radius+.47;
- const frameCastle=stageOpeningView&&Math.hypot(xTile-9.5,yTile-9.5)<5;
- const centerX=(frameCastle?xTile*.35+9.5*.65:xTile)*grid.clientWidth/size;
- const centerY=(frameCastle?yTile*.35+9.5*.65:yTile)*grid.clientHeight/size;
- const x=Math.max(0,Math.min(grid.clientWidth-view.clientWidth,centerX-view.clientWidth/2+cameraPan.x));
- const y=Math.max(0,Math.min(grid.clientHeight-view.clientHeight,centerY-view.clientHeight/2+cameraPan.y));
+ grid.style.setProperty('--camera-zoom',cameraZoom);
+ const center=cameraCenter(grid);
+ const x=boundedCameraOffset(grid.clientWidth,view.clientWidth,center.x-view.clientWidth/2+cameraPan.x);
+ const y=boundedCameraOffset(grid.clientHeight,view.clientHeight,center.y-view.clientHeight/2+cameraPan.y);
  grid.style.transform='translate('+(-x)+'px,'+(-y)+'px)';
  const previous=grid.querySelector('.facing-tile');
  if(previous)previous.classList.remove('facing-tile','placement-preview');
