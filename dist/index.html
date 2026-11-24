@@ -149,6 +149,20 @@ body.game-stage{overflow:hidden;background:#2b483d}.game-stage>header,.game-stag
 .lane-lamp{position:absolute;width:4%;height:19%;right:24%;top:27%;background:#503c38;z-index:2}.lane-lamp:before{content:'';position:absolute;width:270%;height:44%;left:-85%;top:0;background:#b19063;border:1px solid #513f39;box-sizing:border-box}.lane-lamp:after{content:'';position:absolute;inset:-11px -14px;opacity:0;background:radial-gradient(ellipse at 50% 28%,#ffe594b3,#f5c45a44 37%,transparent 69%);transition:opacity 1.4s;pointer-events:none}.map-panel[data-light="3"] .lane-lamp:after,.map-panel[data-light="2"] .lane-lamp:after{opacity:1}.map-panel[data-light="3"] .lane-lamp:before,.map-panel[data-light="2"] .lane-lamp:before{background:#ffeaa8;box-shadow:0 0 6px 2px #ffd868}
 .stage-top-right{display:flex;gap:6px;align-items:start}.stage-location{text-align:right}.stage-location strong{white-space:nowrap}.stage-location small{white-space:nowrap}@media(max-width:480px){.stage-top-right{gap:3px}.stage-location{font-size:12px;padding:5px 7px}.stage-top .stage-close{max-width:89px;white-space:normal}}
 .walking-map .island-view.map-zooming #land-grid{transition:none}
+
+.map#land-grid .island-actor,.walking-map .map#land-grid .island-actor{transition:left var(--stride,180ms) linear,top var(--stride,180ms) linear}
+.map#land-grid .island-actor .pixel-sprite{animation:none;transform:scaleX(var(--face,1))}.island-actor[data-face=west]{--face:-1}
+.map#land-grid .island-actor.actor-walking .pixel-sprite{animation:pixelStride var(--stride,180ms) steps(1,end) infinite}
+@keyframes pixelStride{0%,100%{transform:translateY(0) scaleX(var(--face,1))}50%{background-image:var(--step-frame);transform:translateY(-2px) scaleX(var(--face,1))}}
+@media(prefers-reduced-motion:reduce){.map#land-grid .island-actor,.map#land-grid .island-actor .pixel-sprite{transition:none!important;animation:none!important}}
+[data-face=north] .pixel-actor-hero{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAoklEQVR4nGNgGOrg/aH0/yA8YBZhE6eJo0YdADMUHa8O9AVjbHIjwwH4MFUdAAJRZvb/icVUt3zUAaMOGHUAzAHLohoJYpo44GjUlP8D7gB0/GJDARyjyw24A6jqCJiB6GU9sgPQ5QaFA6jmCGzBS0wUUMUBuAweMg6g2BED7gBkYOps9x8ZEys3tB2Q2OL+H4bRLSFWjmoOIBdTKSxGAW0AAGSOJXvAUdliAAAAAElFTkSuQmCC);--step-frame:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAoklEQVR4nGNgGOrg/aH0/yA8YBZhE6eJo0YdADMUHa8O9AVjbHIjwwH4MFUdAAJRZvb/icVUt3zUAaMOGHUAzAHLohoJYpo44GjUlP8D7gB0/GJDARyjyw24A6jqCJiB6GU9sgPQ5QaFA6jmCGzBS0wUUMUBuAweMg6g2BED7gBkYOps9x8ZEys3tB2Q2OL+H4bRLSFWjmoOIBdTKSxGAW0AAGSOJXvAUdliAAAAAElFTkSuQmCC)}
+.pixel-actor-hero{--step-frame:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAtklEQVR4nGNgGOrg/aH0/yA8YBZhE6eJo0YdADMUHa8O9AVjbHIjwwH4MFUdAAJRZvb/icVUtxzmgO/HZxLEw98Bps52YIxsKbLY8HfAgEfBoHHA9epuOKa5A45GTSG6DKCZA0jBA+4AqjoCZiAp9QBVHYCcwEhxANUcgewAukcDyJABdwClmCoOgJX1MEz33IDuABAmJI+uZmg6ILHF/T8IYzMcJodNHlmOKg6gBFMcCqOAlgAADclwkj85SnEAAAAASUVORK5CYII=)}
+[data-face=north] .pixel-actor-advisor{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAj0lEQVR4nGNgGAUkAlNnu/+E8KgDBsRSmjpm1AEw4GLp+p9YTFWLRx0w6oBRByA7IKy2iSCmiQNgBg+oA9DxxbMb4RhZ/Ov9FVjx0HUALoORHYAuNznZCQXT3QE0CYEBiQJ8qX3QOgAdk2XxoHEAMsDX2qFLy3hAHJDY4v4fhtEtIVaOag4gF1MpLEYBbQAAkiAq+73LxegAAAAASUVORK5CYII=);--step-frame:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAj0lEQVR4nGNgGAUkAlNnu/+E8KgDBsRSmjpm1AEw4GLp+p9YTFWLRx0w6oBRByA7IKy2iSCmiQNgBg+oA9DxxbMb4RhZ/Ov9FVjx0HUALoORHYAuNznZCQXT3QE0CYEBiQJ8qX3QOgAdk2XxoHEAMsDX2qFLy3hAHJDY4v4fhtEtIVaOag4gF1MpLEYBbQAAkiAq+73LxegAAAAASUVORK5CYII=)}
+.pixel-actor-advisor{--step-frame:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAqklEQVR4nGNgGAUkAlNnu/+E8KgDBsRSmjpm1AEw4GLp+p9YTFWLkR3w/fhMgnj4OwAWv8iWIosNfwcMeBQMGgdcr+6GY5o7IKy2iegygGYOIBZ/vb8CKx66DiBkMDY8OdkJBVPkAOQERoojqBYCyA6gexSADBxwB1CKybIY3QHoDQ26OQAGCLV2aN4iGjAHJLa4/wdhbIbD5LDJI8tRxQGUYIpDYRTQEgAAEEd0iyi4pvgAAAAASUVORK5CYII=)}
+.pixel-actor-cow{--step-frame:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAsklEQVR4nGNgGAWjYBRQEXy9v+I/CJMqN/QdEOoa/B+EiXEATC1NHADD31+cxYqR1Yw6gKBBQ8oBIIBumamzHRhjE6PYJ8RgshyA7hB8QUiJI+nmgOvV3WAM8jWMPSAOQMZDywHoFtE9DVArRwyYAwhahA/QxafEOICcYpYqlQ6piY7qDgABUgykuwMSW9z/wzA2tWRbimwwNgcgy+NTi0sdzMEkOwCfgaRiskNnFNACAAAkamFZ8/GTMAAAAABJRU5ErkJggg==)}
+.pixel-actor-cat{--step-frame:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAu0lEQVR4nGNgGAWjYDiAL2sz/sMwNdSNOoBsB1yv7v6/IDkQp+EwNTR3ALJP0TFNHACyFIQJOQBZDU0cAMP4HADDBA0aUg4AAXTLTJ3twBibGMU+IQaT5QB0h1DiAHyYbg4ApXgQBvkaxh4QByDjkeWAAU8DA+4AghbhA3TxKTEOIKeYpaRERXEANgPp5gAQIMVAujsgscX9PwxjU0u2pcgGY3MAsjw+tbjUwRxMsgPwGUgqJjt0RgEtAAAce1zz58+SQgAAAABJRU5ErkJggg==)}
+.pixel-actor-dog{--step-frame:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAArklEQVR4nGNgGAWjYBSMAiqAhnDH/8iYGHU0dcDtJdlY8aByAFUdQTUHkOu6QeUAmGWmznZgjOwAEJ9oB+DzCT6fUeQAdIdQ4gCKcgK1HHC9uhuMQT6HsWniAFwYZikyBokTnaiGvANw4ZHjAIIW4QN08SkxDiC3mKW4wsFlKN0cAAKkGEh3ByS2uP+HYWxqybYU2WBsDkCWx6cWlzqYg0l2AD4DScVkh84ooAUAAFGE+HqU9a8SAAAAAElFTkSuQmCC)}
+.pixel-actor-giraffe{--step-frame:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAnklEQVR4nGNgGAU0AkvS3P+DMC7+qANoBl5uj/sPwjAL0fl0cwAuPGCWmzrbgfHIdcCARwHdHABL7cg5YEAdQFMLsTmArj4e3g4gJkUjY1yJb+g7gFC2olm+HzQOoBTTxAGkhMrQdwAxliGrQccUOQDdMLo6AASINWxAHJDY4v4fhqlmIT6DQRhZDpc6XGqQMVkOIMZgYjHFoTQKqAkAesxp0aaTxRAAAAAASUVORK5CYII=)}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div class="header-resources"><div id="resources" class="resources"></div><button type="button" class="button unlimited-toggle" id="unlimited-toggle" data-action="toggle-unlimited" aria-pressed="false">∞ 无限资源</button></div></header>
 <main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
@@ -482,7 +496,38 @@ function setupMapDrag(){
  },true);
 }
 const moveKeys={arrowright:0,d:0,arrowdown:1,s:1,arrowleft:2,a:2,arrowup:3,w:3};
+const heldMoveKeys=new Map();
+const playerStride=126;
 let lastKeyStep=-Infinity;
+const actorMotion=new Map();
+const animalPace={
+ cow:{stride:380,burst:2,pause:2700},cat:{stride:190,burst:3,pause:2050},
+ dog:{stride:145,burst:4,pause:1550},giraffe:{stride:340,burst:3,pause:2450}
+};
+function setActorMotion(id,direction,duration,now=Date.now()){
+ const motion=actorMotion.get(id)??{};
+ motion.face=roadDirections[direction];
+ motion.until=now+duration;
+ motion.speed=duration;
+ actorMotion.set(id,motion);
+}
+function tickMotion(){
+ const now=Date.now();
+ if(isExploring()&&heldMoveKeys.size&&now-lastKeyStep>=playerStride){
+  const direction=[...heldMoveKeys.values()].at(-1);
+  lastKeyStep=now;
+  moveWalker(direction);
+ }
+ stepActors(now);
+ if(typeof document.querySelector!=='function')return;
+ for(const [id,motion] of actorMotion){
+  if(motion.until&&motion.until<=now){
+   motion.until=0;
+   const node=document.querySelector('[data-island-actor="'+id+'"]');
+   node?.classList.remove('actor-walking');
+  }
+ }
+}
 function isExploring(){return exploreMode&&(workspace==='map'||workspace==='build')}
 function walkingActor(){return mapActor==='advisor'?'advisor':'hero'}
 function facingTile(){return adjacentTiles(actorPosition(walkingActor()))[facing]}
@@ -518,9 +563,10 @@ function moveWalker(direction){
  if(walkable(next)){
   state.actorPositions??={};
   state.actorPositions[id]=next;
+  setActorMotion(id,direction,playerStride);
   updateActorPosition(id);
   save();
- }
+ }else{setActorMotion(id,direction,0);updateActorPosition(id);}
  renderActorToolbar();
  renderStageHud();
  focusCamera();
@@ -542,16 +588,17 @@ function onExploreKey(event){
  const key=event.key.toLowerCase();
  if(Object.hasOwn(moveKeys,key)){
   event.preventDefault();
-  const now=Date.now();
-  if(now-lastKeyStep>=105){lastKeyStep=now;moveWalker(moveKeys[key]);}
+  if(event.repeat)return;
+  heldMoveKeys.set(key,moveKeys[key]);
+  lastKeyStep=Date.now();
+  moveWalker(moveKeys[key]);
  }else if(key==='e'&&!event.repeat){
   event.preventDefault();interactFacing();
  }else if(key==='b'&&!event.repeat&&workspace==='map'){
   event.preventDefault();location.hash='build';
  }
 }
-const feet=new Map();
-let lastAnimalStep=0;
+const animalSteps=new Map();
 function walkable(id){return island[id]&&!water(id)&&!locked(id)&&!citadelGround.has(id)}
 function actorPosition(id){return state.actorPositions?.[id]??(id==='hero'?10:id==='advisor'?18:animals[id].home)}
 function actorMarkup(){
@@ -559,7 +606,9 @@ function actorMarkup(){
  return ids.map(id=>{
   const {q,r}=island[actorPosition(id)];
   const name=animals[id]?.name??people[id].name;
-  return '<button class="island-actor '+(mapActor===id?'actor-active':'')+'" data-action="actor-pick-'+id+'" data-island-actor="'+id+'" title="'+name+'" aria-label="'+name+'" style="--x:'+(q+Math.floor(r/2)+radius)+';--y:'+(r+radius)+'">'+pixelSprite('actor-'+id)+'</button>';
+  const motion=actorMotion.get(id);
+  const walking=motion?.until>Date.now();
+  return '<button class="island-actor '+(mapActor===id?'actor-active':'')+(walking?' actor-walking':'')+'" data-face="'+(motion?.face??'south')+'" data-action="actor-pick-'+id+'" data-island-actor="'+id+'" title="'+name+'" aria-label="'+name+'" style="--x:'+(q+Math.floor(r/2)+radius)+';--y:'+(r+radius)+';--stride:'+(motion?.speed||180)+'ms">'+pixelSprite('actor-'+id)+'</button>';
  }).join('');
 }
 function updateActorPosition(id){
@@ -569,22 +618,38 @@ function updateActorPosition(id){
  const {q,r}=island[actorPosition(id)];
  node.style.setProperty('--x',q+Math.floor(r/2)+radius);
  node.style.setProperty('--y',r+radius);
+ const motion=actorMotion.get(id);
+ if(motion){
+  node.dataset.face=motion.face;
+  node.style.setProperty('--stride',(motion.speed||180)+'ms');
+  node.classList.toggle('actor-walking',motion.until>Date.now());
+ }
 }
 function stepActors(now){
- if(now-lastAnimalStep<2600)return;
- lastAnimalStep=now;
  state.actorPositions??={};
- for(const [id,animal] of Object.entries(animals)){
-  const origin=island[animal.home];
-  const options=adjacentTiles(actorPosition(id)).filter(next=>{
-   if(!walkable(next)||state.tiles[next])return false;
-   const {q,r}=island[next];
+ const occupied=new Set(['hero','advisor',...Object.keys(animals)].map(actorPosition));
+ for(const [index,[id,animal]] of Object.entries(animals).entries()){
+  const pace=animalPace[id];
+  const step=animalSteps.get(id)??{next:0,left:pace.burst,direction:null,previous:null};
+  if(now<step.next)continue;
+  animalSteps.set(id,step);
+  const origin=island[animal.home], current=actorPosition(id);
+  const options=adjacentTiles(current).map((tile,direction)=>({tile,direction})).filter(({tile})=>{
+   if(!walkable(tile)||state.tiles[tile]||occupied.has(tile))return false;
+   const {q,r}=island[tile];
    return Math.max(Math.abs(q-origin.q),Math.abs(r-origin.r),Math.abs(q-origin.q+r-origin.r))<=3;
   });
-  if(!options.length)continue;
-  const step=feet.get(id)??0;
-  state.actorPositions[id]=options[step%options.length];
-  feet.set(id,step+1);
+  if(!options.length){step.next=now+pace.pause;continue}
+  const forward=options.find(option=>option.direction===step.direction);
+  const onward=options.filter(option=>option.tile!==step.previous);
+  const choices=onward.length?onward:options;
+  const chosen=forward??choices[(Math.floor(now/190)+index)%choices.length];
+  step.previous=current;step.direction=chosen.direction;step.left--;
+  step.next=now+(step.left?pace.stride:pace.pause+index*170);
+  if(!step.left){step.left=pace.burst;step.direction=null;}
+  occupied.delete(current);occupied.add(chosen.tile);
+  state.actorPositions[id]=chosen.tile;
+  setActorMotion(id,chosen.direction,pace.stride,now);
   updateActorPosition(id);
  }
 }
@@ -799,7 +864,6 @@ function refreshWorkProgress(){
  const now=Date.now();
  if(refreshDayClock(now))return;
  if(stageToastUntil&&now>=stageToastUntil){stageToastUntil=0;$('map-panel').classList?.remove('stage-toast');}
- stepActors(now);
  const signature=Object.entries(state.tiles).filter(([,t])=>isReady(t,now)).map(([i])=>i).join(',');
  const weatherKey=state.day+'/'+climatePhase(now);
  if(signature!==progressReadySignature||weatherKey!==climateChanged){render();return}
@@ -1162,6 +1226,8 @@ if(typeof location!=='undefined'){
  document.addEventListener('fullscreenchange',()=>{renderClimate();focusCamera();});
  window.addEventListener('resize',focusCamera);
  window.addEventListener('keydown',onExploreKey);
+ window.addEventListener('keyup',event=>heldMoveKeys.delete(event.key.toLowerCase()));
+ window.addEventListener('blur',()=>heldMoveKeys.clear());
  setupMapDrag();
  window.addEventListener('hashchange',()=>{
   syncWorkspace();
@@ -1169,5 +1235,5 @@ if(typeof location!=='undefined'){
  });
  syncWorkspace();
 }else render();
-if(typeof setInterval==='function'){refreshDayClock();setInterval(refreshWorkProgress,500);}
+if(typeof setInterval==='function'){refreshDayClock();setInterval(refreshWorkProgress,500);setInterval(tickMotion,38);}
 </script></body></html>
