@@ -47,13 +47,39 @@
 .pixel-sora{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABFUlEQVR4nGNgGAWjYCgBUwff/8Rgmlm+buNqojDVHQHzmXt4BlGYqiFBquXoDhkQiylyBLUsJsshtLKcaIeAJFvbemiKcSZQYvM4tTCq5Rb2/wcC44wKV0vL/5OTnf672zij4Afn14DFTaLbwBikDhsbXR9ID0ieYCLE5oD3h9LhbFIcgKwP3QHm6T7/QZhiB3y9vwIrG58DQBYHTI4GY5yOoJUDkC2HYbIcAJLHhbHpA9HIlnftDIdjshIhMQ5AT4RkOQBkITomxgHY9CAHO90dgC3ucaYBUHEJMwiXBSAalOiwYWz6SHYAtfHQcgCx7T5SsPfkpf9hpR86hluc2OL+n5Z4wB2AjEEJFYYHjwPoCQaVAwBDiU/PZPW5iAAAAABJRU5ErkJggg==)}
 .map-supplies{padding:0 17px 12px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.map-supplies .muted{margin:0 3px 0 0}
 .header-resources{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.unlimited-toggle{background:#e6d5a8;color:#263b2a;white-space:nowrap}.unlimited-toggle[aria-pressed=true]{background:#fff0a7;border-color:#fff0a7;box-shadow:inset 0 -3px #c7a961}
+
+.climate-panel{padding:0 12px 10px}.climate-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px}.climate-top .actions{margin:0 0 0 auto}.climate-legend{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.climate-legend .button{padding:4px 7px;font-size:12px}
+.island-scroll{overflow:auto;max-height:min(67vh,660px);padding:0;background:#477b8e;border:0;overscroll-behavior:contain}.map#land-grid{--unit:calc(48px * var(--zoom,1));--hex-height:calc(var(--unit) * 1.155);display:block;position:relative;width:calc(var(--unit) * 19);height:calc(var(--hex-height) * 14.5);background:#477b8e;border:0;box-shadow:none;overflow:visible}
+.map#land-grid .hex{position:absolute;left:calc(var(--unit) * var(--x));top:calc(var(--hex-height) * var(--y) * .75);width:var(--unit);height:var(--hex-height);aspect-ratio:auto;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background-blend-mode:multiply;box-shadow:inset 0 0 0 1px #263b2a55;isolation:isolate}
+.map#land-grid .hex .pixel-sprite{inset:12% 3% 9%;background-size:100% 100%}.map#land-grid .hex .pixel-lock{inset:29%}.map#land-grid .hex .tile-progress{bottom:15%;left:26%;width:48%;height:4px}.map#land-grid .hex .ready{top:14%;right:28%;font-size:8px;padding:1px}
+.map#land-grid .hex:after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0}.map#land-grid .hex.weather-rain:after{background:repeating-linear-gradient(120deg,transparent 0 9px,#b7e4ed66 10px 11px,transparent 12px 19px);background-size:38px 38px;animation:weatherFall 1.3s linear infinite}.map#land-grid .hex.weather-snow:after{background:radial-gradient(circle,#fffcef88 0 1px,transparent 2px) 0 0/11px 13px;animation:weatherFall 3s linear infinite}.map#land-grid .hex.weather-fog:after{background:linear-gradient(5deg,#e3e5ed25,transparent 70%)}.map#land-grid .hex.weather-dust:after{background:#d99c4826}
+@keyframes weatherFall{to{background-position:38px 38px}}@media(prefers-reduced-motion:reduce){.map#land-grid .hex:after{animation:none!important}}
+.map#land-grid .biome-meadow{background-color:#c7dba3}.map#land-grid .biome-alpine{background-color:#bfd4d9;background-image:none}.map#land-grid .biome-tundra{background-color:#e5e3d7;background-image:none}.map#land-grid .biome-desert{background-color:#e0b270;background-image:none}.map#land-grid .biome-steppe{background-color:#c8b978;background-image:none}.map#land-grid .biome-rainforest{background-color:#729653;background-image:none}.map#land-grid .biome-wetland{background-color:#8aa786;background-image:none}.map#land-grid .biome-volcanic{background-color:#8c7771;background-image:none}.map#land-grid .biome-coast{background-color:#e0c796;background-image:none}.map#land-grid .biome-ocean,.map#land-grid .hex.water{background-color:#5d9eb0}.map#land-grid .hex.locked{background-color:#667e47}.map#land-grid .hex.selected,.map#land-grid .hex:focus-visible{outline:none;filter:brightness(1.28);box-shadow:inset 0 0 0 3px #ffe8a0;z-index:3}.map#land-grid .hex:hover{filter:brightness(1.16)}
+.pixel-biome-alpine{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAiUlEQVR4nO2OQQ6AIAwE+byefIi/8hWeNRxMsKEulSKG7CY9EDazEwLDMCNl39Yj3pgCCH79N5PoKoDg8t9VAoG1cTcJBG4qgMBovEqiFF4iUyUwzcsNlr414diRZxaQgBxc9t0EcgANnvafBEwSGkCDWrqu41YBKGEdf3v/FPhqXJXoLsAwTK+cz/NZ2lyF1XsAAAAASUVORK5CYII=)}
+.pixel-biome-desert{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAXklEQVR4nGNgGAWjYBSMglEwCtDA13M9/wlhbPrM033+wzC93TxCHRAwOfo/DA9PBxBKiMgOAPEHNATQ8chwAAggRwlyFBBTblAdDM9ygJhiGRbEAx4Co2AUjIIhCwDB1uB0NSnemwAAAABJRU5ErkJggg==)}
+.pixel-biome-steppe{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAANklEQVR4nO3SIQ4AIAwDwP0/vI3foMFjhoEJ7pL6ZmsEAGxGbzNLdUc+cTJGIy3nJdc5MfDCAjgNkWnyfGpMAAAAAElFTkSuQmCC)}
+.pixel-biome-rainforest{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAmElEQVR4nGNgGAWjYBQQAObpPv9BeMAsD5gcDcZ0dwSy5XR3BLLlXTvD4RjmCGzRQtWowucAZEdgU08VRyAHOzYHoIcEVaMKm4HYMLrlxEYV3RyALaqo7gBSooqqDsAV9/jUkhwKxGB8Fr8/lA7GQ9MByGBystN/ZIzsSGKDnyYOICWkhq8DyFFHMzDqgAF3wCgYBaOAXAAAYugYuLo6CEQAAAAASUVORK5CYII=)}
+.pixel-biome-tundra{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAiUlEQVR4nO2OQQ6AIAwE+byefIi/8hWeNRxMsKEulSKG7CY9EDazEwLDMCNl39Yj3pgCCH79N5PoKoDg8t9VAoG1cTcJBG4qgMBovEqiFF4iUyUwzcsNlr414diRZxaQgBxc9t0EcgANnvafBEwSGkCDWrqu41YBKGEdf3v/FPhqXJXoLsAwTK+cz/NZ2lyF1XsAAAAASUVORK5CYII=)}
+.pixel-biome-wetland{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAq0lEQVR4nGNgGAWjYBQQAObpPv9BeMAsD5gcDcZ0dwSy5XR3BLLlXTvD4RjmCGzRQtWowucAZEdgU08VRyAHOzYHoIcEVaMKm4HYMLrlxEYV3RyALaqo7gBSooqqDsAV9/jUkhwKxGB8Fr8/lA7GQ9MByGBystN/ZIzsSGKDnyYOICWkhq8DyFFHM0B1B3hPXvqf2nhoOQAZlB7e/59STLblg8IBo2AU0BIAAL6N1QB1ztk5AAAAAElFTkSuQmCC)}
+.pixel-biome-volcanic{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAoklEQVR4nO2QwQmAMAxF3cyDi7iE4Ehu1Sk8V3oIxNC0RtOmSD58sBD+ezhNHk+DhH2NUDN4d/AQAqa/vrnAGY6Y+gT+PwGAcxIUripB4VSAg6tJ5ASwRFMBDg4CNfgniRIcigHNBLZ5uUHxG99jYLqhFQvQASyQG01vNYHcQE4AhuG7JCCS4Aa4UcmtKlwqUJWQwt92TIFecFbCXMDj8VjlAv7MzeUBDAhiAAAAAElFTkSuQmCC)}
+.pixel-biome-coast{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAANklEQVR4nO3SIQ4AIAwDwP0/vI3foMFjhoEJ7pL6ZmsEAGxGbzNLdUc+cTJGIy3nJdc5MfDCAjgNkWnyfGpMAAAAAElFTkSuQmCC)}
+.pixel-biome-meadow{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAmElEQVR4nGNgGAWjYBQQAObpPv9BeMAsD5gcDcZ0dwSy5XR3BLLlXTvD4RjmCGzRQtWowucAZEdgU08VRyAHOzYHoIcEVaMKm4HYMLrlxEYV3RyALaqo7gBSooqqDsAV9/jUkhwKxGB8Fr8/lA7GQ9MByGBystN/ZIzsSGKDnyYOICWkhq8DyFFHMzDqgAF3wCgYBaOAXAAAYugYuLo6CEQAAAAASUVORK5CYII=)}
+.pixel-biome-ocean{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAANUlEQVR4nO3SIQ4AIAwDwH2a9yF4GHjMMDDBXVLfbI0AgE0bfWap7sgnTsZopOW85DonBl5Yw2mCSe2ULsoAAAAASUVORK5CYII=)}
+
+.actor-toolbar{padding:0 12px 9px}.actor-toolbar>.actions:first-child{margin:0}.build-layout .actor-toolbar{display:none}.map#land-grid .island-actor{position:absolute;left:calc(var(--unit) * (var(--x) + .19));top:calc(var(--hex-height) * (var(--y) * .75 + .11));width:calc(var(--unit) * .62);height:calc(var(--unit) * .62);padding:0;border:0;background:transparent;z-index:4;transition:left .42s linear,top .42s linear;filter:drop-shadow(0 2px #263b2a5a)}.island-actor:hover,.island-actor.actor-active{filter:drop-shadow(0 0 3px #fff2ac)!important}.map#land-grid .island-actor .pixel-sprite{inset:0;animation:actorBob 1.1s steps(2,end) infinite}.build-layout .island-actor{pointer-events:none}@keyframes actorBob{50%{transform:translateY(-2px)}}@media(prefers-reduced-motion:reduce){.map#land-grid .island-actor,.map#land-grid .island-actor .pixel-sprite{animation:none;transition:none}}
+.pixel-actor-cow{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAApElEQVR4nGNgGAWjYBRQEXy9v+I/CJMqN/QdEOoa/B+EiXEATC1NHADD31+cxYqR1Yw6gKBBQ8oBIIBumamzHRhjE6PYJ8RgshyA7hB8QUiJI+nmgOvV3WAM8jWMPSAOQMZDywHoFtE9DVArRwyYAwhahA/QxafEOICcYhambmg7AAbQDaZU3eB3QGKL+39kjG4wujyp6kCYJAfQApMdOqOAFgAAS11ViaZXxyIAAAAASUVORK5CYII=)}
+.pixel-actor-cat{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAArElEQVR4nGNgGAWjYDiAL2sz/sMwNdSNOoBsB1yv7v6/IDkQp+EwNTR3ALJP0TFNHACyFIQJOQBZDU0cAMP4HADDBA0aUg4AAXTLTJ3twBibGMU+IQaT5QB0h1DiAHyYbg4ApXgQBvkaxh4QByDjkeWAAU8DA+4AghbhA3TxKTEOIKeYhakb2g6AAXSDKVU3+B2Q2OL+HxmjG4wuT6o6ECbJAbTAZIfOKKAFAACHXkn/zUfPAAAAAABJRU5ErkJggg==)}
+.pixel-actor-dog{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAoElEQVR4nGNgGAWjYBSMAiqAhnDH/8iYGHU0dcDtJdlY8aByAFUdQTUHkOu6QeUAmGWmznZgjOwAEJ9oB+DzCT6fUeQAdIdQ4gCKcgK1HHC9uhuMQT6HsWniAFwYZikyBokTnaiGvANw4ZHjAIIW4QN08SkxDiC3mB36DoABchobNK1qae6AxBb3/8gY3WB0eVLVgTBJDqAFJjt0RgEtAADDAug1LScqugAAAABJRU5ErkJggg==)}
+.pixel-actor-giraffe{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAlElEQVR4nGNgGAU0AkvS3P+DMC7+qANoBl5uj/sPwjAL0fl0cwAuPGCWmzrbgfHIdcCARwHdHABL7cg5YEAdQFMLsTmArj4e3g4gJkUjY1yJb+g7gFC2olm+HzQOoBTTxAGkhMrQdwAxluFTM6AOINtyZIBsOCVqho4DElvc/yNjZMPR5UhRg4xJcgAtMMWhNAqoCQA48Ff07ytpKQAAAABJRU5ErkJggg==)}
+.pixel-actor-hero{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAqElEQVR4nGNgGOrg/aH0/yA8YBZhE6eJo0YdADMUHa8O9AVjbHIjwwH4MFUdAAJRZvb/icVUtxzmgO/HZxLEw98Bps52YIxsKbLY8HfAgEfBoHHA9epuOKa5A45GTSG6DKCZA0jBA+4AqjoCZiAp9cCgcADVHEFO8FPNAZRYPigcQLEjBtwByABW4cAwsXJD2wGJLe7/YRjdEmLlqOYAcjGVwmIU0AYAACPgZV+gW8SLAAAAAElFTkSuQmCC)}
+.pixel-actor-advisor{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAmklEQVR4nGNgGAUkAlNnu/+E8KgDBsRSmjpm1AEw4GLp+p9YTFWLkR3w/fhMgnj4OwAWv8iWIosNfwcMeBQMGgdcr+6GY5o7IKy2iegygGYOIBZ/vb8CKx66DiBkMDY8OdkJBdPdATQJgQGJAlItHxQOQMdkWTxoHIAM8LV26NIyHhAHJLa4/4dhdEuIlaOaA8jFVAqLUUAbAAAnGGVU6WSgfAAAAABJRU5ErkJggg==)}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div class="header-resources"><div id="resources" class="resources"></div><button type="button" class="button unlimited-toggle" id="unlimited-toggle" data-action="toggle-unlimited" aria-pressed="false">∞ 无限资源</button></div></header>
 <main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
 <nav class="realm-nav" aria-label="王国工作区">
 <a href="#map" data-view="map" aria-current="page">🗺️ 王国地图</a><a href="#build" data-view="build">🛠️ 建造手册</a><a href="#castle" data-view="castle">🏰 王家城堡</a><a href="#throne" data-view="throne">👑 王座厅</a>
 </nav>
-<div class="layout workspace" id="land-workspace"><section class="panel map-panel"><div class="map-top"><span>王国地图</span><span><a href="#build">打开建造手册</a> · <span id="area"></span></span></div><div class="map-supplies" id="map-supplies" aria-label="每日免费资源"></div><div class="landscape"><div class="map" id="land-grid" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
+<div class="layout workspace" id="land-workspace"><section class="panel map-panel"><div class="map-top"><span>王国地图</span><span><a href="#build">打开建造手册</a> · <span id="area"></span></span></div><div class="map-supplies" id="map-supplies" aria-label="每日免费资源"></div><div id="climate-panel" class="climate-panel"></div><div id="actor-toolbar" class="actor-toolbar" aria-label="地图角色操作"></div><div class="landscape island-scroll" id="island-scroll" tabindex="0" aria-label="可滚动的六边形岛屿地图"><div class="map" id="land-grid" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
 <aside class="side"><section class="panel card quest" id="quest"></section><section class="panel card" id="inspect"></section><section class="panel card" id="residents"></section></aside>
 <section class="panel catalog" id="catalog-panel" hidden><div class="catalog-head"><h3>建造手册</h3><span class="muted">王室减免已计入建造费用</span><div class="tabs" id="tabs"></div></div><div id="build-controls" class="build-controls"></div><p id="build-plan" class="build-plan"></p><div class="choices" id="choices"></div></section>
 </div><section class="panel castle workspace" id="castle-workspace" aria-label="王家城堡" hidden></section>
@@ -95,6 +121,7 @@ function setWorkspace(view){
  const next=views.includes(view)?view:'map';
  if(next!==workspace){
   if(next!=='build')plan=null;
+  if(next!=='map')mapActor=null;
   if(next!=='castle')relocating=null;
  }
  workspace=next;
@@ -120,6 +147,8 @@ function renderWorkspace(){
 let state=fresh(),persistent=true;
 try{const saved=localStorage.getItem(key);if(saved)state=JSON.parse(saved)}catch{persistent=false}
 state.stock.happiness??=0;
+const newClimate=state.climateEpoch===undefined;
+state.climateEpoch??=Date.now();
 state.people.hero.mood=100;
 const priorRoyalWork=state.people.hero.job;
 state.labor??={morale:85,royalSite:catalog[state.tiles[priorRoyalWork]?.type]?.yield?priorRoyalWork:null,mode:'supervise'};
@@ -138,7 +167,186 @@ const jobs=[{title:'播下第一颗种子',desc:'建造一座猫草农场。',do
  {title:'给栗栗留一扇窗',desc:'建造蘑菇小屋，邀请栗栗入住。',done:()=>!!state.people.rabbit,reward:{gold:25}},
  {title:'把好心情分享出去',desc:'通过问候、送礼或经营取得 12 快乐值。',done:()=>can({joy:12})||state.expanded,reward:{stars:1,gold:25}},
  {title:'越过溪谷的边界',desc:'攒满 60 金币、12 木材和 12 快乐值，开放东侧花坡。',done:()=>state.expanded,reward:{diamonds:1}}];
-const mapWidth=8, mapHeight=9;
+const mapWidth=8, mapHeight=9, radius=9;
+const climatePeriod=45_000;
+const climateProfiles={
+ meadow:{name:'温带草原',icon:'🌿',weather:['晴朗','细雨','多云']},
+ coast:{name:'海岸沙滩',icon:'🐚',weather:['海风','晴朗','海雾']},
+ ocean:{name:'近海',icon:'🌊',weather:['海风','海雾','暴雨']},
+ alpine:{name:'高山雪岭',icon:'🏔️',weather:['晴朗','飘雪','寒潮']},
+ tundra:{name:'寒带冻原',icon:'❄️',weather:['寒潮','多云','飘雪']},
+ desert:{name:'干旱沙漠',icon:'🏜️',weather:['晴朗','沙尘','热浪']},
+ steppe:{name:'半干旱草原',icon:'🌾',weather:['干风','多云','短时阵雨']},
+ rainforest:{name:'热带雨林',icon:'🌴',weather:['闷热','阵雨','季风暴雨']},
+ wetland:{name:'河谷湿地',icon:'🪷',weather:['晨雾','阴雨','晴朗']},
+ volcanic:{name:'火山丘陵',icon:'🌋',weather:['地热雾','干风','灰雾']}
+};
+function hexKey(q,r){return q+','+r}
+const oldCoordinates=new Map();
+for(let i=0;i<mapWidth*mapHeight;i++){
+ const r=Math.floor(i/mapWidth)-4, q=i%mapWidth-4-Math.floor(r/2);
+ oldCoordinates.set(hexKey(q,r),i);
+}
+const island=[], hexes=new Map();
+let nextTile=mapWidth*mapHeight;
+function biomeAt(q,r,distance,legacy){
+ if(legacy)return 'meadow';
+ if(distance===radius&&(q-r+27)%4===0)return 'ocean';
+ if(distance===radius&&r>-7)return 'coast';
+ const x=q+r/2;
+ if(r<=-6)return x<0?'alpine':'tundra';
+ if(x>=5)return r<2?'desert':'steppe';
+ if(r>=5)return x<0?'rainforest':'wetland';
+ if(x<=-5)return r<-1?'alpine':r>1?'rainforest':'volcanic';
+ if(r<=-3)return 'steppe';
+ if(r>=3)return 'wetland';
+ return 'meadow';
+}
+for(let r=-radius;r<=radius;r++){
+ for(let q=-radius;q<=radius;q++){
+  const distance=Math.max(Math.abs(q),Math.abs(r),Math.abs(q+r));
+  if(distance>radius)continue;
+  const key=hexKey(q,r);
+  const legacy=oldCoordinates.get(key);
+  const tile={id:legacy??nextTile++,q,r,biome:biomeAt(q,r,distance,legacy!==undefined)};
+  island[tile.id]=tile;
+  hexes.set(key,tile.id);
+ }
+}
+const neighbors=[[1,0],[0,1],[-1,1],[-1,0],[0,-1],[1,-1]];
+function adjacentHexes(id){
+ const {q,r}=island[id];
+ return neighbors.map(([dx,dy])=>hexes.get(hexKey(q+dx,r+dy)));
+}
+let mapZoom=1, climateChanged='';
+const animals={
+ cow:{name:'团团牛',home:13,sound:'团团牛甩甩尾巴，慢悠悠地蹭了蹭你。'},
+ cat:{name:'糯米猫',home:19,sound:'糯米猫眯起眼，呼噜呼噜地打起滚。'},
+ dog:{name:'豆豆狗',home:28,sound:'豆豆狗摇着尾巴跑来绕了你一圈。'},
+ giraffe:{name:'栗糖长颈鹿',home:island.find(hex=>hex.biome==='rainforest').id,sound:'栗糖低下长脖子，轻轻碰了碰你的手。'}
+};
+let mapActor=null;
+const actorRoutes={};
+const feet=new Map();
+let lastAnimalStep=0;
+function walkable(id){return island[id]&&!water(id)&&!locked(id)}
+function actorPosition(id){return state.actorPositions?.[id]??(id==='hero'?10:id==='advisor'?18:animals[id].home)}
+function actorPath(start,goal){
+ if(!walkable(goal))return [];
+ const previous=new Map([[start,null]]);
+ const queue=[start];
+ for(let i=0;i<queue.length&&!previous.has(goal);i++){
+  for(const next of adjacentHexes(queue[i])){
+   if(!walkable(next)||previous.has(next))continue;
+   previous.set(next,queue[i]);queue.push(next);
+  }
+ }
+ if(!previous.has(goal))return [];
+ const route=[];
+ for(let i=goal;i!==start;i=previous.get(i))route.push(i);
+ return route.reverse();
+}
+function actorMarkup(){
+ const ids=['hero','advisor',...Object.keys(animals)];
+ return ids.map(id=>{
+  const {q,r}=island[actorPosition(id)];
+  const name=animals[id]?.name??people[id].name;
+  return '<button class="island-actor '+(mapActor===id?'actor-active':'')+'" data-action="actor-pick-'+id+'" data-island-actor="'+id+'" title="'+name+'" aria-label="'+name+'" style="--x:'+(q+r/2+radius)+';--y:'+(r+radius)+'">'+pixelSprite('actor-'+id)+'</button>';
+ }).join('');
+}
+function updateActorPosition(id){
+ if(typeof document.querySelector!=='function')return;
+ const node=document.querySelector('[data-island-actor="'+id+'"]');
+ if(!node)return;
+ const {q,r}=island[actorPosition(id)];
+ node.style.setProperty('--x',q+r/2+radius);
+ node.style.setProperty('--y',r+radius);
+}
+function stepActors(now){
+ const routeActors=Object.keys(actorRoutes);
+ if(routeActors.length){
+  state.actorPositions??={};
+  for(const id of routeActors){
+   state.actorPositions[id]=actorRoutes[id].shift();
+   updateActorPosition(id);
+   if(!actorRoutes[id].length){
+    delete actorRoutes[id];
+    if(mapActor===id)renderActorToolbar();
+    save();
+   }
+  }
+ }
+ if(now-lastAnimalStep<2600)return;
+ lastAnimalStep=now;
+ state.actorPositions??={};
+ for(const [id,animal] of Object.entries(animals)){
+  const origin=island[animal.home];
+  const options=adjacentHexes(actorPosition(id)).filter(next=>{
+   if(!walkable(next)||state.tiles[next])return false;
+   const {q,r}=island[next];
+   return Math.max(Math.abs(q-origin.q),Math.abs(r-origin.r),Math.abs(q-origin.q+r-origin.r))<=3;
+  });
+  if(!options.length)continue;
+  const step=feet.get(id)??0;
+  state.actorPositions[id]=options[step%options.length];
+  feet.set(id,step+1);
+  updateActorPosition(id);
+ }
+}
+function renderActorToolbar(){
+ const target=$('actor-toolbar');
+ const isRoyal=mapActor==='hero'||mapActor==='advisor';
+ const working=isRoyal&&catalog[state.tiles[actorPosition(mapActor)]?.type]?.yield;
+ target.innerHTML='<div class="actions">'+button('👑 聂萌','actor-command-hero',false,mapActor==='hero')+
+ button('📜 刘博文','actor-command-advisor',false,mapActor==='advisor')+
+ (isRoyal?button('退出角色操作','actor-clear'):'')+'</div>'+
+ (isRoyal?'<p class="muted">点击一块陆地让'+people[mapActor].name+'走过去。</p><div class="actions">'+
+ (mapActor==='hero'?button('在这里督工','actor-supervise',!working||!!actorRoutes.hero):button('安抚民心','actor-comfort',state.counselDay===state.day||!!actorRoutes.advisor))+'</div>':
+ '<p class="muted">点击动物可以和它互动。</p>');
+}
+const weatherTone={
+ '晴朗':'sun','海风':'sun','细雨':'rain','阴雨':'rain','阵雨':'rain','季风暴雨':'rain','暴雨':'rain','短时阵雨':'rain',
+ '飘雪':'snow','寒潮':'snow','海雾':'fog','晨雾':'fog','地热雾':'fog','灰雾':'fog','多云':'fog',
+ '沙尘':'dust','热浪':'dust','干风':'dust','闷热':'dust'
+};
+function climatePhase(now=Date.now()){
+ return Math.floor(Math.max(0,now-state.climateEpoch)/climatePeriod);
+}
+function weatherFor(biome,now=Date.now()){
+ if(biome==='meadow'&&season()==='冬'&&(climatePhase(now)+state.day)%3===0)return '飘雪';
+ const pattern=climateProfiles[biome].weather;
+ const seasonShift=Math.floor((state.day-1)/7);
+ const yearPattern=pattern[(state.day-1+seasonShift+climatePhase(now))%pattern.length];
+ return yearPattern;
+}
+function weatherBonus(type,id){
+ const biome=island[id]?.biome;
+ if(!biome||id<mapWidth*mapHeight)return 0;
+ const tone=weatherTone[weatherFor(biome)];
+ if(type==='farm'&&(biome==='rainforest'||biome==='wetland')&&tone==='rain')return 1;
+ if(type==='mine'&&(biome==='alpine'||biome==='volcanic')&&tone==='sun')return 1;
+ return 0;
+}
+function renderClimate(){
+ const tile=island[selected]??island[10];
+ const current=weatherFor(tile.biome);
+ $('climate-panel').innerHTML='<div class="climate-top"><strong>'+climateProfiles[tile.biome].icon+' '+climateProfiles[tile.biome].name+' · '+current+'</strong><span id="weather-timer"></span><div class="actions">'+
+ button('−','map-zoom-out',mapZoom===0.75)+button('＋','map-zoom-in',mapZoom===1.5)+button('回到王宫','map-center')+'</div></div>'+
+ '<div class="climate-legend" aria-label="定位气候区域">'+Object.entries(climateProfiles).map(([id,c])=>button(c.icon+' '+c.name,'climate-focus-'+id,false,tile.biome===id)).join('')+'</div>';
+ updateClimateTimer();
+}
+function updateClimateTimer(){
+ const tick=$('weather-timer');
+ const elapsed=Math.max(0,Date.now()-state.climateEpoch);
+ tick.textContent='下次天气变化 '+Math.ceil((climatePeriod-elapsed%climatePeriod)/1000)+' 秒';
+}
+function focusHex(id){
+ if(typeof document.querySelector!=='function')return;
+ const hex=document.querySelector('[data-tile="'+id+'"]');
+ const view=$('island-scroll');
+ if(!hex||typeof view.scrollTo!=='function')return;
+ view.scrollTo({left:hex.offsetLeft+(hex.offsetWidth-view.clientWidth)/2,top:hex.offsetTop+(hex.offsetHeight-view.clientHeight)/2,behavior:'auto'});
+}
 const originalTiles=48;
 const eastExpansion={title:'东侧花坡',cost:{gold:60,wood:12},requirement:{joy:12},flag:'expanded'};
 const southExpansion={title:'南岸新区',cost:{gold:85,wood:18,ore:4},requirement:{happiness:12},flag:'southExpanded'};
@@ -371,9 +579,10 @@ function add(items,m=1){
  if(state.unlimitedResources)return;
  for(const [id,amount] of Object.entries(items))state.stock[id]+=amount*m;
 }
-const water=i=>[0,8,16,24,32,40,41,42,48,56,64].includes(i);
+const water=i=>island[i]?.biome==='ocean'||[0,8,16,24,32,40,41,42,48,56,64].includes(i);
 function expansionAt(i){
  if(i===null||water(i))return null;
+ if(i>=mapWidth*mapHeight)return null;
  if(i>=originalTiles)return state.southExpanded?null:southExpansion;
  return !state.expanded&&i%mapWidth>=6?eastExpansion:null;
 }
@@ -402,8 +611,11 @@ function workProgress(t){
 let progressReadySignature='';
 function refreshWorkProgress(){
  const now=Date.now();
+ stepActors(now);
  const signature=Object.entries(state.tiles).filter(([,t])=>isReady(t,now)).map(([i])=>i).join(',');
- if(signature!==progressReadySignature){render();return}
+ const weatherKey=state.day+'/'+climatePhase(now);
+ if(signature!==progressReadySignature||weatherKey!==climateChanged){render();return}
+ updateClimateTimer();
  for(const bar of document.querySelectorAll('[data-tile-progress]')){
   bar.style.width=batchProgress(state.tiles[bar.dataset.tileProgress],now)+'%';
  }
@@ -430,6 +642,9 @@ function laborControls(index){
 }
 function render(){
  renderWorkspace();
+ climateChanged=state.day+'/'+climatePhase();
+ renderClimate();
+ renderActorToolbar();
  progressReadySignature=Object.entries(state.tiles).filter(([,t])=>isReady(t)).map(([i])=>i).join(',');
  renderCastle();
  $('resources').innerHTML=Object.keys(names).map(k=>'<span title="'+names[k]+'">'+icons[k]+' '+(state.unlimitedResources?'∞':state.stock[k])+'</span>').join('');
@@ -447,14 +662,21 @@ function render(){
  $('save-note').textContent=persistent?'进度自动保存在当前浏览器。':'浏览器存储不可用，本次进度保存在当前页面。';
  $('sleep').textContent='☀️ 结束第 '+state.day+' 天';
  let cells='';
- for(let i=0;i<mapWidth*mapHeight;i++){
-  const t=state.tiles[i],def=t&&catalog[t.type],closed=locked(i),wet=water(i),name=t?(def?.name??'王宫'):closed?'待开放'+expansionAt(i).title:wet?'溪水':'空地';
-  const content=closed?pixelSprite('forest')+(i%8===6&&i%16===6?pixelSprite('lock'):''):t?pixelSprite(t.type):!wet&&[5,13,29,43].includes(i)?pixelSprite('grove'):'';
+ for(const hex of island){
+  const {id:i,q,r,biome}=hex;
+  const t=state.tiles[i],def=t&&catalog[t.type],closed=locked(i),wet=water(i);
+  const name=t?(def?.name??'王宫'):closed?'待开放'+expansionAt(i).title:wet?'水域':climateProfiles[biome].name+'空地';
+  const content=closed?pixelSprite('forest')+(i%3===0?pixelSprite('lock'):''):t?pixelSprite(t.type):i>=mapWidth*mapHeight?pixelSprite('biome-'+biome):!wet&&[5,13,29,43].includes(i)?pixelSprite('grove'):'';
   const terrain=wet?'water water-'+(i>=originalTiles?32:i):'terrain-'+((i*7+Math.floor(i/8))%4);
+  const weather=weatherFor(biome);
   const progress=def?.yield?'<span class="tile-progress" aria-hidden="true"><i data-tile-progress="'+i+'" style="width:'+batchProgress(t)+'%"></i></span>':'';
-  cells+='<button class="tile '+terrain+(closed?' locked':'')+(selected===i?' selected':'')+(workspace==='build'&&plan&&!t&&!wet&&!closed?' build-available':'')+'" data-tile="'+i+'" aria-label="'+name+'，第'+(Math.floor(i/8)+1)+'行第'+(i%8+1)+'列'+(isReady(t)?'，可收取':planted(t)?'，生产中':'')+'">'+content+progress+(isReady(t)?'<span class="ready">收</span>':'')+'</button>';
+  const available=workspace==='build'&&plan&&!t&&!wet&&!closed?' build-available':'';
+  const x=q+r/2+radius,y=r+radius;
+  cells+='<button class="tile hex '+terrain+' biome-'+biome+' weather-'+weatherTone[weather]+(closed?' locked':'')+(selected===i?' selected':'')+available+'" style="--x:'+x+';--y:'+y+'" data-tile="'+i+'" aria-label="'+name+' · '+weather+(isReady(t)?' · 可收取':planted(t)?' · 生产中':'')+'">'+content+progress+(isReady(t)?'<span class="ready">收</span>':'')+'</button>';
  }
- $('land-grid').innerHTML=cells;
+ const grid=$('land-grid');
+ if(grid.style)grid.style.setProperty('--zoom',mapZoom);
+ grid.innerHTML=cells+actorMarkup();
  const q=jobs[state.quest], week=Math.floor((state.day-1)/7)+1;
  $('quest').innerHTML='<h3>📖 溪谷手记</h3>'+(q?'<strong>'+q.title+'</strong><p class="muted">'+q.desc+'</p><div class="actions">'+button('领取 '+format(q.reward),'quest',!q.done(),true)+'</div>':'<p>溪谷篇已完成。</p>')+'<div class="actions">'+button('日常 · 问候居民','daily',state.daily===state.day||!Object.values(state.people).some(p=>p.last===state.day))+button('每周 · 收获 3 次','weekly',state.week===week||(state.weekHarvest?.[week]??0)<3)+button('成就 · 建造 5 座','award',state.award||state.total.built<5)+'</div>';
  const t=state.tiles[selected],def=t&&catalog[t.type];
@@ -468,6 +690,8 @@ function render(){
   if(work)detail+=' '+people[work[0]].name+'在此协助生产，每批首项产物 +'+workerBonus(work[0])+'。';
   const crew=t.crew??0;
   if(def.service)detail+=' '+def.service;
+  const bonus=weatherBonus(t.type,selected);
+  if(bonus)detail+=' 当前天气使首项产物 +'+bonus+'。';
   if(def.yield)detail+=' 驻派奴仆 '+crew+'/'+maxCrew+' 人，每 '+crewSize+' 人使每批首项产物 +1。';
   const upgrade={gold:25*t.grade,ore:2*t.grade};
   $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p>'+(def.yield?workProgress(t):'')+'<div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!can({diamonds:1})):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>'+(def.yield?laborControls(selected):'')+(t.type==='shop'?'<div class="royal-judgment"><strong>商店货架</strong><div class="actions">'+Object.entries(shopGoods).map(([id,item])=>button('买 '+item.amount+names[id]+' · '+item.price+' 金币','shop-buy-'+id,!can({gold:item.price}))).join('')+'</div></div>':'');
@@ -485,6 +709,14 @@ function render(){
  }).join(''):'<p class="muted">此类别暂无可建造设施。</p>';
 }
 function tileClick(i){
+ if(workspace==='map'&&(mapActor==='hero'||mapActor==='advisor')){
+  if(!walkable(i)){tell('这块地目前走不到，请选择开放的陆地。');return}
+  const route=actorPath(actorPosition(mapActor),i);
+  if(!route.length)return;
+  actorRoutes[mapActor]=route;
+  renderActorToolbar();
+  return
+ }
  selected=i;
  if(!plan){message='查看右侧地块详情。';render();return}
  const d=catalog[plan];
@@ -498,6 +730,37 @@ function tileClick(i){
  tell(d.name+'建成了！');
 }
 function act(a){
+ if(a.startsWith('actor-command-')||a.startsWith('actor-pick-')){
+  const id=a.split('-').at(-1), animal=animals[id];
+  if(animal){
+   state.pettedDay??={};
+   const first=state.pettedDay[id]!==state.day;
+   if(first){state.pettedDay[id]=state.day;add({joy:1})}
+   tell(animal.sound+(first?' 快乐值 +1。':''));
+  }else if(workspace==='map'&&(id==='hero'||id==='advisor')){
+   mapActor=id;plan=null;render();focusHex(actorPosition(id));
+  }
+  return
+ }
+ if(a==='actor-clear'){mapActor=null;render();return}
+ if(a==='actor-supervise'&&mapActor==='hero'&&!actorRoutes.hero){
+  selected=actorPosition('hero');
+  act('labor-supervise');return;
+ }
+ if(a==='actor-comfort'&&mapActor==='advisor'&&!actorRoutes.advisor){
+  person='advisor';act('counsel-festival');return;
+ }
+ if(a==='map-center'){focusHex(10);return}
+ if(a==='map-zoom-in'||a==='map-zoom-out'){
+  mapZoom=Math.max(0.75,Math.min(1.5,mapZoom+(a==='map-zoom-in'?0.25:-0.25)));
+  render();focusHex(selected??10);return;
+ }
+ if(a.startsWith('climate-focus-')){
+  const biome=a.slice(14);
+  const tile=island.find(hex=>hex.biome===biome&&hex.id>=mapWidth*mapHeight);
+  if(tile){selected=tile.id;render();focusHex(tile.id)}
+  return;
+ }
  if(a==='toggle-unlimited'){
   state.unlimitedResources=!state.unlimitedResources;
   tell(state.unlimitedResources?'无限资源已开启。':'无限资源已关闭，原有余额已恢复。');
@@ -591,7 +854,7 @@ function act(a){
  }
  if(a==='upgrade'&&t.grade<3){const cost={gold:25*t.grade,ore:2*t.grade};if(can(cost)){add(cost,-1);t.grade++;tell(d.name+'升到了 '+t.grade+' 级。')}return}
  if(a==='harvest'&&isReady(t)){
-  const adjacent=[selected-8,selected+8,...(selected%8?[selected-1]:[]),...(selected%8<7?[selected+1]:[])];
+  const adjacent=adjacentHexes(selected);
   const worker=Object.entries(state.people).find(([,resident])=>resident.job===selected);
   const bonus=Number(adjacent.some(i=>['flowers','fountain'].includes(state.tiles[i]?.type)))+(worker?workerBonus(worker[0]):0)+t.grade-1+crew/crewSize;
   const {royalSite,mode,morale}=state.labor;
@@ -599,7 +862,7 @@ function act(a){
   const pressed=royalSite===selected&&mode==='pressure';
   const penalty=morale<lowMorale?moralePenalty:0;
   const output={...d.yield},first=Object.keys(output)[0];
-  output[first]=Math.max(1,output[first]+bonus+royalBonus-penalty);
+  output[first]=Math.max(1,output[first]+bonus+royalBonus+weatherBonus(t.type,selected)-penalty);
   add(output);state.xp++;state.total.harvest++;
   if(d.mood)Object.values(state.people).forEach(resident=>{resident.mood=Math.min(100,resident.mood+d.mood)});
   if(d.morale)adjustMorale(d.morale);
@@ -630,13 +893,15 @@ for(const t of Object.values(state.tiles)){
   t.batchStart=Date.now();batchesMigrated=true;
  }
 }
-if(batchesMigrated)save();
+if(batchesMigrated||newClimate)save();
 if(typeof location!=='undefined'){
  window.addEventListener('hashchange',()=>{
   syncWorkspace();
+  if(workspace==='map'||workspace==='build')focusHex(selected??10);
   window.scrollTo(0,0);
  });
  syncWorkspace();
+ if(workspace==='map'||workspace==='build')focusHex(10);
 }else render();
 if(typeof setInterval==='function')setInterval(refreshWorkProgress,500);
 </script></body></html>
