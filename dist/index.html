@@ -86,6 +86,16 @@ main{max-width:1580px}.layout:not(.build-layout){display:block}.layout:not(.buil
 .map#land-grid .island-tile.build-available{box-shadow:inset 0 0 0 1px #f8e6aaad}
 .map#land-grid .island-tile:hover,.map#land-grid .island-tile.selected,.map#land-grid .island-tile:focus-visible{background:#faeec72e;box-shadow:inset 0 0 0 2px #fff0a9;z-index:3}
 .map#land-grid .island-tile.weather-rain:after,.map#land-grid .island-tile.weather-snow:after{opacity:.56}
+
+.walking-map .island-view{height:clamp(330px,62vh,680px);position:relative;overflow:hidden;background:#2c657d;display:block;container-type:normal}
+.walking-map .map#land-grid{width:max(100%,1600px);height:auto;transform-origin:0 0;transition:transform .16s linear}
+.walking-map .map#land-grid .island-actor{transition:left .14s linear,top .14s linear}
+.walking-map .map#land-grid .facing-tile{box-shadow:inset 0 0 0 2px #f8e5a9ad;z-index:2}
+.walking-map .map#land-grid .placement-preview{background:#f8ecae45;box-shadow:inset 0 0 0 3px #fff2aa}
+.build-layout .walking-map .actor-toolbar{display:block}.walk-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.walk-controls .actions{margin-top:4px}.walk-controls .button{min-width:35px}.walk-controls p{margin:0}
+.map-panel.walking-map:fullscreen .island-view,.map-panel.walking-map.map-overlay .island-view{display:block}
+.map-panel.walking-map:fullscreen .map#land-grid,.map-panel.walking-map.map-overlay .map#land-grid{width:max(100%,1600px)}
+@media(prefers-reduced-motion:reduce){.walking-map .map#land-grid{transition:none}}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div class="header-resources"><div id="resources" class="resources"></div><button type="button" class="button unlimited-toggle" id="unlimited-toggle" data-action="toggle-unlimited" aria-pressed="false">∞ 无限资源</button></div></header>
 <main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
@@ -129,22 +139,26 @@ const fieldActivities={
  joy:{label:'举办溪谷小聚',reward:{joy:6}}
 };
 const views=['map','build','castle','throne'];
-let workspace='map', affordableOnly=false, repeatBuild=false;
+let workspace='map', affordableOnly=false, repeatBuild=false, exploreMode=false;
 function setWorkspace(view){
  const next=views.includes(view)?view:'map';
  if(next!==workspace){
   if(next!=='build')plan=null;
-  if(next!=='map')mapActor=null;
+  if(next!=='map'&&(next!=='build'||!exploreMode))mapActor=null;
   if(next!=='castle')relocating=null;
  }
  workspace=next;
+ if(isExploring())mapActor??='hero';
  render();
 }
 function syncWorkspace(){
- setWorkspace(location.hash.slice(1));
+ const route=location.hash.slice(1);
+ if(route==='explore'){exploreMode=true;mapActor??='hero';}
+ setWorkspace(route==='explore'?'map':route);
 }
 function renderWorkspace(){
  const land=$('land-workspace');
+ $('map-panel').classList?.toggle('walking-map',isExploring());
  land.hidden=workspace==='castle'||workspace==='throne';
  land.className='layout workspace'+(workspace==='build'?' build-layout':'');
  $('catalog-panel').hidden=workspace!=='build';
@@ -242,6 +256,69 @@ const animals={
  giraffe:{name:'栗糖长颈鹿',home:island.find(hex=>hex.biome==='rainforest').id,sound:'栗糖低下长脖子，轻轻碰了碰你的手。'}
 };
 let mapActor=null;
+let facing=0;
+const moveKeys={arrowright:0,d:0,arrowdown:1,s:1,arrowleft:2,a:2,arrowup:3,w:3};
+let lastKeyStep=-Infinity;
+function isExploring(){return exploreMode&&(workspace==='map'||workspace==='build')}
+function walkingActor(){return mapActor==='advisor'?'advisor':'hero'}
+function facingTile(){return adjacentTiles(actorPosition(walkingActor()))[facing]}
+function focusCamera(){
+ const grid=$('land-grid'), view=$('island-view');
+ if(!grid.style)return;
+ if(!isExploring()||typeof document.querySelector!=='function'){
+  grid.style.transform='';
+  return;
+ }
+ const actor=document.querySelector('[data-island-actor="'+walkingActor()+'"]');
+ if(!actor||!view.clientWidth||!view.clientHeight)return;
+ const x=Math.max(0,Math.min(grid.clientWidth-view.clientWidth,actor.offsetLeft+actor.offsetWidth/2-view.clientWidth/2));
+ const y=Math.max(0,Math.min(grid.clientHeight-view.clientHeight,actor.offsetTop+actor.offsetHeight/2-view.clientHeight/2));
+ grid.style.transform='translate('+(-x)+'px,'+(-y)+'px)';
+ const previous=grid.querySelector('.facing-tile');
+ if(previous)previous.classList.remove('facing-tile','placement-preview');
+ const tile=grid.querySelector('[data-tile="'+facingTile()+'"]');
+ if(tile){
+  tile.classList.add('facing-tile');
+  if(plan&&walkable(facingTile())&&!state.tiles[facingTile()])tile.classList.add('placement-preview');
+ }
+}
+function moveWalker(direction){
+ if(!isExploring())return;
+ const id=walkingActor();
+ facing=direction;
+ selected=null;
+ $('inspect').classList?.remove('map-detail-drawer');
+ delete actorRoutes[id];
+ const next=facingTile();
+ if(walkable(next)){
+  state.actorPositions??={};
+  state.actorPositions[id]=next;
+  updateActorPosition(id);
+  save();
+ }
+ renderActorToolbar();
+ focusCamera();
+}
+function interactFacing(){
+ if(!isExploring())return;
+ const id=facingTile();
+ if(id===undefined)return;
+ if(!plan)selected=id;
+ tileClick(id,true);
+}
+function onExploreKey(event){
+ if(!isExploring()||event.altKey||event.metaKey||event.ctrlKey||/^(INPUT|TEXTAREA|SELECT)$/.test(event.target?.tagName??''))return;
+ const key=event.key.toLowerCase();
+ if(Object.hasOwn(moveKeys,key)){
+  event.preventDefault();
+  const now=Date.now();
+  if(now-lastKeyStep>=105){lastKeyStep=now;moveWalker(moveKeys[key]);}
+ }else if(key==='e'&&!event.repeat){
+  event.preventDefault();interactFacing();
+ }else if(key==='b'&&!event.repeat&&workspace==='map'){
+  event.preventDefault();location.hash='build';
+ }
+}
 const actorRoutes={};
 const feet=new Map();
 let lastAnimalStep=0;
@@ -285,6 +362,7 @@ function stepActors(now){
   for(const id of routeActors){
    state.actorPositions[id]=actorRoutes[id].shift();
    updateActorPosition(id);
+   if(isExploring()&&id===walkingActor())focusCamera();
    if(!actorRoutes[id].length){
     delete actorRoutes[id];
     if(mapActor===id)renderActorToolbar();
@@ -315,10 +393,14 @@ function renderActorToolbar(){
  const working=isRoyal&&catalog[state.tiles[actorPosition(mapActor)]?.type]?.yield;
  target.innerHTML='<div class="actions">'+button('👑 聂萌','actor-command-hero',false,mapActor==='hero')+
  button('📜 刘博文','actor-command-advisor',false,mapActor==='advisor')+
- (isRoyal?button('退出角色操作','actor-clear'):'')+'</div>'+
- (isRoyal?'<p class="muted">点击一块陆地让'+people[mapActor].name+'走过去。</p><div class="actions">'+
+ (isRoyal&&!isExploring()?button('退出角色操作','actor-clear'):'')+'</div>'+
+ (isRoyal?'<p class="muted">点击陆地让'+people[mapActor].name+'走过去。</p><div class="actions">'+
  (mapActor==='hero'?button('在这里督工','actor-supervise',!working||!!actorRoutes.hero):button('安抚民心','actor-comfort',state.counselDay===state.day||!!actorRoutes.advisor))+'</div>':
- '<p class="muted">点击动物可以和它互动。</p>');
+ '<p class="muted">点击动物可以和它互动。</p>')+
+ (isExploring()?'<div class="walk-controls" aria-label="探索与建造控制"><div class="actions">'+
+ ['→','↓','←','↑'].map((arrow,i)=>button(arrow,'walk-'+i)).join('')+
+ button(plan?'摆放 '+catalog[plan].name:'查看前方','walk-interact',false,true)+'</div>'+
+ '<p class="muted">方向键 / WASD 移动 · E '+(plan?'摆放所选建筑':'查看前方地块')+' · B 打开建造手册</p></div>':'');
 }
 const weatherTone={
  '晴朗':'sun','海风':'sun','细雨':'rain','阴雨':'rain','阵雨':'rain','季风暴雨':'rain','暴雨':'rain','短时阵雨':'rain',
@@ -347,7 +429,7 @@ function renderClimate(){
  const tile=island[selected]??island[10];
  const current=weatherFor(tile.biome);
  $('climate-panel').innerHTML='<div class="climate-top"><strong>'+climateProfiles[tile.biome].icon+' '+climateProfiles[tile.biome].name+' · '+current+'</strong><span id="weather-timer"></span><div class="actions">'+
- button('回到王宫','map-center')+(typeof $('map-panel').classList!=='undefined'&&$('map-panel').classList.contains('map-overlay')
+ button(isExploring()?'全岛视图':'跟随角色','toggle-explore',false,isExploring())+button('回到王宫','map-center')+(typeof $('map-panel').classList!=='undefined'&&$('map-panel').classList.contains('map-overlay')
   ?button('退出全屏','close-map-overlay')
   :button(document.fullscreenElement?'退出全屏':'全屏看地图','map-fullscreen'))+'</div></div>'+
  '<div class="climate-legend" aria-label="定位气候区域">'+Object.entries(climateProfiles).map(([id,c])=>button(c.icon+' '+c.name,'climate-focus-'+id,false,tile.biome===id)).join('')+'</div>';
@@ -365,7 +447,7 @@ function showFullMapOverlay(){
 function focusHex(id){
  if(typeof document.querySelector!=='function')return;
  const hex=document.querySelector('[data-tile="'+id+'"]');
- if(!hex||document.fullscreenElement)return;
+ if(!hex||document.fullscreenElement||isExploring())return;
  hex.scrollIntoView({block:'nearest',inline:'nearest'});
 }
 const originalTiles=48;
@@ -696,6 +778,7 @@ function render(){
   cells+='<button class="tile island-tile '+terrain+' biome-'+biome+' weather-'+weatherTone[weather]+(closed?' locked':'')+(selected===i?' selected':'')+available+'" style="--x:'+x+';--y:'+y+'" data-tile="'+i+'" aria-label="'+name+' · '+weather+(isReady(t)?' · 可收取':planted(t)?' · 生产中':'')+'">'+content+progress+(isReady(t)?'<span class="ready">收</span>':'')+'</button>';
  }
  $('land-grid').innerHTML=cells+actorMarkup();
+ focusCamera();
  const q=jobs[state.quest], week=Math.floor((state.day-1)/7)+1;
  $('quest').innerHTML='<h3>📖 溪谷手记</h3>'+(q?'<strong>'+q.title+'</strong><p class="muted">'+q.desc+'</p><div class="actions">'+button('领取 '+format(q.reward),'quest',!q.done(),true)+'</div>':'<p>溪谷篇已完成。</p>')+'<div class="actions">'+button('日常 · 问候居民','daily',state.daily===state.day||!Object.values(state.people).some(p=>p.last===state.day))+button('每周 · 收获 3 次','weekly',state.week===week||(state.weekHarvest?.[week]??0)<3)+button('成就 · 建造 5 座','award',state.award||state.total.built<5)+'</div>';
  const t=state.tiles[selected],def=t&&catalog[t.type];
@@ -716,7 +799,7 @@ function render(){
   $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p>'+(def.yield?workProgress(t):'')+'<div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!can({diamonds:1})):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>'+(def.yield?laborControls(selected):'')+(t.type==='shop'?'<div class="royal-judgment"><strong>商店货架</strong><div class="actions">'+Object.entries(shopGoods).map(([id,item])=>button('买 '+item.amount+names[id]+' · '+item.price+' 金币','shop-buy-'+id,!can({gold:item.price}))).join('')+'</div></div>':'');
  }else{ $('inspect').innerHTML='<h3>'+(t?'🏰 王宫 · 粉色梦想豪宅':'🧭 地块详情')+'</h3><p class="muted">'+(t?'粉色露台和泳池环绕着聂萌的王座厅。<a href="#throne">前往王座厅与聂萌商议</a>。建造金币费用减免 20%（向上取整）。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击地图上的锁格查看拓地条件。')+'</p>'; }
  const inspect=$('inspect');
- const openDetails=workspace==='map'&&selected!==null&&!mapActor;
+ const openDetails=workspace==='map'&&selected!==null&&(!mapActor||isExploring());
  inspect.className='panel card'+(openDetails?' map-detail-drawer':'');
  if(openDetails)inspect.innerHTML+='<div class="actions">'+button('关闭地块详情','close-map-details')+'</div>';
  const p=state.people[person],who=people[person];
@@ -731,8 +814,9 @@ function render(){
   return '<button class="choice" data-plan="'+id+'" aria-pressed="'+(id===plan)+'" '+(!unlocked?'disabled':'')+'>'+pixelSprite(id)+'<strong>'+d.name+'</strong><small>'+format(cost)+'</small><small>'+status+'</small></button>';
  }).join(''):'<p class="muted">此类别暂无可建造设施。</p>';
 }
-function tileClick(i){
- if(workspace==='map'&&(mapActor==='hero'||mapActor==='advisor')){
+function tileClick(i,interact=false){
+ if(!interact&&!plan&&((workspace==='map'&&(mapActor==='hero'||mapActor==='advisor'))||isExploring())){
+  if(isExploring())mapActor=walkingActor();
   if(!walkable(i)){tell('这块地目前走不到，请选择开放的陆地。');return}
   const route=actorPath(actorPosition(mapActor),i);
   if(!route.length)return;
@@ -753,6 +837,15 @@ function tileClick(i){
  tell(d.name+'建成了！');
 }
 function act(a){
+ if(a==='toggle-explore'){
+  exploreMode=!exploreMode;
+  if(exploreMode)mapActor??='hero';
+  else if(typeof location!=='undefined'&&location.hash==='#explore')location.hash='map';
+  render();
+  return;
+ }
+ if(a==='walk-interact'){interactFacing();return}
+ if(a.startsWith('walk-')){moveWalker(Number(a.slice(5)));return}
  if(a.startsWith('actor-command-')||a.startsWith('actor-pick-')){
   const id=a.split('-').at(-1), animal=animals[id];
   if(animal){
@@ -760,8 +853,8 @@ function act(a){
    const first=state.pettedDay[id]!==state.day;
    if(first){state.pettedDay[id]=state.day;add({joy:1})}
    tell(animal.sound+(first?' 快乐值 +1。':''));
-  }else if(workspace==='map'&&(id==='hero'||id==='advisor')){
-   mapActor=id;plan=null;render();focusHex(actorPosition(id));
+  }else if((workspace==='map'||isExploring())&&(id==='hero'||id==='advisor')){
+   mapActor=id;if(workspace!=='build')plan=null;render();focusHex(actorPosition(id));
   }
   return
  }
@@ -773,7 +866,14 @@ function act(a){
  if(a==='actor-comfort'&&mapActor==='advisor'&&!actorRoutes.advisor){
   person='advisor';act('counsel-festival');return;
  }
- if(a==='map-center'){selected=10;render();focusHex(10);return}
+ if(a==='map-center'){
+  if(isExploring()){
+   const id=walkingActor(), route=actorPath(actorPosition(id),10);
+   if(route.length)actorRoutes[id]=route;
+   renderActorToolbar();
+  }else{selected=10;render();focusHex(10);}
+  return;
+ }
  if(a==='map-fullscreen'){
   const panel=$('map-panel');
   if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
@@ -789,7 +889,7 @@ function act(a){
  if(a.startsWith('climate-focus-')){
   const biome=a.slice(14);
   const tile=island.find(hex=>hex.biome===biome&&hex.id>=mapWidth*mapHeight);
-  if(tile){selected=tile.id;render();focusHex(tile.id)}
+  if(tile){exploreMode=false;mapActor=null;selected=tile.id;render();focusHex(tile.id)}
   return;
  }
  if(a==='toggle-unlimited'){
@@ -914,7 +1014,7 @@ document.addEventListener('click',e=>{
  }
  if(b.dataset.tile!==undefined){tileClick(Number(b.dataset.tile));return}
  if(b.dataset.plan){plan=b.dataset.plan;selected=null;const d=catalog[plan];tell('准备建造'+d.name+'，请选择空地。');
-  if(typeof window!=='undefined'&&window.matchMedia('(max-width: 760px)').matches)document.querySelector('.map-panel').scrollIntoView({block:'start'});
+  if(!isExploring()&&typeof window!=='undefined'&&window.matchMedia('(max-width: 760px)').matches)document.querySelector('.map-panel').scrollIntoView({block:'start'});
   return}
  if(b.dataset.action)act(b.dataset.action);
 });
@@ -926,7 +1026,9 @@ for(const t of Object.values(state.tiles)){
 }
 if(batchesMigrated||newClimate)save();
 if(typeof location!=='undefined'){
- document.addEventListener('fullscreenchange',renderClimate);
+ document.addEventListener('fullscreenchange',()=>{renderClimate();focusCamera();});
+ window.addEventListener('resize',focusCamera);
+ window.addEventListener('keydown',onExploreKey);
  window.addEventListener('hashchange',()=>{
   syncWorkspace();
   window.scrollTo(0,0);
