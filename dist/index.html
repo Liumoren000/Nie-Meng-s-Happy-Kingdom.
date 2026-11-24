@@ -147,6 +147,7 @@ body.game-stage{overflow:hidden;background:#2b483d}.game-stage>header,.game-stag
 
 .map#land-grid .parcel-path{position:absolute;inset:0;pointer-events:none;z-index:0}.path-arm{position:absolute;background:#d8b379;box-shadow:inset 0 0 0 1px #99744a70}.path-east,.path-west{height:18%;top:41%;width:59%}.path-east{right:0}.path-west{left:0}.path-north,.path-south{width:18%;left:41%;height:59%}.path-north{top:0}.path-south{bottom:0}.path-arm:after{content:'';position:absolute;inset:2px;background:repeating-linear-gradient(90deg,#f0ce9033 0 3px,transparent 3px 10px);pointer-events:none}.path-north:after,.path-south:after{background:repeating-linear-gradient(#f0ce9033 0 3px,transparent 3px 10px)}
 .lane-lamp{position:absolute;width:4%;height:19%;right:24%;top:27%;background:#503c38;z-index:2}.lane-lamp:before{content:'';position:absolute;width:270%;height:44%;left:-85%;top:0;background:#b19063;border:1px solid #513f39;box-sizing:border-box}.lane-lamp:after{content:'';position:absolute;inset:-11px -14px;opacity:0;background:radial-gradient(ellipse at 50% 28%,#ffe594b3,#f5c45a44 37%,transparent 69%);transition:opacity 1.4s;pointer-events:none}.map-panel[data-light="3"] .lane-lamp:after,.map-panel[data-light="2"] .lane-lamp:after{opacity:1}.map-panel[data-light="3"] .lane-lamp:before,.map-panel[data-light="2"] .lane-lamp:before{background:#ffeaa8;box-shadow:0 0 6px 2px #ffd868}
+.stage-top-right{display:flex;gap:6px;align-items:start}.stage-location{text-align:right}.stage-location strong{white-space:nowrap}.stage-location small{white-space:nowrap}@media(max-width:480px){.stage-top-right{gap:3px}.stage-location{font-size:12px;padding:5px 7px}.stage-top .stage-close{max-width:89px;white-space:normal}}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div class="header-resources"><div id="resources" class="resources"></div><button type="button" class="button unlimited-toggle" id="unlimited-toggle" data-action="toggle-unlimited" aria-pressed="false">∞ 无限资源</button></div></header>
 <main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
@@ -189,6 +190,7 @@ const fieldActivities={
  wood:{label:'拾取木材',reward:{wood:10}},
  joy:{label:'举办溪谷小聚',reward:{joy:6}}
 };
+const cityName='不文明城市';
 const views=['map','build','throne','residents','journal','climate'];
 let workspace='map', affordableOnly=false, repeatBuild=false, exploreMode=false;
 let movingBuilding=null, demolishingBuilding=null;
@@ -551,10 +553,16 @@ function stepActors(now){
 }
 function renderStageHud(){
  const time=localGameTime();
+ const tile=island[selected]??island[actorPosition(walkingActor())];
+ const region=climateProfiles[tile.biome];
+ const inlandWater=water(tile.id)&&tile.biome!=='ocean';
+ const terrainName=inlandWater?'溪流':region.name;
+ const terrainIcon=inlandWater?'💧':region.icon;
  const labels={build:'建造手册',throne:'王座厅',residents:'王室与居民',journal:'任务与成就',climate:'气候地图'};
  const panel=labels[workspace];
  $('stage-hud').innerHTML='<div class="stage-top"><div class="stage-date"><strong>'+season()+'季 · 第 '+state.day+' 天</strong><small><span id="stage-clock">'+dayPhases[time.phase]+' '+time.label+'</span> · '+weatherFor(island[actorPosition(walkingActor())].biome)+'</small></div>'+
- (panel?'<a href="#explore" class="button stage-close">关闭'+panel+' ×</a>':button(stageMenu?'关闭菜单':'☰','stage-menu',false,true))+'</div>'+
+ '<div class="stage-top-right"><div class="stage-date stage-location" aria-label="城市和地形"><strong>'+cityName+'</strong><small>'+terrainIcon+' '+terrainName+'</small></div>'+
+ (panel?'<a href="#explore" class="button stage-close">关闭'+panel+' ×</a>':button(stageMenu?'关闭菜单':'☰','stage-menu',false,true))+'</div></div>'+
  '<div class="stage-hotbar"><a href="#build" class="button"><kbd>B</kbd> 建造</a>'+button('<kbd>E</kbd> '+(movingBuilding!==null?'移动到此':'互动'),'walk-interact')+
  (movingBuilding!==null?button('取消移动','building-cancel'):button(walkingActor()==='hero'?'👑 聂萌':'📜 刘博文','stage-switch'))+'<a class="button" href="#throne">王座厅</a></div>'+
  '<div class="stage-dpad">'+['→','↓','←','↑'].map((arrow,index)=>button(arrow,'walk-'+index)).join('')+'</div>'+
