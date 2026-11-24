@@ -39,6 +39,12 @@
 
 .realm-nav{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:5px;margin-bottom:17px;background:#e9e0c6;border:1px solid #d2c39c;border-radius:12px;box-shadow:0 3px 0 #ddd0af}.realm-nav a{text-align:center;padding:11px 4px;text-decoration:none;color:#294632;border-radius:8px;font-size:14px;font-weight:bold}.realm-nav a:hover{background:#f8ebc8}.realm-nav a[aria-current=page]{color:#fff8e1;background:#2e573d}.workspace[hidden]{display:none!important}.catalog[hidden]{display:none}.build-layout{grid-template-columns:minmax(0,1fr) minmax(290px,340px);align-items:start}.build-layout .map-panel{scroll-margin-top:65px;grid-column:1;grid-row:1/span 2}.build-layout .catalog{grid-column:2;grid-row:1;margin:0}.build-layout .side{grid-column:2;grid-row:2;display:block}.build-layout #quest,.build-layout #residents{display:none}.build-layout .choices{grid-template-columns:1fr}.build-layout .catalog-head{display:block}.build-layout .catalog-head .tabs{margin-top:9px}.build-layout .choice{grid-template-columns:40px 1fr;align-items:center}.build-layout .choice .pixel-sprite{position:relative;inset:auto;width:40px;height:40px;grid-row:1/span 3;background-color:#a6bc68;border-radius:3px}.build-layout .choice small{grid-column:2}.build-layout .choice:disabled{opacity:.74}.build-controls{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}.build-plan{font-size:13px;margin:8px 0;padding:7px;background:#e9e1bd;border-radius:6px}.tile.build-available{cursor:crosshair;box-shadow:inset 0 0 0 1px #567348}.tile.build-available:hover{box-shadow:inset 0 0 0 3px #ffe9a1}.castle{margin-top:0}.throne-workspace{background:#eee2cd}.throne-workspace .castle-command{padding:18px}.report-list{margin:9px 0 0;padding:0;list-style:none;font-size:13px}.report-list li{padding:7px 0;border-top:1px solid #dcc998}.report-list time{font-weight:bold;margin-right:6px}.route-info{display:block;font-size:12px;line-height:1.6;font-weight:normal}.report-area{margin-top:14px}.report-area h3{font-family:serif}
 @media(max-width:760px){.build-layout{grid-template-columns:1fr}.build-layout .catalog{grid-column:1;grid-row:1}.build-layout .map-panel{grid-column:1;grid-row:2}.build-layout .side{grid-column:1;grid-row:3}.build-layout .choices{grid-template-columns:repeat(auto-fit,minmax(145px,1fr))}.realm-nav a{font-size:12px}}
+.pixel-shop{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAzklEQVR4nGNgGAWjYBSQCErtnf/jw3SxPGByNFZMU0cQspymjiDWcpo4At3y+xUJODFNHEGKz6keEpRYTrEDKLWcIkcQG+c0SQ8ghV/vr4BrBrGpySdoOa0dgDckBtwByI6gFSYqHcDA5GQnuA/Ixc/3Nv8HmUOSxcgOABkQkVCIgmGGomOQOLp6qjng/aF0MEY2FDlo0R2ArpZsB8AshrEH1AHowYrPAVSLAmxxTMgB6HjoOSCxxf0/CGNL6eRimJkkOYAWeGg4YBTQEwAAzxYp2aORi9YAAAAASUVORK5CYII=)}
+.pixel-hospital{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA2ElEQVR4nGNgGAWjYBSQCErtnf/jw3SxfN3G1VgxTR2BbPnX+yvgeHWgLwqfJo5A9zk+B1A9JNAtv1+RALcYHcMcQFVHYItzQiFANUfgSnB0cQC+1I5sITqmSs5Aj3NyMNmOwOdzSjBRjiBUylELD14H0MMRRKUDGJic7IQ3xRODn+9t/g8yhySLkR0AMiAioRAFwwxFxyBxdPVUc8D7Q+lgjGwoctCiOwBd7dB3ALZgxecAqkYBNozPAdjUDi0HJLa4/wdhbCmdXAwzkyQH0AIPDQeMAnoCAMGaUo30D427AAAAAElFTkSuQmCC)}
+.pixel-school{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA4ElEQVR4nGNgGAVDGbw/lP4fhkeeA6aULfqP7AAQny4Wl9o7wy39en8FHNMlJECWE3IASJ6mloOCGobRowCEYepobjkuB1DdEeiW369IAGN8DqCqI7D5nFAIUM0R+CwnBlPkAEotp8gR2OKcVEy2I6jlc7JCAqaI1njwOoAejiAqHcDA5GQnlPKeHPx8b/N/kDkkWYzsAJABEQmFKBhmKDoGiaOrp5oDYCUesqHIQYvuAHS1Q98B2IIVnwOoGgXYMD4HYFM7tByQ2OL+H4SxpXRyMcxMkhxACzw0HDAK6AkAnAVXgtLjO88AAAAASUVORK5CYII=)}
+.pixel-gym{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA3UlEQVR4nGNgGAWjYBSQCErtnf/jw3Sx3HvyUqyYpo4Ii0r/D8Igi5DZ6Bgmh6yHYstBviLVAch6KLYc2TBiMVUdgOwzYjF6dFBkOXqwExMFFDsAPbVT4gCScway5fcrEsjCZGdPfPmcEkyUIwiVctTCg9cB9HAEUekABiYnO/3/en8FRfj53ub/IHNIshjZASADIhIKUTDMUHQMEkdXTzUHvD+UDsbIhiIHLboD0NUOfQdgC1Z8DqBqFGDD+ByATe3QckBii/t/EMaW0snFMDNJcgAt8NBwwCigJwAA42ILzdwlE2AAAAAASUVORK5CYII=)}
+.pixel-henu{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA4klEQVR4nGNgGAWjYBSQCErtnf/jw3SxfHWgL1ZMU0cQspymjiDWcpo4At3y+xUJWPHX+yto4whcPke3EJ1PFUfgC3aaOwCb5abOdiRhsh2BK87JcQDJjiAmtRNrMcnRQaiUg2FCDiC7tCTWAZRiqoQCTSxHd8j7Q+lgDMpi5OLne5v/I5tFlgMiEgpRMMjQyclOGBgkDsLoaqniAGQ2zAHIQYvuAGS1ZDsAhqnhALIKJJihuKIAnwPQ1ZJkMboDsGF8DsCmdmg5ILHF/T8IY0vp5GKYmSQ5gBZ4aDhgFNATAAAgLAbzwxloOAAAAABJRU5ErkJggg==)}
+.pixel-sora{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA5ElEQVR4nGNgGAWjYBSQCErtnf/jw3SxfErZIqyYpo4gZDlNHUGs5TRxBLrl9ysSsOKv91fQxhG4fI5uITqfKo7AF+w0dwA2y02d7UjCZDsCV5yT4wCSHUFMaifWYpKjg1ApB8OEHEB2aUmsAyjFVAkFmliO4ZDD+8EYlMXIxc/3Nv9HNossB0QkFKJgkKGTk50wMEgchNHVUsUB7w+lgzGyA5CDFt0ByGrJdwAUU8UB5BRIMENxRQE+B6CrJclidAdgw/gcgE3t0HJAYov7fxDGltLJxTAzSXIALfDQcMAooCcAAFGWIsvCf7yqAAAAAElFTkSuQmCC)}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div id="resources" class="resources"></div></header>
 <main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
@@ -58,12 +64,18 @@ const catalog={
  bakery:{name:'甜品工坊',icon:'🧁',group:'生产',cost:{gold:45,wood:12,ore:3},level:2,input:{grass:2},yield:{treat:2}},
  cottage:{name:'蘑菇小屋',icon:'🍄',group:'居住',cost:{gold:45,wood:16},level:2},
  cafe:{name:'萌宠咖啡馆',icon:'☕',group:'商业',cost:{gold:65,wood:15,ore:5},level:3,input:{treat:1},yield:{gold:30,joy:5}},
+ shop:{name:'溪谷商店',icon:'🛍️',group:'商业',cost:{gold:35,wood:8},level:2,yield:{gold:14},service:'商店每批赚取金币，也可随时补买建材和原料。'},
+ hospital:{name:'王国医院',icon:'🏥',group:'公共服务',cost:{gold:55,wood:13,ore:3},level:2,input:{grass:1},yield:{happiness:3},mood:12,service:'每次开放诊疗，全体居民心情 +12。'},
+ school:{name:'魔法学校',icon:'📚',group:'公共服务',cost:{gold:75,wood:17,ore:6},level:3,input:{ore:1,grass:2},yield:{stars:1,happiness:3},service:'完成魔法课程后，获得萌力星与幸福值。'},
+ gym:{name:'溪谷健身房',icon:'🏋️',group:'公共服务',cost:{gold:50,wood:12,ore:2},level:2,input:{grass:1},yield:{happiness:2},morale:8,service:'完成一轮训练，劳动民心 +8。'},
+ henu:{name:'禾牛社',icon:'🍲',group:'特色建筑',cost:{gold:65,wood:12,ore:4},level:2,input:{grass:2},yield:{happiness:6,gold:18},service:'招牌寿喜锅。每次开席消耗 2 份猫草。'},
+ sora:{name:'空之介',icon:'🍲',group:'特色建筑',cost:{gold:85,wood:16,ore:5},level:3,input:{grass:1,treat:1},yield:{happiness:9,gold:25},service:'寿喜锅配甜点。每次开席消耗 1 份猫草和 1 份甜点。'},
  flowers:{name:'野花花坛',icon:'🌷',group:'装饰',cost:{gold:12},level:1},
  fountain:{name:'溪石喷泉',icon:'⛲',group:'装饰',cost:{gold:30,ore:6},level:1},
  road:{name:'碎石小径',icon:'▫️',group:'装饰',cost:{gold:2},level:1}
 };
-const names={gold:'金币',wood:'木材',ore:'矿石',joy:'快乐值',stars:'萌力星',grass:'猫草',treat:'甜点',diamonds:'钻石'};
-const icons={gold:'🪙',wood:'🪵',ore:'🪨',joy:'💛',stars:'⭐',grass:'🌿',treat:'🧁',diamonds:'💎'};
+const names={gold:'金币',wood:'木材',ore:'矿石',joy:'快乐值',happiness:'幸福值',stars:'萌力星',grass:'猫草',treat:'甜点',diamonds:'钻石'};
+const icons={gold:'🪙',wood:'🪵',ore:'🪨',joy:'💛',happiness:'💗',stars:'⭐',grass:'🌿',treat:'🧁',diamonds:'💎'};
 const royalRetinue=32;
 const crewSize=4;
 const maxCrew=8;
@@ -101,6 +113,7 @@ function renderWorkspace(){
 }
 let state=fresh(),persistent=true;
 try{const saved=localStorage.getItem(key);if(saved)state=JSON.parse(saved)}catch{persistent=false}
+state.stock.happiness??=0;
 state.people.hero.mood=100;
 const priorRoyalWork=state.people.hero.job;
 state.labor??={morale:85,royalSite:catalog[state.tiles[priorRoyalWork]?.type]?.yield?priorRoyalWork:null,mode:'supervise'};
@@ -119,7 +132,14 @@ const jobs=[{title:'播下第一颗种子',desc:'建造一座猫草农场。',do
  {title:'给栗栗留一扇窗',desc:'建造蘑菇小屋，邀请栗栗入住。',done:()=>!!state.people.rabbit,reward:{gold:25}},
  {title:'把好心情分享出去',desc:'通过问候、送礼或经营取得 12 快乐值。',done:()=>state.stock.joy>=12||state.expanded,reward:{stars:1,gold:25}},
  {title:'越过溪谷的边界',desc:'攒满 60 金币、12 木材和 12 快乐值，开放东侧花坡。',done:()=>state.expanded,reward:{diamonds:1}}];
-const expandCost={gold:60,wood:12};
+const mapWidth=8, mapHeight=9;
+const originalTiles=48;
+const eastExpansion={title:'东侧花坡',cost:{gold:60,wood:12},requirement:{joy:12},flag:'expanded'};
+const southExpansion={title:'南岸新区',cost:{gold:85,wood:18,ore:4},requirement:{happiness:12},flag:'southExpanded'};
+const shopGoods={
+ wood:{price:14,amount:5},ore:{price:15,amount:3},
+ grass:{price:10,amount:3},treat:{price:12,amount:1}
+};
 const counsel={
  supplies:{name:'整理国库',reward:{gold:18,wood:4},report:'臣已清点仓库，拨出一笔建造物资。'},
  festival:{name:'安抚民心',reward:{joy:4},report:'臣已听取各处工队的诉求，安排休息并送去了补给。'}
@@ -341,8 +361,16 @@ const season=()=>['春','夏','秋','冬'][Math.floor((state.day-1)/7)%4];
 const format=items=>Object.entries(items).map(([k,v])=>icons[k]+v+' '+names[k]).join(' · ');
 const can=items=>Object.entries(items).every(([k,v])=>state.stock[k]>=v);
 const add=(items,m=1)=>Object.entries(items).forEach(([k,v])=>state.stock[k]+=v*m);
-const water=i=>[0,8,16,24,32,40,41,42].includes(i);
-const locked=i=>!state.expanded&&i%8>=6;
+const water=i=>[0,8,16,24,32,40,41,42,48,56,64].includes(i);
+function expansionAt(i){
+ if(i===null||water(i))return null;
+ if(i>=originalTiles)return state.southExpanded?null:southExpansion;
+ return !state.expanded&&i%mapWidth>=6?eastExpansion:null;
+}
+const locked=i=>Boolean(expansionAt(i));
+function canExpand(zone){
+ return can(zone.cost)&&can(zone.requirement)&&(zone!==southExpansion||state.expanded);
+}
 const batchDuration=60_000;
 const planted=t=>t?.ready!==undefined;
 const isReady=(t,now=Date.now())=>planted(t)&&(t.ready<=state.day||(t.batchStart!==undefined&&now-t.batchStart>=batchDuration));
@@ -396,15 +424,15 @@ function render(){
  renderCastle();
  $('resources').innerHTML=Object.keys(names).map(k=>'<span title="'+names[k]+'">'+icons[k]+' '+state.stock[k]+'</span>').join('');
  $('calendar').textContent=season()+'季 · 第 '+state.day+' 天 · 王国 Lv.'+level()+' · 👑 国王聂萌 · 无敌';
- $('area').textContent=state.expanded?'东侧花坡已开放':'东侧花坡未开放';
+ $('area').textContent='东侧花坡 '+(state.expanded?'已开放':'待开放')+' · 南岸新区 '+(state.southExpanded?'已开放':'待开放');
  $('hint').textContent=message;
  $('save-note').textContent=persistent?'进度自动保存在当前浏览器。':'浏览器存储不可用，本次进度保存在当前页面。';
  $('sleep').textContent='☀️ 结束第 '+state.day+' 天';
  let cells='';
- for(let i=0;i<48;i++){
-  const t=state.tiles[i],def=t&&catalog[t.type],closed=locked(i),wet=water(i),name=t?(def?.name??'王宫'):closed?'待开放花坡':wet?'溪水':'空地';
+ for(let i=0;i<mapWidth*mapHeight;i++){
+  const t=state.tiles[i],def=t&&catalog[t.type],closed=locked(i),wet=water(i),name=t?(def?.name??'王宫'):closed?'待开放'+expansionAt(i).title:wet?'溪水':'空地';
   const content=closed?pixelSprite('forest')+(i%8===6&&i%16===6?pixelSprite('lock'):''):t?pixelSprite(t.type):!wet&&[5,13,29,43].includes(i)?pixelSprite('grove'):'';
-  const terrain=wet?'water water-'+i:'terrain-'+((i*7+Math.floor(i/8))%4);
+  const terrain=wet?'water water-'+(i>=originalTiles?32:i):'terrain-'+((i*7+Math.floor(i/8))%4);
   const progress=def?.yield?'<span class="tile-progress" aria-hidden="true"><i data-tile-progress="'+i+'" style="width:'+batchProgress(t)+'%"></i></span>':'';
   cells+='<button class="tile '+terrain+(closed?' locked':'')+(selected===i?' selected':'')+(workspace==='build'&&plan&&!t&&!wet&&!closed?' build-available':'')+'" data-tile="'+i+'" aria-label="'+name+'，第'+(Math.floor(i/8)+1)+'行第'+(i%8+1)+'列'+(isReady(t)?'，可收取':planted(t)?'，生产中':'')+'">'+content+progress+(isReady(t)?'<span class="ready">收</span>':'')+'</button>';
  }
@@ -412,20 +440,23 @@ function render(){
  const q=jobs[state.quest], week=Math.floor((state.day-1)/7)+1;
  $('quest').innerHTML='<h3>📖 溪谷手记</h3>'+(q?'<strong>'+q.title+'</strong><p class="muted">'+q.desc+'</p><div class="actions">'+button('领取 '+format(q.reward),'quest',!q.done(),true)+'</div>':'<p>溪谷篇已完成。</p>')+'<div class="actions">'+button('日常 · 问候居民','daily',state.daily===state.day||!Object.values(state.people).some(p=>p.last===state.day))+button('每周 · 收获 3 次','weekly',state.week===week||(state.weekHarvest?.[week]??0)<3)+button('成就 · 建造 5 座','award',state.award||state.total.built<5)+'</div>';
  const t=state.tiles[selected],def=t&&catalog[t.type];
- if(selected!==null&&locked(selected)){
-  $('inspect').innerHTML='<h3>🌼 东侧花坡</h3><p class="muted">'+format(expandCost)+' · 需 12 快乐值</p><div class="actions">'+button('开放花坡','expand',!can(expandCost)||state.stock.joy<12,true)+'</div>';
+ const zone=expansionAt(selected);
+ if(zone){
+  const prerequisite=zone===southExpansion&&!state.expanded?' · 需先开放东侧花坡':'';
+  $('inspect').innerHTML='<h3>🌼 '+zone.title+'</h3><p class="muted">'+format(zone.cost)+' · 需 '+format(zone.requirement)+prerequisite+'</p><div class="actions">'+button('开放'+zone.title,'expand',!canExpand(zone),true)+'</div>';
  }else if(def){
   let detail=def.yield?(isReady(t)?'产物可以收取。':planted(t)?'生产中，约一分钟或结束今天后可收取。':'需要投入 '+format(def.input)+'。'):(t.type==='cottage'?'小屋提供 1 个居民名额。':t.type==='road'?'连接溪谷里的设施。':'相邻生产设施可额外产出 1 份首项产物。');
   const work=Object.entries(state.people).find(([,p])=>p.job===selected);
   if(work)detail+=' '+people[work[0]].name+'在此协助生产，每批首项产物 +'+workerBonus(work[0])+'。';
   const crew=t.crew??0;
+  if(def.service)detail+=' '+def.service;
   if(def.yield)detail+=' 驻派奴仆 '+crew+'/'+maxCrew+' 人，每 '+crewSize+' 人使每批首项产物 +1。';
   const upgrade={gold:25*t.grade,ore:2*t.grade};
-  $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p>'+(def.yield?workProgress(t):'')+'<div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!state.stock.diamonds):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>'+(def.yield?laborControls(selected):'');
- }else{ $('inspect').innerHTML='<h3>'+(t?'🏰 王宫 · 粉色梦想豪宅':'🧭 地块详情')+'</h3><p class="muted">'+(t?'粉色露台和泳池环绕着聂萌的王座厅。<a href="#throne">前往王座厅与聂萌商议</a>。建造金币费用减免 20%（向上取整）。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击东侧锁格查看拓地条件。')+'</p>'; }
+  $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p>'+(def.yield?workProgress(t):'')+'<div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!state.stock.diamonds):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>'+(def.yield?laborControls(selected):'')+(t.type==='shop'?'<div class="royal-judgment"><strong>商店货架</strong><div class="actions">'+Object.entries(shopGoods).map(([id,item])=>button('买 '+item.amount+names[id]+' · '+item.price+' 金币','shop-buy-'+id,state.stock.gold<item.price)).join('')+'</div></div>':'');
+ }else{ $('inspect').innerHTML='<h3>'+(t?'🏰 王宫 · 粉色梦想豪宅':'🧭 地块详情')+'</h3><p class="muted">'+(t?'粉色露台和泳池环绕着聂萌的王座厅。<a href="#throne">前往王座厅与聂萌商议</a>。建造金币费用减免 20%（向上取整）。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击地图上的锁格查看拓地条件。')+'</p>'; }
  const p=state.people[person],who=people[person];
  $('residents').innerHTML='<h3>👑 王室与居民</h3><p class="muted">王室奴仆 '+royalRetinue+' 人 · '+idleRetinue()+' 人待命</p><p class="muted"><strong>劳动民心 '+state.labor.morale+'/100</strong> · 低于 '+lowMorale+' 时每批首项产物 −'+moralePenalty+'</p><div class="tabs">'+Object.keys(state.people).map(id=>button(people[id].name,'person-'+id,false,id===person)).join('')+'</div><div class="resident"><div class="portrait">'+who.icon+'</div><div><strong>'+who.name+'</strong>'+(person==='advisor'?'<p class="muted">忠诚 100% · 王国宰相</p>':'')+'<p class="muted">羁绊 Lv.'+(1+Math.floor(p.bond/4))+' · 心情 '+p.mood+(person==='hero'?' · 无限体力':' · 体力 '+(p.last===state.day?2:3)+'/3')+'</p></div></div>'+((p.bond>=4||person==='advisor'||person==='hero')?'<p class="muted">「'+who.line+'」</p>':'')+(person==='advisor'?'<p class="muted">'+(state.counselDay===state.day?'今日奏报已处理。':'每日可采纳一项奏报。')+'</p><div class="actions">'+Object.entries(counsel).map(([id,item])=>button(item.name+' · '+format(item.reward)+(id==='festival'?' · 民心 +'+relief:''),'counsel-'+id,state.counselDay===state.day,true)).join('')+'</div>':'')+'<div class="actions">'+button('打招呼','greet',p.last===state.day,true)+button('送礼 · '+icons[who.gift]+names[who.gift],'gift',!state.stock[who.gift]||p.giftDay===state.day)+'</div>';
- $('tabs').innerHTML=['生产','居住','商业','装饰'].map(g=>button(g,'group-'+g,false,g===group)).join('')+(plan?button('取消建造','cancel'):'');
+ $('tabs').innerHTML=['生产','居住','商业','公共服务','特色建筑','装饰'].map(g=>button(g,'group-'+g,false,g===group)).join('')+(plan?button('取消建造','cancel'):'');
  $('build-controls').innerHTML=castlePicker('只看可建造','build-affordable',affordableOnly)+castlePicker('连续摆放','build-repeat',repeatBuild);
  $('build-plan').textContent=plan?'正在摆放 '+catalog[plan].name+'，点地图上的空地。':'选择建筑查看花费，再到地图上摆放。';
  const choices=Object.entries(catalog).filter(([,d])=>d.group===group&&(!affordableOnly||(level()>=d.level&&can(constructionCost(d)))));
@@ -475,7 +506,21 @@ function act(a){
  if(a==='daily'&&state.daily!==state.day&&Object.values(state.people).some(r=>r.last===state.day)){state.daily=state.day;add({gold:12});state.xp++;tell('日常奖励到账：12 金币。');return}
  if(a==='weekly'&&state.week!==week&&(state.weekHarvest?.[week]??0)>=3){state.week=week;add({gold:35,diamonds:1});state.xp++;tell('每周奖励到账：35 金币、1 钻石。');return}
  if(a==='award'&&!state.award&&state.total.built>=5){state.award=true;add({diamonds:2});tell('达成建设成就，获得 2 钻石。');return}
- if(a==='expand'&&!state.expanded&&state.stock.joy>=12&&can(expandCost)){add(expandCost,-1);state.expanded=true;state.xp++;tell('东侧花坡开放了！');return}
+ if(a==='expand'){
+  const zone=expansionAt(selected);
+  if(zone&&canExpand(zone)){
+   add(zone.cost,-1);state[zone.flag]=true;state.xp++;tell(zone.title+'开放了！');
+  }
+  return
+ }
+ if(a.startsWith('shop-buy-')){
+  const id=a.slice(9), item=shopGoods[id];
+  if(t?.type==='shop'&&item&&state.stock.gold>=item.price){
+   add({gold:-item.price,[id]:item.amount});
+   tell('从溪谷商店购入 '+format({[id]:item.amount})+'。');
+  }
+  return
+ }
  if(a==='invite'&&t?.type==='cottage'&&!state.people.rabbit){state.people.rabbit={bond:0,mood:75,last:0,job:null};person='rabbit';state.xp++;tell('栗栗搬进了蘑菇小屋。');return}
  if(a==='greet'&&p.last!==state.day){p.last=state.day;p.bond++;p.mood=Math.min(100,p.mood+5);add({joy:3});if(p.bond%4===0)add({stars:1});tell(who.name+'向你打招呼，快乐值 +3。');return}
  if(a==='gift'&&state.stock[who.gift]&&p.giftDay!==state.day){p.giftDay=state.day;state.stock[who.gift]--;const before=Math.floor(p.bond/4);p.bond+=3;p.mood=Math.min(100,p.mood+12);add({joy:4,stars:Math.floor(p.bond/4)-before});tell(who.name+'很喜欢这份礼物，快乐值 +4。');return}
@@ -523,10 +568,12 @@ function act(a){
   const output={...d.yield},first=Object.keys(output)[0];
   output[first]=Math.max(1,output[first]+bonus+royalBonus-penalty);
   add(output);state.xp++;state.total.harvest++;
+  if(d.mood)Object.values(state.people).forEach(resident=>{resident.mood=Math.min(100,resident.mood+d.mood)});
+  if(d.morale)adjustMorale(d.morale);
   if(pressed)adjustMorale(-pressureCost);
   state.weekHarvest??={};state.weekHarvest[week]=(state.weekHarvest[week]??0)+1;
   if(d.input){delete t.ready;delete t.batchStart;}else startBatch(t);
-  tell('收获 '+format(output)+'。'+(pressed?' 劳动民心 '+morale+' → '+state.labor.morale+'。':''));
+  tell('收获 '+format(output)+'。'+((pressed||d.morale)?' 劳动民心 '+morale+' → '+state.labor.morale+'。':'')+(d.mood?' 全体居民心情已恢复。':''));
  }
 }
 document.addEventListener('click',e=>{
