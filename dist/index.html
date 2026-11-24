@@ -2,12 +2,15 @@
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>聂萌的快乐王国</title>
 <style>
 :root{font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:#283b2a;background:#f4f0e3;--green:#254b36;--cream:#fffcf0;--line:#ddd7bf}*{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer;color:inherit}button:focus-visible{outline:3px solid #a45122;outline-offset:2px}button:disabled{cursor:default;opacity:.56}header{background:var(--green);color:#fff8df;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;border-bottom:4px solid #d0a85e}h1,h2,h3,p{margin:0}h1{font-family:serif;font-size:26px;letter-spacing:.1em}.resources{display:flex;gap:8px;flex-wrap:wrap}.resources span{background:#ffffff18;padding:7px 11px;border-radius:20px;font-size:14px}main{max-width:1260px;margin:auto;padding:26px 24px}.heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:18px}.heading h2{font-family:serif;font-size:34px}.heading p,.muted{color:#5c6754;font-size:13px;margin-top:5px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px}.panel{background:var(--cream);border:1px solid var(--line);border-radius:18px;box-shadow:0 4px 0 #ded7be}.map-panel{overflow:hidden}.map-top{padding:13px 18px;display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:bold}.landscape{background:linear-gradient(145deg,#44674b,#6b8858);padding:18px;position:relative}.map{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;border:5px solid #39583c;border-radius:12px;overflow:hidden;background:#57794d}.tile{aspect-ratio:1.15;border:0;border-radius:3px;background:#abc77a;position:relative;min-width:0;padding:0;display:grid;place-items:center;box-shadow:inset 0 -4px #38553027;font-size:clamp(15px,3.1vw,38px)}.tile:nth-child(3n){background:#b3ce82}.tile:nth-child(4n){background:#9dbb70}.tile:hover{filter:brightness(1.13);z-index:1}.tile.selected{outline:3px solid #fff0af;z-index:2}.tile.locked{background:repeating-linear-gradient(135deg,#718b55 0 7px,#77925a 7px 14px);font-size:clamp(11px,2vw,21px)}.tile.water{background:repeating-linear-gradient(165deg,#75a7a0 0 13px,#80b4a9 13px 16px)}.tile.road{background:#d9bd82}.sprig{font-size:13px;color:#527243;opacity:.64}.ready{position:absolute;right:3px;top:3px;font-size:11px;background:#fff0a2;border-radius:10px;padding:2px 4px}.hint{padding:12px 17px;font-size:13px;min-height:43px}.side{display:grid;gap:15px;align-content:start}.card{padding:15px}.card h3{font-family:serif;font-size:19px;margin-bottom:8px}.quest{background:#f2e5bd}.button{border:1px solid #d8c99d;border-radius:9px;background:#f5e8bf;padding:8px 11px;font-weight:bold;font-size:13px}.primary{background:#326346;color:#fffbea;border-color:#326346}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.resident{display:flex;gap:10px;align-items:center;margin-top:8px}.portrait{font-size:29px;padding:6px;background:#eadcba;border-radius:12px}.catalog{margin-top:20px;padding:15px}.catalog-head{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:11px;flex-wrap:wrap}.tabs{display:flex;gap:6px;flex-wrap:wrap}.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(133px,1fr));gap:8px}.choice{display:grid;text-align:left;border:1px solid var(--line);background:#faf2d9;border-radius:11px;padding:10px;gap:4px}.choice[aria-pressed=true]{background:#dce8bb;border:2px solid #547744;padding:9px}.choice small{color:#5a644d}.choice i{font-style:normal;font-size:24px}.selected-name{font-weight:bold}.footer{margin:14px 0;font-size:12px;color:#5c6754}@media(max-width:850px){.layout{grid-template-columns:1fr}.side{grid-template-columns:repeat(auto-fit,minmax(235px,1fr))}}@media(max-width:490px){main{padding:15px 10px}.heading h2{font-size:26px}.landscape{padding:8px}.map{gap:2px}.resources span{padding:5px 8px}}
+
+.castle{margin-top:20px;padding:18px}.castle-title{display:flex;align-items:start;justify-content:space-between;gap:12px}.castle-title h2{font-family:serif}.castle-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px;margin-top:14px}.castle-card{min-width:0;background:#f8efd5;border:1px solid var(--line);border-radius:12px;padding:13px}.castle-card h3{margin-bottom:6px}.castle-board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:12px;padding:8px;border-radius:10px;background:#607c57}.castle-board button{background:#e8ddaf;border:1px solid #a39875;border-radius:6px;padding:7px 3px;min-height:48px;font-size:12px;font-weight:bold}.castle-board button[aria-pressed=true]{outline:2px solid #fff4b7;background:#fff1c6}.castle-lane{text-align:center;color:#fffbe7;font-size:12px}.castle-log{margin-top:10px;padding:8px;border-radius:8px;background:#eee2bb;font-size:13px}.castle-alert{color:#813c23;font-weight:bold}.castle-plan{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.castle-plan [aria-pressed=true]{background:#d9e7c0;border-color:#6b8056}.castle-command{grid-column:1/-1;background:#f1e5bf}.castle-command blockquote{margin:6px 0;font-size:14px;color:#4f482f}.castle-target{display:grid;gap:6px;margin-top:10px}.castle-target .button{text-align:left}.castle-target .primary{text-align:center}.castle-details{min-height:54px}@media(max-width:700px){.castle-layout{grid-template-columns:1fr}}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div id="resources" class="resources"></div></header>
 <main><div class="heading"><div><h2>苔芽溪谷</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
-<div class="layout"><section class="panel map-panel"><div class="map-top"><span>王国地图</span><span id="area"></span></div><div class="landscape"><div class="map" id="map" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
+<div class="layout"><section class="panel map-panel"><div class="map-top"><span>王国地图</span><span><a href="#castle">🏰 王家城堡</a> · <span id="area"></span></span></div><div class="landscape"><div class="map" id="map" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
 <aside class="side"><section class="panel card quest" id="quest"></section><section class="panel card" id="inspect"></section><section class="panel card" id="residents"></section></aside></div>
 <section class="panel catalog"><div class="catalog-head"><h3>建造手册</h3><span class="muted">王室减免已计入建造费用</span><div class="tabs" id="tabs"></div></div><div class="choices" id="choices"></div></section>
+<section class="panel castle" id="castle" aria-label="王家城堡"></section>
 <p class="footer" id="save-note"></p></main>
 <script>
 const catalog={
@@ -46,6 +49,135 @@ const counsel={
  festival:{name:'安抚民心',reward:{joy:4},report:'臣替陛下走了一趟溪谷，居民们安心多了。'}
 };
 const workerBonus=id=>id==='advisor'?2:1;
+const newCastle=()=>({level:1,defenses:{1:{type:'wall',level:1},4:{type:'tower',level:1}},troops:{guard:3,scout:0},stars:0,raids:0,report:'',order:null,raidDay:0,threat:null});
+state.castle??=newCastle();
+const lanes=['西翼','正门','东翼'];
+const defenses={
+ wall:{name:'石墙',icon:'🧱',power:4,cost:{gold:15,ore:2}},
+ tower:{name:'星灯塔',icon:'🏮',power:5,cost:{gold:22,wood:6}}
+};
+const units={
+ guard:{name:'蘑菇卫兵',icon:'🛡️',cost:{gold:8},power:3},
+ scout:{name:'兔耳斥候',icon:'🐇',cost:{gold:9,grass:1},power:2}
+};
+const rivals={
+ moss:{name:'苔石营地',terrain:['哨塔','高墙','疏林'],power:[14,13,9],reward:{gold:28,ore:3},retort:10},
+ mist:{name:'雾松堡',terrain:['高墙','疏林','哨塔'],power:[21,17,22],reward:{gold:55,ore:6,stars:1},retort:17}
+};
+let castleSlot=1, attackLane=2, target='moss';
+const castleCapacity=()=>4+2*state.castle.level;
+const troopCount=()=>Object.values(state.castle.troops).reduce((sum,count)=>sum+count,0);
+const slotPower=(building,slot)=>{
+ const front=slot<3;
+ const favored=(building.type==='wall'&&front)||(building.type==='tower'&&!front);
+ return (defenses[building.type].power+Number(favored))*building.level;
+};
+const defensePower=lane=>[lane,lane+3].reduce((sum,slot)=>{
+ const building=state.castle.defenses[slot];
+ return sum+(building?slotPower(building,slot):0);
+},0);
+const orderActive=id=>state.castle.order?.day===state.day&&state.castle.order.id===id;
+function attackPower(){
+ const {guard,scout}=state.castle.troops;
+ const terrain=rivals[target].terrain[attackLane];
+ return guard*(units.guard.power+(terrain==='高墙'?1:0))+scout*(units.scout.power+(terrain==='疏林'?2:0))+(orderActive('rally')?4:0);
+}
+function castleUpgradeCost(){return {gold:35*state.castle.level,wood:8*state.castle.level,ore:3*state.castle.level}}
+function scaledCost(items,m){return Object.fromEntries(Object.entries(items).map(([k,v])=>[k,v*m]))}
+function castlePicker(label,action,active){
+ return '<button class="button" data-action="'+action+'" aria-pressed="'+active+'">'+label+'</button>';
+}
+function renderCastle(){
+ const c=state.castle, upgrade=castleUpgradeCost(), building=c.defenses[castleSlot];
+ const planned=c.order?.day===state.day;
+ const threat=c.threat;
+ const threatLine=threat?'<p class="muted castle-alert">明日反攻预警 · '+lanes[threat.lane]+' · 强度 '+threat.power+'。结束今天前布防。</p>':'';
+ const layout=lanes.map((label,index)=>'<div class="castle-lane">'+label+' · 防御 '+defensePower(index)+'</div>').join('')+
+ Array.from({length:6},(_,index)=>{
+  const item=c.defenses[index];
+  const row=index<3?'前排':'后排';
+  return castlePicker((item?defenses[item.type].icon+' '+defenses[item.type].name+' Lv.'+item.level:'＋ 空地')+'<br><small>'+lanes[index%3]+row+'</small>','castle-slot-'+index,castleSlot===index);
+ }).join('');
+ const defenseCost=building&&scaledCost(defenses[building.type].cost,building.level+1);
+ const defenseButtons=building?
+ button('升级 · '+format(defenseCost),'castle-defense-upgrade',building.level>=c.level||!can(defenseCost),true)+
+ button('移到本翼另一排','castle-defense-move',!!c.defenses[(castleSlot+3)%6])+
+ button('拆除并退回基础造价','castle-defense-remove'):
+ Object.entries(defenses).map(([id,d])=>button(d.icon+' '+d.name+' · '+format(d.cost),'castle-build-'+id,!can(d.cost))).join('');
+ const rival=rivals[target];
+ const lockedTarget=target==='mist'&&c.level<2;
+ const raidUsed=c.raidDay===state.day;
+ $('castle').innerHTML='<div class="castle-title"><div><h2>🏰 王家城堡</h2><p class="muted">城堡 Lv.'+c.level+' · 战绩 '+c.stars+' 星 · 胜利 '+c.raids+' 次</p></div>'+button('升级城堡 · '+format(upgrade),'castle-upgrade',c.level>=3||!can(upgrade),true)+'</div>'+
+ '<div class="castle-layout"><section class="castle-card"><h3>城防布局</h3><p class="muted">三翼各有前后两排。石墙放前排、星灯塔放后排，各可多提供 1 点防御／级。</p>'+threatLine+
+ '<div class="castle-board">'+layout+'</div><div class="castle-details"><p class="muted">'+lanes[castleSlot%3]+(castleSlot<3?'前排':'后排')+' · '+(building?'本格防御 '+slotPower(building,castleSlot)+'，建筑等级随城堡解锁。':'选择要建造的防御设施。')+'</p><div class="actions">'+defenseButtons+'</div></div></section>'+
+ '<section class="castle-card"><h3>兵营与出征</h3><p class="muted">编制 '+troopCount()+'/'+castleCapacity()+'，出征使用当前整支部队。</p><div class="actions">'+Object.entries(units).map(([id,u])=>button(u.icon+' '+u.name+' '+c.troops[id]+' · 招募 '+format(u.cost),'castle-train-'+id,troopCount()>=castleCapacity()||!can(u.cost))).join('')+
+ '</div><div class="castle-plan">'+Object.entries(rivals).map(([id,r])=>castlePicker(r.name,'castle-target-'+id,target===id)).join('')+'</div>'+
+ (lockedTarget?'<p class="muted">雾松堡要在城堡 Lv.2 后开放。</p>':'<div class="castle-target">'+lanes.map((label,index)=>castlePicker(label+' · '+rival.terrain[index]+' · 防御 '+rival.power[index],'castle-lane-'+index,attackLane===index)).join('')+
+ '<p class="muted">卫兵擅长高墙路线，斥候擅长疏林。当前战力 <strong>'+attackPower()+'</strong> / 敌方防御 '+rival.power[attackLane]+'。</p>'+
+ button(raidUsed?'今日已出征':'从'+lanes[attackLane]+'出征','castle-raid',raidUsed||!troopCount(),true)+'</div>')+'</section>'+
+ '<section class="castle-card castle-command"><h3>👑 王座厅 · 与聂萌商议</h3><blockquote>「我要给城墙刷金漆！……你先说，今天是去出征，还是守城？」</blockquote><p class="muted">'+(planned?'今日已颁令 · '+(orderActive('rally')?'御驾鼓舞':'王城警戒'):'每日可请国王颁一道军令。')+'</p><div class="actions">'+
+ button('请聂萌鼓舞 · 出征战力 +4','castle-order-rally',planned||raidUsed,true)+button('请聂萌警戒 · 今夜城防 +5','castle-order-watch',planned,true)+'</div></section></div>'+
+ (c.report?'<p class="castle-log" role="status">'+c.report+'</p>':'');
+}
+function castleAction(a){
+ const c=state.castle;
+ const building=c.defenses[castleSlot];
+ const parts=a.split('-');
+ const id=parts.at(-1);
+ if(a.startsWith('castle-slot-')){castleSlot=Number(id);render();return}
+ if(a.startsWith('castle-lane-')){attackLane=Number(id);render();return}
+ if(a.startsWith('castle-target-')){target=id;render();return}
+ let report;
+ if(a==='castle-upgrade'&&c.level<3&&can(castleUpgradeCost())){
+  add(castleUpgradeCost(),-1);c.level++;
+  report='王家城堡升至 Lv.'+c.level+'，兵营容量增加。';
+ }else if(a.startsWith('castle-build-')&&!building&&defenses[id]&&can(defenses[id].cost)){
+  add(defenses[id].cost,-1);
+  c.defenses[castleSlot]={type:id,level:1};
+  report=lanes[castleSlot%3]+'的'+defenses[id].name+'已建成。';
+ }else if(a==='castle-defense-upgrade'&&building&&building.level<c.level){
+  const cost=scaledCost(defenses[building.type].cost,building.level+1);
+  if(can(cost)){add(cost,-1);building.level++;report=defenses[building.type].name+'已升级。'}
+ }else if(a==='castle-defense-move'&&building){
+  const other=(castleSlot+3)%6;
+  if(!c.defenses[other]){c.defenses[other]=building;delete c.defenses[castleSlot];castleSlot=other;report='防御设施已移到本翼另一排。'}
+ }else if(a==='castle-defense-remove'&&building){
+  add(defenses[building.type].cost);delete c.defenses[castleSlot];report='已拆除并退回基础造价。';
+ }else if(a.startsWith('castle-train-')&&units[id]&&troopCount()<castleCapacity()&&can(units[id].cost)){
+  add(units[id].cost,-1);c.troops[id]++;report=units[id].name+'加入了城堡驻军。';
+ }else if(a.startsWith('castle-order-')&&c.order?.day!==state.day){
+  if(id==='rally'&&c.raidDay!==state.day){c.order={id,day:state.day};report='聂萌登上城楼为部队鼓舞士气。今日出征战力 +4。'}
+  if(id==='watch'){c.order={id,day:state.day};report='聂萌下令点亮城楼。今夜守城防御 +5。'}
+ }else if(a==='castle-raid'&&c.raidDay!==state.day&&troopCount()&&(target!=='mist'||c.level>=2)){
+  const rival=rivals[target], margin=attackPower()-rival.power[attackLane];
+  const win=margin>=0;
+  c.raidDay=state.day;
+  c.threat={lane:(attackLane+state.day)%3,power:rival.retort};
+  if(win){
+   const stars=margin>=6?3:margin>=3?2:1;
+   c.stars+=stars;c.raids++;add(rival.reward);
+   report='拿下'+rival.name+'，获得 '+stars+' 星及 '+format(rival.reward)+'。';
+  }else{
+   const retreat=c.troops.guard?'guard':'scout';c.troops[retreat]--;
+   report='出征未达目标，部队撤回，1 名'+units[retreat].name+'离队。';
+  }
+  report+=' 对手将在次日反攻。';
+ }
+ if(report){c.report=report;tell(report)}
+}
+function resolveCastleDefense(){
+ const c=state.castle, threat=c.threat;
+ if(!threat)return;
+ const power=defensePower(threat.lane)+Math.min(4,c.troops.guard)+(orderActive('watch')?5:0);
+ if(power>=threat.power){
+  add({gold:12,joy:2});c.report=lanes[threat.lane]+'守城成功（'+power+' / '+threat.power+'），获得 12 金币与 2 快乐值。';
+ }else{
+  const lost=Math.min(state.stock.gold,10);
+  state.stock.gold-=lost;c.report=lanes[threat.lane]+'防守失利（'+power+' / '+threat.power+'），损失 '+lost+' 金币。';
+ }
+ c.threat=null;
+ return c.report;
+}
 const $=id=>document.getElementById(id);
 const level=()=>state.xp>=5?3:state.xp>=2?2:1;
 const season=()=>['春','夏','秋','冬'][Math.floor((state.day-1)/7)%4];
@@ -60,6 +192,7 @@ function save(){try{localStorage.setItem(key,JSON.stringify(state));persistent=t
 function tell(text){message=text;save();render()}
 function button(label,action,disabled=false,primary=false){return '<button class="button '+(primary?'primary':'')+'" data-action="'+action+'" '+(disabled?'disabled':'')+'>'+label+'</button>'}
 function render(){
+ renderCastle();
  $('resources').innerHTML=Object.keys(names).map(k=>'<span title="'+names[k]+'">'+icons[k]+' '+state.stock[k]+'</span>').join('');
  $('calendar').textContent=season()+'季 · 第 '+state.day+' 天 · 王国 Lv.'+level()+' · 👑 国王聂萌 · 无敌';
  $('area').textContent=state.expanded?'东侧花坡已开放':'东侧花坡未开放';
@@ -86,7 +219,7 @@ function render(){
   if(def.yield)detail+=' 驻派奴仆 '+crew+'/'+maxCrew+' 人，每 '+crewSize+' 人使每批首项产物 +1。';
   const upgrade={gold:25*t.grade,ore:2*t.grade};
   $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p><div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+button(work?'撤回 '+people[work[0]].name:person==='hero'?'国王督工':'委派 '+people[person].name,'assign')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!state.stock.diamonds):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>';
- }else{ $('inspect').innerHTML='<h3>'+(t?'🏰 王宫':'🧭 地块详情')+'</h3><p class="muted">'+(t?'聂萌的王座设在这里。建造由王室奴仆协助，金币费用减免 20%（向上取整）。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击东侧锁格查看拓地条件。')+'</p>'; }
+ }else{ $('inspect').innerHTML='<h3>'+(t?'🏰 王宫':'🧭 地块详情')+'</h3><p class="muted">'+(t?'聂萌的王座设在这里。<a href="#castle">前往王家城堡与聂萌商议</a>。建造金币费用减免 20%（向上取整）。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击东侧锁格查看拓地条件。')+'</p>'; }
  const p=state.people[person],who=people[person];
  $('residents').innerHTML='<h3>👑 王室与居民</h3><p class="muted">王室奴仆 '+royalRetinue+' 人 · '+idleRetinue()+' 人待命</p><div class="tabs">'+Object.keys(state.people).map(id=>button(people[id].name,'person-'+id,false,id===person)).join('')+'</div><div class="resident"><div class="portrait">'+who.icon+'</div><div><strong>'+who.name+'</strong>'+(person==='advisor'?'<p class="muted">忠诚 100% · 王国宰相</p>':'')+'<p class="muted">羁绊 Lv.'+(1+Math.floor(p.bond/4))+' · 心情 '+p.mood+(person==='hero'?' · 无限体力':' · 体力 '+(p.last===state.day?2:3)+'/3')+'</p></div></div>'+((p.bond>=4||person==='advisor')?'<p class="muted">「'+who.line+'」</p>':'')+(person==='advisor'?'<p class="muted">'+(state.counselDay===state.day?'今日奏报已处理。':'每日可采纳一项奏报。')+'</p><div class="actions">'+Object.entries(counsel).map(([id,item])=>button(item.name+' · '+format(item.reward),'counsel-'+id,state.counselDay===state.day,true)).join('')+'</div>':'')+'<div class="actions">'+button('打招呼','greet',p.last===state.day,true)+button('送礼 · '+icons[who.gift]+names[who.gift],'gift',!state.stock[who.gift]||p.giftDay===state.day)+'</div>';
  $('tabs').innerHTML=['生产','居住','商业','装饰'].map(g=>button(g,'group-'+g,false,g===group)).join('')+(plan?button('取消建造','cancel'):'');
@@ -104,6 +237,7 @@ function tileClick(i){
  plan=null;tell(d.name+'建成了！');
 }
 function act(a){
+ if(a.startsWith('castle-')){castleAction(a);return}
  const t=state.tiles[selected],d=t&&catalog[t.type],p=state.people[person],who=people[person],q=jobs[state.quest];
  if(a.startsWith('group-')){group=a.slice(6);plan=null;render();return}
  if(a.startsWith('person-')){person=a.slice(7);render();return}
@@ -156,7 +290,12 @@ function act(a){
 }
 document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b||b.disabled)return;
- if(b.id==='sleep'){state.day++;if(state.people.rabbit)state.people.rabbit.mood=Math.max(35,state.people.rabbit.mood-2);tell('新的一天开始了，去看看有哪些产物可以收取。');return}
+ if(b.id==='sleep'){
+  const defenseReport=resolveCastleDefense();
+  state.day++;
+  if(state.people.rabbit)state.people.rabbit.mood=Math.max(35,state.people.rabbit.mood-2);
+  tell(defenseReport??'新的一天开始了，去看看有哪些产物可以收取。');return
+ }
  if(b.dataset.tile!==undefined){tileClick(Number(b.dataset.tile));return}
  if(b.dataset.plan){plan=b.dataset.plan;selected=null;const d=catalog[plan];tell('准备建造'+d.name+'，请选择空地。');return}
  if(b.dataset.action)act(b.dataset.action);
