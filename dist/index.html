@@ -37,6 +37,15 @@ const key='niemeng-kingdom-v1';
 let state=fresh(),persistent=true;
 try{const saved=localStorage.getItem(key);if(saved)state=JSON.parse(saved)}catch{persistent=false}
 state.people.hero.mood=100;
+const priorRoyalWork=state.people.hero.job;
+state.labor??={morale:85,royalSite:catalog[state.tiles[priorRoyalWork]?.type]?.yield?priorRoyalWork:null,mode:'supervise'};
+state.people.hero.job=null;
+const pressureCost=12;
+const lowMorale=40;
+const moralePenalty=2;
+const relief=25;
+const royalYield={supervise:1,pressure:3};
+const adjustMorale=amount=>{state.labor.morale=Math.max(0,Math.min(100,state.labor.morale+amount))};
 state.people.advisor??={bond:0,mood:90,last:0,job:null};
 let selected=null,plan=null,group='生产',person='hero',message='从建造手册选择猫草农场，再点击空地。';
 const people={hero:{name:'国王聂萌',icon:'👸🏻',gift:'treat',line:'先让每家都有灯、有粮。国库的金子，花在臣民身上才有分量。'},advisor:{name:'宰相刘博文',icon:'📜',gift:'treat',line:'陛下尽管开口。粮仓、工坊和国库，臣都记着。陛下已经看出了方案的利弊，臣这就照您的吩咐办。'},rabbit:{name:'栗栗',icon:'🐰',gift:'grass',line:'我想沿着小路种满花，这样就不会迷路啦！'}};
@@ -48,7 +57,7 @@ const jobs=[{title:'播下第一颗种子',desc:'建造一座猫草农场。',do
 const expandCost={gold:60,wood:12};
 const counsel={
  supplies:{name:'整理国库',reward:{gold:18,wood:4},report:'臣已清点仓库，拨出一笔建造物资。'},
- festival:{name:'安抚民心',reward:{joy:4},report:'臣替陛下走了一趟溪谷，居民们安心多了。'}
+ festival:{name:'安抚民心',reward:{joy:4},report:'臣已听取各处工队的诉求，安排休息并送去了补给。'}
 };
 const workerBonus=id=>id==='advisor'?2:1;
 const newCastle=()=>({level:1,defenses:{1:{type:'wall',level:1},4:{type:'tower',level:1}},troops:{guard:3,scout:0},stars:0,raids:0,report:'',order:null,raidDay:0,threat:null});
@@ -234,6 +243,16 @@ const isReady=t=>planted(t)&&t.ready<=state.day;
 function save(){try{localStorage.setItem(key,JSON.stringify(state));persistent=true}catch{persistent=false}}
 function tell(text){message=text;save();render()}
 function button(label,action,disabled=false,primary=false){return '<button class="button '+(primary?'primary':'')+'" data-action="'+action+'" '+(disabled?'disabled':'')+'>'+label+'</button>'}
+function laborControls(index){
+ const {royalSite,mode,morale}=state.labor;
+ const active=royalSite===index;
+ const status=active?(mode==='pressure'?'聂萌正在此处加压劳动。':'聂萌正在亲自督工。'):'聂萌可以随时调来这里。王令同时只在一座设施生效。';
+ const penalty=morale<lowMorale?' 民心过低，本批首项产物 −'+moralePenalty+'。':'';
+ return '<div class="royal-judgment"><strong>👑 劳动指令</strong><p class="muted">'+status+penalty+'</p><div class="actions">'+
+ button('亲自督工 · 产量 +'+royalYield.supervise,'labor-supervise',active&&mode==='supervise')+
+ button('压迫劳动 · 产量 +'+royalYield.pressure+'／民心 −'+pressureCost,'labor-pressure',active&&mode==='pressure')+
+ (active?button('结束劳动指令','labor-end'):'')+'</div></div>';
+}
 function render(){
  renderCastle();
  $('resources').innerHTML=Object.keys(names).map(k=>'<span title="'+names[k]+'">'+icons[k]+' '+state.stock[k]+'</span>').join('');
@@ -257,14 +276,14 @@ function render(){
  }else if(def){
   let detail=def.yield?(isReady(t)?'产物可以收取。':planted(t)?'下次产出在第 '+t.ready+' 天。':'需要投入 '+format(def.input)+'。'):(t.type==='cottage'?'小屋提供 1 个居民名额。':t.type==='road'?'连接溪谷里的设施。':'相邻生产设施可额外产出 1 份首项产物。');
   const work=Object.entries(state.people).find(([,p])=>p.job===selected);
-  if(work)detail+=' '+people[work[0]].name+'在此'+(work[0]==='hero'?'督工':'协助生产')+'，每批首项产物 +'+workerBonus(work[0])+'。';
+  if(work)detail+=' '+people[work[0]].name+'在此协助生产，每批首项产物 +'+workerBonus(work[0])+'。';
   const crew=t.crew??0;
   if(def.yield)detail+=' 驻派奴仆 '+crew+'/'+maxCrew+' 人，每 '+crewSize+' 人使每批首项产物 +1。';
   const upgrade={gold:25*t.grade,ore:2*t.grade};
-  $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p><div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+button(work?'撤回 '+people[work[0]].name:person==='hero'?'国王督工':'委派 '+people[person].name,'assign')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!state.stock.diamonds):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>';
+  $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p><div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!state.stock.diamonds):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>'+(def.yield?laborControls(selected):'');
  }else{ $('inspect').innerHTML='<h3>'+(t?'🏰 王宫':'🧭 地块详情')+'</h3><p class="muted">'+(t?'聂萌的王座设在这里。<a href="#castle">前往王家城堡与聂萌商议</a>。建造金币费用减免 20%（向上取整）。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击东侧锁格查看拓地条件。')+'</p>'; }
  const p=state.people[person],who=people[person];
- $('residents').innerHTML='<h3>👑 王室与居民</h3><p class="muted">王室奴仆 '+royalRetinue+' 人 · '+idleRetinue()+' 人待命</p><div class="tabs">'+Object.keys(state.people).map(id=>button(people[id].name,'person-'+id,false,id===person)).join('')+'</div><div class="resident"><div class="portrait">'+who.icon+'</div><div><strong>'+who.name+'</strong>'+(person==='advisor'?'<p class="muted">忠诚 100% · 王国宰相</p>':'')+'<p class="muted">羁绊 Lv.'+(1+Math.floor(p.bond/4))+' · 心情 '+p.mood+(person==='hero'?' · 无限体力':' · 体力 '+(p.last===state.day?2:3)+'/3')+'</p></div></div>'+((p.bond>=4||person==='advisor'||person==='hero')?'<p class="muted">「'+who.line+'」</p>':'')+(person==='advisor'?'<p class="muted">'+(state.counselDay===state.day?'今日奏报已处理。':'每日可采纳一项奏报。')+'</p><div class="actions">'+Object.entries(counsel).map(([id,item])=>button(item.name+' · '+format(item.reward),'counsel-'+id,state.counselDay===state.day,true)).join('')+'</div>':'')+'<div class="actions">'+button('打招呼','greet',p.last===state.day,true)+button('送礼 · '+icons[who.gift]+names[who.gift],'gift',!state.stock[who.gift]||p.giftDay===state.day)+'</div>';
+ $('residents').innerHTML='<h3>👑 王室与居民</h3><p class="muted">王室奴仆 '+royalRetinue+' 人 · '+idleRetinue()+' 人待命</p><p class="muted"><strong>劳动民心 '+state.labor.morale+'/100</strong> · 低于 '+lowMorale+' 时每批首项产物 −'+moralePenalty+'</p><div class="tabs">'+Object.keys(state.people).map(id=>button(people[id].name,'person-'+id,false,id===person)).join('')+'</div><div class="resident"><div class="portrait">'+who.icon+'</div><div><strong>'+who.name+'</strong>'+(person==='advisor'?'<p class="muted">忠诚 100% · 王国宰相</p>':'')+'<p class="muted">羁绊 Lv.'+(1+Math.floor(p.bond/4))+' · 心情 '+p.mood+(person==='hero'?' · 无限体力':' · 体力 '+(p.last===state.day?2:3)+'/3')+'</p></div></div>'+((p.bond>=4||person==='advisor'||person==='hero')?'<p class="muted">「'+who.line+'」</p>':'')+(person==='advisor'?'<p class="muted">'+(state.counselDay===state.day?'今日奏报已处理。':'每日可采纳一项奏报。')+'</p><div class="actions">'+Object.entries(counsel).map(([id,item])=>button(item.name+' · '+format(item.reward)+(id==='festival'?' · 民心 +'+relief:''),'counsel-'+id,state.counselDay===state.day,true)).join('')+'</div>':'')+'<div class="actions">'+button('打招呼','greet',p.last===state.day,true)+button('送礼 · '+icons[who.gift]+names[who.gift],'gift',!state.stock[who.gift]||p.giftDay===state.day)+'</div>';
  $('tabs').innerHTML=['生产','居住','商业','装饰'].map(g=>button(g,'group-'+g,false,g===group)).join('')+(plan?button('取消建造','cancel'):'');
  $('choices').innerHTML=Object.entries(catalog).filter(([,d])=>d.group===group).map(([id,d])=>'<button class="choice" data-plan="'+id+'" aria-pressed="'+(id===plan)+'" '+(level()<d.level?'disabled':'')+'><i>'+d.icon+'</i><strong>'+d.name+'</strong><small>'+format(constructionCost(d))+'</small><small>'+(level()<d.level?'王国 Lv.'+d.level+' 解锁':d.yield?'产出 '+format(d.yield):'')+'</small></button>').join('');
 }
@@ -288,7 +307,13 @@ function act(a){
   const item=counsel[a.slice(8)];
   if(person==='advisor'&&item&&state.counselDay!==state.day){
    state.counselDay=state.day;add(item.reward);
-   tell('刘博文奏报：'+item.report+' 获得 '+format(item.reward)+'。');
+   const before=state.labor.morale;
+   if(a==='counsel-festival'){
+    adjustMorale(relief);
+    Object.values(state.people).forEach(resident=>{resident.mood=Math.min(100,resident.mood+10)});
+   }
+   const recovery=a==='counsel-festival'?' 劳动民心 +'+(state.labor.morale-before)+'，居民心情上升。':'';
+   tell('刘博文奏报：'+item.report+' 获得 '+format(item.reward)+'。'+recovery);
   }
   return
  }
@@ -305,6 +330,18 @@ function act(a){
  if(a==='remove'&&d?.group==='装饰'){delete state.tiles[selected];tell(d.name+'已移除。');return}
  if(!d?.yield)return;
  const crew=t.crew??0;
+ if(a.startsWith('labor-')){
+  if(a==='labor-end'&&state.labor.royalSite===selected){
+   state.labor.royalSite=null;
+   tell('聂萌结束了'+d.name+'的劳动指令。');
+  }
+  if(a==='labor-supervise'||a==='labor-pressure'){
+   const mode=a.slice(6);
+   Object.assign(state.labor,{royalSite:selected,mode});
+   tell('聂萌来到'+d.name+'，'+(mode==='pressure'?'要求加紧生产。指令持续期间，每收取一批都会降低民心。':'开始亲自督工。'));
+  }
+  return
+ }
  if(a==='send-crew'&&crew<maxCrew&&idleRetinue()>=crewSize){
   t.crew=crew+crewSize;
   tell(crewSize+' 名王室奴仆已派驻'+d.name+'。');return
@@ -317,18 +354,27 @@ function act(a){
  if(a==='speed'&&planted(t)&&!isReady(t)&&state.stock.diamonds){state.stock.diamonds--;t.ready=state.day;tell('制作完成，可以收取了。');return}
  if(a==='assign'){
   const worker=Object.values(state.people).find(r=>r.job===selected);
-  if(worker)worker.job=null;else p.job=selected;
-  tell(worker?'居民已撤回。':who.name+(person==='hero'?'亲自督工':'已开始工作')+'，首项产物 +'+workerBonus(person)+'。');return
+  if(worker)worker.job=null;
+  else if(person!=='hero')p.job=selected;
+  else return;
+  tell(worker?'居民已撤回。':who.name+'已开始工作，首项产物 +'+workerBonus(person)+'。');return
  }
  if(a==='upgrade'&&t.grade<3){const cost={gold:25*t.grade,ore:2*t.grade};if(can(cost)){add(cost,-1);t.grade++;tell(d.name+'升到了 '+t.grade+' 级。')}return}
  if(a==='harvest'&&isReady(t)){
   const adjacent=[selected-8,selected+8,...(selected%8?[selected-1]:[]),...(selected%8<7?[selected+1]:[])];
   const worker=Object.entries(state.people).find(([,resident])=>resident.job===selected);
   const bonus=Number(adjacent.some(i=>['flowers','fountain'].includes(state.tiles[i]?.type)))+(worker?workerBonus(worker[0]):0)+t.grade-1+crew/crewSize;
-  const output={...d.yield},first=Object.keys(output)[0];output[first]+=bonus;add(output);state.xp++;state.total.harvest++;
+  const {royalSite,mode,morale}=state.labor;
+  const royalBonus=royalSite===selected?royalYield[mode]:0;
+  const pressed=royalSite===selected&&mode==='pressure';
+  const penalty=morale<lowMorale?moralePenalty:0;
+  const output={...d.yield},first=Object.keys(output)[0];
+  output[first]=Math.max(1,output[first]+bonus+royalBonus-penalty);
+  add(output);state.xp++;state.total.harvest++;
+  if(pressed)adjustMorale(-pressureCost);
   state.weekHarvest??={};state.weekHarvest[week]=(state.weekHarvest[week]??0)+1;
   if(d.input)delete t.ready;else t.ready=state.day+1;
-  tell('收获 '+format(output)+'。');
+  tell('收获 '+format(output)+'。'+(pressed?' 劳动民心 '+morale+' → '+state.labor.morale+'。':''));
  }
 }
 document.addEventListener('click',e=>{
@@ -336,6 +382,7 @@ document.addEventListener('click',e=>{
  if(b.id==='sleep'){
   const defenseReport=resolveCastleDefense();
   state.day++;
+  adjustMorale(4);
   if(state.people.rabbit)state.people.rabbit.mood=Math.max(35,state.people.rabbit.mood-2);
   tell(defenseReport??'新的一天开始了，去看看有哪些产物可以收取。');return
  }
