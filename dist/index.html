@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>聂萌的快乐王国</title>
+<style>
+:root{font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:#283b2a;background:#f4f0e3;--green:#254b36;--cream:#fffcf0;--line:#ddd7bf}*{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer;color:inherit}button:focus-visible{outline:3px solid #a45122;outline-offset:2px}button:disabled{cursor:default;opacity:.56}header{background:var(--green);color:#fff8df;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;border-bottom:4px solid #d0a85e}h1,h2,h3,p{margin:0}h1{font-family:serif;font-size:26px;letter-spacing:.1em}.resources{display:flex;gap:8px;flex-wrap:wrap}.resources span{background:#ffffff18;padding:7px 11px;border-radius:20px;font-size:14px}main{max-width:1260px;margin:auto;padding:26px 24px}.heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:18px}.heading h2{font-family:serif;font-size:34px}.heading p,.muted{color:#5c6754;font-size:13px;margin-top:5px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px}.panel{background:var(--cream);border:1px solid var(--line);border-radius:18px;box-shadow:0 4px 0 #ded7be}.map-panel{overflow:hidden}.map-top{padding:13px 18px;display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:bold}.landscape{background:linear-gradient(145deg,#44674b,#6b8858);padding:18px;position:relative}.map{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;border:5px solid #39583c;border-radius:12px;overflow:hidden;background:#57794d}.tile{aspect-ratio:1.15;border:0;border-radius:3px;background:#abc77a;position:relative;min-width:0;padding:0;display:grid;place-items:center;box-shadow:inset 0 -4px #38553027;font-size:clamp(15px,3.1vw,38px)}.tile:nth-child(3n){background:#b3ce82}.tile:nth-child(4n){background:#9dbb70}.tile:hover{filter:brightness(1.13);z-index:1}.tile.selected{outline:3px solid #fff0af;z-index:2}.tile.locked{background:repeating-linear-gradient(135deg,#718b55 0 7px,#77925a 7px 14px);font-size:clamp(11px,2vw,21px)}.tile.water{background:repeating-linear-gradient(165deg,#75a7a0 0 13px,#80b4a9 13px 16px)}.tile.road{background:#d9bd82}.sprig{font-size:13px;color:#527243;opacity:.64}.ready{position:absolute;right:3px;top:3px;font-size:11px;background:#fff0a2;border-radius:10px;padding:2px 4px}.hint{padding:12px 17px;font-size:13px;min-height:43px}.side{display:grid;gap:15px;align-content:start}.card{padding:15px}.card h3{font-family:serif;font-size:19px;margin-bottom:8px}.quest{background:#f2e5bd}.button{border:1px solid #d8c99d;border-radius:9px;background:#f5e8bf;padding:8px 11px;font-weight:bold;font-size:13px}.primary{background:#326346;color:#fffbea;border-color:#326346}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.resident{display:flex;gap:10px;align-items:center;margin-top:8px}.portrait{font-size:29px;padding:6px;background:#eadcba;border-radius:12px}.catalog{margin-top:20px;padding:15px}.catalog-head{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:11px;flex-wrap:wrap}.tabs{display:flex;gap:6px;flex-wrap:wrap}.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(133px,1fr));gap:8px}.choice{display:grid;text-align:left;border:1px solid var(--line);background:#faf2d9;border-radius:11px;padding:10px;gap:4px}.choice[aria-pressed=true]{background:#dce8bb;border:2px solid #547744;padding:9px}.choice small{color:#5a644d}.choice i{font-style:normal;font-size:24px}.selected-name{font-weight:bold}.footer{margin:14px 0;font-size:12px;color:#5c6754}@media(max-width:850px){.layout{grid-template-columns:1fr}.side{grid-template-columns:repeat(auto-fit,minmax(235px,1fr))}}@media(max-width:490px){main{padding:15px 10px}.heading h2{font-size:26px}.landscape{padding:8px}.map{gap:2px}.resources span{padding:5px 8px}}
+</style></head><body>
+<header><h1>🌿 聂萌的快乐王国</h1><div id="resources" class="resources"></div></header>
+<main><div class="heading"><div><h2>苔芽溪谷</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
+<div class="layout"><section class="panel map-panel"><div class="map-top"><span>王国地图</span><span id="area"></span></div><div class="landscape"><div class="map" id="map" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
+<aside class="side"><section class="panel card quest" id="quest"></section><section class="panel card" id="inspect"></section><section class="panel card" id="residents"></section></aside></div>
+<section class="panel catalog"><div class="catalog-head"><h3>建造手册</h3><div class="tabs" id="tabs"></div></div><div class="choices" id="choices"></div></section>
+<p class="footer" id="save-note"></p></main>
+<script>
+const catalog={
+ farm:{name:'猫草农场',icon:'🌱',group:'生产',cost:{gold:25,wood:8},level:1,yield:{wood:9,grass:3}},
+ mine:{name:'石芽矿坑',icon:'⛏️',group:'生产',cost:{gold:35,wood:10},level:1,yield:{ore:5}},
+ bakery:{name:'甜品工坊',icon:'🧁',group:'生产',cost:{gold:45,wood:12,ore:3},level:2,input:{grass:2},yield:{treat:2}},
+ cottage:{name:'蘑菇小屋',icon:'🍄',group:'居住',cost:{gold:45,wood:16},level:2},
+ cafe:{name:'萌宠咖啡馆',icon:'☕',group:'商业',cost:{gold:65,wood:15,ore:5},level:3,input:{treat:1},yield:{gold:30,joy:5}},
+ flowers:{name:'野花花坛',icon:'🌷',group:'装饰',cost:{gold:12},level:1},
+ fountain:{name:'溪石喷泉',icon:'⛲',group:'装饰',cost:{gold:30,ore:6},level:1},
+ road:{name:'碎石小径',icon:'▫️',group:'装饰',cost:{gold:2},level:1}
+};
+const names={gold:'金币',wood:'木材',ore:'矿石',joy:'快乐值',stars:'萌力星',grass:'猫草',treat:'甜点',diamonds:'钻石'};
+const icons={gold:'🪙',wood:'🪵',ore:'🪨',joy:'💛',stars:'⭐',grass:'🌿',treat:'🧁',diamonds:'💎'};
+const fresh=()=>({day:1,energy:8,xp:0,expanded:false,tiles:{10:{type:'hall',grade:1},18:{type:'road',grade:1}},stock:{gold:115,wood:30,ore:0,joy:0,stars:0,grass:0,treat:0,diamonds:0},people:{hero:{bond:0,mood:75,last:0,job:null}},total:{built:0,harvest:0,greet:0},quest:0,daily:0,week:0,award:false});
+const key='niemeng-kingdom-v1';
+let state=fresh(),persistent=true;
+try{const saved=localStorage.getItem(key);if(saved)state=JSON.parse(saved)}catch{persistent=false}
+let selected=null,plan=null,group='生产',person='hero',message='从建造手册选择猫草农场，再点击空地。';
+const people={hero:{name:'聂萌',icon:'🧑🏻‍🌾',gift:'treat',line:'沿着溪走，就能听到种子破土的声音。'},rabbit:{name:'栗栗',icon:'🐰',gift:'grass',line:'我想沿着小路种满花，这样就不会迷路啦！'}};
+const jobs=[{title:'播下第一颗种子',desc:'建造一座猫草农场。',done:()=>Object.values(state.tiles).some(t=>t.type==='farm'),reward:{gold:20}},
+ {title:'溪谷的第一篮收成',desc:'结束今天，第二天收割猫草。',done:()=>state.total.harvest>=1,reward:{gold:25,wood:8}},
+ {title:'给栗栗留一扇窗',desc:'建造蘑菇小屋，邀请栗栗入住。',done:()=>!!state.people.rabbit,reward:{gold:25}},
+ {title:'把好心情分享出去',desc:'通过问候、送礼或经营取得 12 快乐值。',done:()=>state.stock.joy>=12||state.expanded,reward:{stars:1,gold:25}},
+ {title:'越过溪谷的边界',desc:'攒满 60 金币、12 木材和 12 快乐值，开放东侧花坡。',done:()=>state.expanded,reward:{diamonds:1}}];
+const expandCost={gold:60,wood:12};
+const $=id=>document.getElementById(id);
+const level=()=>state.xp>=5?3:state.xp>=2?2:1;
+const season=()=>['春','夏','秋','冬'][Math.floor((state.day-1)/7)%4];
+const format=items=>Object.entries(items).map(([k,v])=>icons[k]+v+' '+names[k]).join(' · ');
+const can=items=>Object.entries(items).every(([k,v])=>state.stock[k]>=v);
+const add=(items,m=1)=>Object.entries(items).forEach(([k,v])=>state.stock[k]+=v*m);
+const water=i=>[0,8,16,24,32,40,41,42].includes(i);
+const locked=i=>!state.expanded&&i%8>=6;
+const planted=t=>t?.ready!==undefined;
+const isReady=t=>planted(t)&&t.ready<=state.day;
+function save(){try{localStorage.setItem(key,JSON.stringify(state));persistent=true}catch{persistent=false}}
+function tell(text){message=text;save();render()}
+function button(label,action,disabled=false,primary=false){return '<button class="button '+(primary?'primary':'')+'" data-action="'+action+'" '+(disabled?'disabled':'')+'>'+label+'</button>'}
+function render(){
+ $('resources').innerHTML=Object.keys(names).map(k=>'<span title="'+names[k]+'">'+icons[k]+' '+state.stock[k]+'</span>').join('');
+ $('calendar').textContent=season()+'季 · 第 '+state.day+' 天 · 王国 Lv.'+level()+' · 体力 '+state.energy+'/8';
+ $('area').textContent=state.expanded?'东侧花坡已开放':'东侧花坡未开放';
+ $('hint').textContent=message;
+ $('save-note').textContent=persistent?'进度自动保存在当前浏览器。':'浏览器存储不可用，本次进度保存在当前页面。';
+ $('sleep').textContent='☀️ 结束第 '+state.day+' 天';
+ let cells='';
+ for(let i=0;i<48;i++){
+  const t=state.tiles[i],def=t&&catalog[t.type],closed=locked(i),wet=water(i),name=t?(def?.name??'王国事务所'):closed?'待开放花坡':wet?'溪水':'空地';
+  const content=closed?'🔒':t?(def?.icon??'🏡'):wet?'':i%7===0?'<span class="sprig">✿</span>':'<span class="sprig">·</span>';
+  cells+='<button class="tile '+(closed?'locked ':wet?'water ':t?.type==='road'?'road ':'')+(selected===i?'selected':'')+'" data-tile="'+i+'" aria-label="'+name+'，第'+(Math.floor(i/8)+1)+'行第'+(i%8+1)+'列'+(isReady(t)?'，可收取':'')+'">'+content+(isReady(t)?'<span class="ready">收</span>':'')+'</button>';
+ }
+ $('map').innerHTML=cells;
+ const q=jobs[state.quest], week=Math.floor((state.day-1)/7)+1;
+ $('quest').innerHTML='<h3>📖 溪谷手记</h3>'+(q?'<strong>'+q.title+'</strong><p class="muted">'+q.desc+'</p><div class="actions">'+button('领取 '+format(q.reward),'quest',!q.done(),true)+'</div>':'<p>溪谷篇已完成。</p>')+'<div class="actions">'+button('日常 · 问候居民','daily',state.daily===state.day||!Object.values(state.people).some(p=>p.last===state.day))+button('每周 · 收获 3 次','weekly',state.week===week||(state.weekHarvest?.[week]??0)<3)+button('成就 · 建造 5 座','award',state.award||state.total.built<5)+'</div>';
+ const t=state.tiles[selected],def=t&&catalog[t.type];
+ if(selected!==null&&locked(selected)){
+  $('inspect').innerHTML='<h3>🌼 东侧花坡</h3><p class="muted">'+format(expandCost)+' · 需 12 快乐值</p><div class="actions">'+button('开放花坡','expand',!can(expandCost)||state.stock.joy<12,true)+'</div>';
+ }else if(def){
+  let detail=def.yield?(isReady(t)?'产物可以收取。':planted(t)?'下次产出在第 '+t.ready+' 天。':'需要投入 '+format(def.input)+'。'):(t.type==='cottage'?'小屋提供 1 个居民名额。':t.type==='road'?'连接溪谷里的设施。':'相邻生产设施可额外产出 1 份首项产物。');
+  const work=Object.entries(state.people).find(([,p])=>p.job===selected);
+  if(work)detail+=' '+people[work[0]].name+'在这里工作。';
+  const upgrade={gold:25*t.grade,ore:2*t.grade};
+  $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p><div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',!state.energy,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!state.stock.diamonds):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>';
+ }else{ $('inspect').innerHTML='<h3>'+(t?'🏡 王国事务所':'🧭 地块详情')+'</h3><p class="muted">'+(t?'聂萌从这里开始建设溪谷。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击东侧锁格查看拓地条件。')+'</p>'; }
+ const p=state.people[person],who=people[person];
+ $('residents').innerHTML='<h3>🐾 王国居民</h3><div class="tabs">'+Object.keys(state.people).map(id=>button(people[id].name,'person-'+id,false,id===person)).join('')+'</div><div class="resident"><div class="portrait">'+who.icon+'</div><div><strong>'+who.name+'</strong><p class="muted">羁绊 Lv.'+(1+Math.floor(p.bond/4))+' · 心情 '+p.mood+' · 体力 '+(p.last===state.day?2:3)+'/3</p></div></div>'+(p.bond>=4?'<p class="muted">「'+who.line+'」</p>':'')+'<div class="actions">'+button('打招呼','greet',p.last===state.day,true)+button('送礼 · '+icons[who.gift]+names[who.gift],'gift',!state.stock[who.gift]||p.giftDay===state.day)+'</div>';
+ $('tabs').innerHTML=['生产','居住','商业','装饰'].map(g=>button(g,'group-'+g,false,g===group)).join('')+(plan?button('取消建造','cancel'):'');
+ $('choices').innerHTML=Object.entries(catalog).filter(([,d])=>d.group===group).map(([id,d])=>'<button class="choice" data-plan="'+id+'" aria-pressed="'+(id===plan)+'" '+(level()<d.level?'disabled':'')+'><i>'+d.icon+'</i><strong>'+d.name+'</strong><small>'+format(d.cost)+'</small><small>'+(level()<d.level?'王国 Lv.'+d.level+' 解锁':d.yield?'产出 '+format(d.yield):'')+'</small></button>').join('');
+}
+function tileClick(i){
+ selected=i;
+ if(!plan){message='查看右侧地块详情。';render();return}
+ const d=catalog[plan];
+ if(locked(i)||water(i)||state.tiles[i]){tell('这里无法建造，请选择一格空草地。');return}
+ if(!can(d.cost)||state.energy<1){tell('资源或体力不足，无法建造。');return}
+ add(d.cost,-1);state.energy--;state.total.built+=plan==='road'?0:1;if(plan!=='road')state.xp++;
+ state.tiles[i]={type:plan,grade:1,...(d.yield&&!d.input?{ready:state.day+1}:{})};
+ plan=null;tell(d.name+'建成了！');
+}
+function act(a){
+ const t=state.tiles[selected],d=t&&catalog[t.type],p=state.people[person],who=people[person],q=jobs[state.quest];
+ if(a.startsWith('group-')){group=a.slice(6);plan=null;render();return}
+ if(a.startsWith('person-')){person=a.slice(7);render();return}
+ if(a==='cancel'){plan=null;tell('建造已取消。');return}
+ if(a==='quest'&&q?.done()){add(q.reward);state.quest++;state.xp++;tell('已领取手记奖励。');return}
+ const week=Math.floor((state.day-1)/7)+1;
+ if(a==='daily'&&state.daily!==state.day&&Object.values(state.people).some(r=>r.last===state.day)){state.daily=state.day;add({gold:12});state.xp++;tell('日常奖励到账：12 金币。');return}
+ if(a==='weekly'&&state.week!==week&&(state.weekHarvest?.[week]??0)>=3){state.week=week;add({gold:35,diamonds:1});state.xp++;tell('每周奖励到账：35 金币、1 钻石。');return}
+ if(a==='award'&&!state.award&&state.total.built>=5){state.award=true;add({diamonds:2});tell('达成建设成就，获得 2 钻石。');return}
+ if(a==='expand'&&!state.expanded&&state.stock.joy>=12&&can(expandCost)){add(expandCost,-1);state.expanded=true;state.xp++;tell('东侧花坡开放了！');return}
+ if(a==='invite'&&t?.type==='cottage'&&!state.people.rabbit){state.people.rabbit={bond:0,mood:75,last:0,job:null};person='rabbit';state.xp++;tell('栗栗搬进了蘑菇小屋。');return}
+ if(a==='greet'&&p.last!==state.day){p.last=state.day;p.bond++;p.mood=Math.min(100,p.mood+5);add({joy:3});if(p.bond%4===0)add({stars:1});tell(who.name+'向你打招呼，快乐值 +3。');return}
+ if(a==='gift'&&state.stock[who.gift]&&p.giftDay!==state.day){p.giftDay=state.day;state.stock[who.gift]--;const before=Math.floor(p.bond/4);p.bond+=3;p.mood=Math.min(100,p.mood+12);add({joy:4,stars:Math.floor(p.bond/4)-before});tell(who.name+'很喜欢这份礼物，快乐值 +4。');return}
+ if(a==='remove'&&d?.group==='装饰'){delete state.tiles[selected];tell(d.name+'已移除。');return}
+ if(!d?.yield)return;
+ if(a==='start'&&d.input&&!planted(t)&&can(d.input)){add(d.input,-1);t.ready=state.day+1;tell(d.name+'开始制作，明天可收取。');return}
+ if(a==='speed'&&planted(t)&&!isReady(t)&&state.stock.diamonds){state.stock.diamonds--;t.ready=state.day;tell('制作完成，可以收取了。');return}
+ if(a==='assign'){
+  const worker=Object.values(state.people).find(r=>r.job===selected);
+  if(worker)worker.job=null;else p.job=selected;
+  tell(worker?'居民已撤回。':who.name+'已开始工作，首项产物 +1。');return
+ }
+ if(a==='upgrade'&&t.grade<3){const cost={gold:25*t.grade,ore:2*t.grade};if(can(cost)){add(cost,-1);t.grade++;tell(d.name+'升到了 '+t.grade+' 级。')}return}
+ if(a==='harvest'&&isReady(t)&&state.energy){
+  const adjacent=[selected-8,selected+8,...(selected%8?[selected-1]:[]),...(selected%8<7?[selected+1]:[])];
+  const bonus=Number(adjacent.some(i=>['flowers','fountain'].includes(state.tiles[i]?.type)))+Number(Object.values(state.people).some(r=>r.job===selected))+t.grade-1;
+  const output={...d.yield},first=Object.keys(output)[0];output[first]+=bonus;add(output);state.energy--;state.xp++;state.total.harvest++;
+  state.weekHarvest??={};state.weekHarvest[week]=(state.weekHarvest[week]??0)+1;
+  if(d.input)delete t.ready;else t.ready=state.day+1;
+  tell('收获 '+format(output)+'。');
+ }
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b||b.disabled)return;
+ if(b.id==='sleep'){state.day++;state.energy=8;Object.values(state.people).forEach(p=>p.mood=Math.max(35,p.mood-2));tell('新的一天开始了，体力已恢复。');return}
+ if(b.dataset.tile!==undefined){tileClick(Number(b.dataset.tile));return}
+ if(b.dataset.plan){plan=b.dataset.plan;selected=null;const d=catalog[plan];tell('准备建造'+d.name+'，请选择空地。');return}
+ if(b.dataset.action)act(b.dataset.action);
+});
+render();
+</script></body></html>
