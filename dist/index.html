@@ -146,7 +146,7 @@ const crewSize=4;
 const maxCrew=8;
 const idleRetinue=()=>royalRetinue-Object.values(state.tiles).reduce((sum,t)=>sum+(t.crew??0),0);
 const constructionCost=def=>({...def.cost,gold:Math.ceil(def.cost.gold*0.8)});
-const fresh=()=>({day:1,xp:0,expanded:false,tiles:{10:{type:'hall',grade:1},18:{type:'road',grade:1}},stock:{gold:115,wood:30,ore:0,joy:0,stars:0,grass:0,treat:0,diamonds:0},people:{hero:{bond:0,mood:100,last:0,job:null}},total:{built:0,harvest:0,greet:0},quest:0,daily:0,week:0,award:false});
+const fresh=()=>({day:1,xp:0,expanded:false,tiles:{18:{type:'road',grade:1}},stock:{gold:115,wood:30,ore:0,joy:0,stars:0,grass:0,treat:0,diamonds:0},people:{hero:{bond:0,mood:100,last:0,job:null}},total:{built:0,harvest:0,greet:0},quest:0,daily:0,week:0,award:false});
 const key='niemeng-kingdom-v1';
 const fieldActivities={
  wood:{label:'拾取木材',reward:{wood:10}},
@@ -290,6 +290,8 @@ for(let r=-radius;r<=radius;r++){
  }
 }
 const citadelTile=36;
+const mansionName='聂萌的粉色梦想豪宅';
+const mansionEntrance=34;
 const citadelGround=new Set([27,28,29,35,36,37,43,44,45]);
 function installCitadel(){
  if(state.citadelVersion===1)return false;
@@ -529,7 +531,7 @@ function renderClimate(){
  const tile=island[selected]??island[10];
  const current=weatherFor(tile.biome);
  $('climate-panel').innerHTML='<div class="climate-top"><strong>'+climateProfiles[tile.biome].icon+' '+climateProfiles[tile.biome].name+' · '+current+'</strong><span id="weather-timer"></span><div class="actions">'+
- button(isExploring()?'全岛视图':'跟随角色','toggle-explore',false,isExploring())+button('回到王宫','map-center')+(typeof $('map-panel').classList!=='undefined'&&$('map-panel').classList.contains('map-overlay')
+ button(isExploring()?'全岛视图':'跟随角色','toggle-explore',false,isExploring())+button('回到豪宅','map-center')+(typeof $('map-panel').classList!=='undefined'&&$('map-panel').classList.contains('map-overlay')
   ?button('退出全屏','close-map-overlay')
   :button(document.fullscreenElement?'退出全屏':'全屏看地图','map-fullscreen'))+'</div></div>'+
  '<div class="climate-legend" aria-label="定位气候区域">'+Object.entries(climateProfiles).map(([id,c])=>button(c.icon+' '+c.name,'climate-focus-'+id,false,tile.biome===id)).join('')+'</div>';
@@ -716,7 +718,7 @@ function render(){
  for(const hex of island){
   const {id:i,q,r,biome}=hex;
   const t=state.tiles[i],def=t&&catalog[t.type],closed=locked(i),wet=water(i);
-  const name=citadelGround.has(i)?'王家城堡':t?(def?.name??'王宫'):closed?'待开放'+expansionAt(i).title:wet?'水域':climateProfiles[biome].name+'空地';
+  const name=citadelGround.has(i)?mansionName:t?(def?.name??'建筑'):closed?'待开放'+expansionAt(i).title:wet?'水域':climateProfiles[biome].name+'空地';
   const content=i===citadelTile?pixelSprite('citadel'):closed?(i%5===0?pixelSprite('lock'):''):t?pixelSprite(t.type):'';
   const terrain=wet?'water water-'+(i>=originalTiles?32:i):'terrain-'+((i*7+Math.floor(i/8))%4);
   const weather=weatherFor(biome);
@@ -745,7 +747,11 @@ function render(){
   if(def.yield)detail+=' 驻派奴仆 '+crew+'/'+maxCrew+' 人，每 '+crewSize+' 人使每批首项产物 +1。';
   const upgrade={gold:25*t.grade,ore:2*t.grade};
   $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p>'+(def.yield?workProgress(t):'')+'<div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!can({diamonds:1})):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+(movingBuilding===selected?button('取消移动','building-cancel'):(demolishingBuilding===selected?button('确认拆除','building-confirm-remove',false,true)+button('取消','building-cancel'):button('移动建筑','building-move')+button('拆除建筑','building-remove')))+'</div>'+(def.yield?laborControls(selected):'')+(t.type==='shop'?'<div class="royal-judgment"><strong>商店货架</strong><div class="actions">'+Object.entries(shopGoods).map(([id,item])=>button('买 '+item.amount+names[id]+' · '+item.price+' 金币','shop-buy-'+id,!can({gold:item.price}))).join('')+'</div></div>':'');
- }else{ $('inspect').innerHTML='<h3>'+(t?'🏰 王宫 · 粉色梦想豪宅':'🧭 地块详情')+'</h3><p class="muted">'+(t?'粉色露台和泳池环绕着聂萌的王座厅。<a href="#throne">前往王座厅与聂萌商议</a>。建造金币费用减免 20%（向上取整）。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击地图上的锁格查看拓地条件。')+'</p>'; }
+ }else if(citadelGround.has(selected)){
+  $('inspect').innerHTML='<h3>'+mansionName+'</h3><p class="muted"><a href="#throne">进入王座厅</a></p>';
+ }else{
+  $('inspect').innerHTML='<h3>🧭 地块详情</h3><p class="muted">'+(selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击地图上的锁格查看拓地条件。')+'</p>';
+ }
  const inspect=$('inspect');
  const openDetails=(workspace==='map'||workspace==='build')&&selected!==null;
  inspect.className='panel card'+(openDetails?' map-detail-drawer':'');
@@ -859,10 +865,10 @@ function act(a){
  }
  if(a==='map-center'){
   if(isExploring()){
-   const id=walkingActor(), route=actorPath(actorPosition(id),10);
+   const id=walkingActor(), route=actorPath(actorPosition(id),mansionEntrance);
    if(route.length)actorRoutes[id]=route;
    renderActorToolbar();
-  }else{selected=10;render();focusHex(10);}
+  }else{selected=citadelTile;render();focusHex(citadelTile);}
   return;
  }
  if(a==='map-fullscreen'){
@@ -962,7 +968,7 @@ function act(a){
  }
  if(a==='recall-crew'&&crew>=crewSize){
   t.crew=crew-crewSize;
-  tell(crewSize+' 名王室奴仆已返回王宫。');return
+  tell(crewSize+' 名王室奴仆已返回梦想豪宅。');return
  }
  if(a==='start'&&d.input&&!planted(t)&&can(d.input)){add(d.input,-1);startBatch(t);tell(d.name+'开始制作，劳动进度已开始。');return}
  if(a==='speed'&&planted(t)&&!isReady(t)&&can({diamonds:1})){add({diamonds:1},-1);t.ready=state.day;tell('制作完成，可以收取了。');return}
@@ -1014,7 +1020,9 @@ for(const t of Object.values(state.tiles)){
   t.batchStart=Date.now();batchesMigrated=true;
  }
 }
-if(installCitadel()||batchesMigrated||newClimate||newClock)save();
+const removedOldPalace=state.tiles[10]?.type==='hall';
+if(removedOldPalace)delete state.tiles[10];
+if(installCitadel()||removedOldPalace||batchesMigrated||newClimate||newClock)save();
 if(typeof location!=='undefined'){
  exploreMode=true;
  document.addEventListener('fullscreenchange',()=>{renderClimate();focusCamera();});
