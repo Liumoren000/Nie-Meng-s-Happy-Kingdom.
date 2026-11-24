@@ -97,7 +97,7 @@ main{max-width:1580px}.layout:not(.build-layout){display:block}.layout:not(.buil
 .map-panel.walking-map:fullscreen .map#land-grid,.map-panel.walking-map.map-overlay .map#land-grid{width:max(100%,1600px)}
 @media(prefers-reduced-motion:reduce){.walking-map .map#land-grid{transition:none}}
 
-.stage-hud{display:none}.button kbd{padding:1px 4px;background:#183832;border-radius:2px;color:#fff4cc}.map#land-grid .citadel-tile{z-index:3}.map#land-grid .citadel-tile .pixel-citadel{inset:-100%;z-index:1;background-size:100% 100%;background-repeat:no-repeat}.map#land-grid .citadel-tile:after{z-index:2}.map#land-grid .citadel-tile:hover{filter:brightness(1.06)}
+.stage-hud{display:none}.button kbd{padding:1px 4px;background:#183832;border-radius:2px;color:#fff4cc}.map#land-grid .citadel-tile{z-index:3}.map#land-grid .citadel-tile .citadel-size{position:absolute;inset:-100%;z-index:1;pointer-events:none}.map#land-grid .citadel-tile .citadel-size .pixel-sprite{inset:0}.map#land-grid .citadel-tile:after{z-index:2}.map#land-grid .citadel-tile:hover{filter:brightness(1.06)}
 body.game-stage{overflow:hidden;background:#2b483d}.game-stage>header,.game-stage main>.heading,.game-stage .realm-nav,.game-stage .footer,.game-stage .map-top,.game-stage #land-workspace>.side:not(:has(.map-detail-drawer)){display:none}.game-stage main{padding:0;max-width:none}.game-stage #land-workspace{display:block}.game-stage .map-panel{border:0;border-radius:0;box-shadow:none;height:100dvh;background:#2c657d;position:relative;overflow:hidden}.game-stage .map-panel .island-view{height:100%;max-height:none}.game-stage #land-workspace>.side{margin:0}.game-stage .side>*:not(.map-detail-drawer){display:none}.game-stage .map-panel .hint{position:absolute;bottom:68px;left:50%;transform:translateX(-50%);min-height:0;width:max-content;max-width:84%;padding:5px 10px;border-radius:4px;background:#213830c9;color:#fff2c7;pointer-events:none;font-size:12px}.game-stage .map-panel>.map-supplies,.game-stage .map-panel>.climate-panel,.game-stage .map-panel>.actor-toolbar,.game-stage .map-panel:not(.stage-toast) .hint{display:none}
 .game-stage .stage-hud{display:block;position:absolute;inset:0;pointer-events:none;z-index:6}.stage-top,.stage-hotbar,.stage-menu,.stage-dpad{pointer-events:auto;color:#fff5d2}.stage-top{display:flex;justify-content:space-between;align-items:start;padding:12px}.stage-date,.stage-hotbar,.stage-menu,.stage-dpad{background:#263b30ee;border:2px solid #b49358;box-shadow:0 3px #203429}.stage-date{padding:6px 11px;border-radius:3px}.stage-date small{display:block;color:#eddea6}.stage-hotbar{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:4px;padding:5px;border-radius:5px;white-space:nowrap}.stage-hotbar .button,.stage-dpad .button,.stage-menu .button{color:#263b2a}.stage-hotbar a,.stage-menu a{text-decoration:none}.stage-menu{position:absolute;right:12px;top:60px;width:min(380px,calc(100vw - 24px));padding:14px;border-radius:5px}.stage-menu h3{margin-bottom:8px}.stage-wallet{display:flex;gap:6px;flex-wrap:wrap}.stage-wallet span{padding:3px 5px;background:#ffffff12;border-radius:3px}.stage-dpad{display:none}@media(pointer:coarse){.stage-dpad{display:grid;position:absolute;bottom:66px;left:10px;grid-template-columns:repeat(2,38px);gap:2px;padding:4px}.stage-dpad .button{padding:3px}.game-stage .map-panel .hint{bottom:119px}}
 @media(max-width:850px){.stage-hotbar .button{padding:6px 8px}}
@@ -110,6 +110,40 @@ body.game-stage{overflow:hidden;background:#2b483d}.game-stage>header,.game-stag
 .unified-shell .map-detail-drawer{z-index:10;background:#f8ebc8;border:2px solid #896a42;bottom:69px}.unified-shell[data-workspace=build] .map-detail-drawer{right:auto;left:14px}.unified-shell .map-panel:not(.walking-map) .island-view{display:grid;place-items:center;container-type:size}.unified-shell .map-panel:not(.walking-map) #land-grid{width:min(100cqw,100cqh)}
 .unified-shell .map-panel .island-view:after{content:'';position:absolute;pointer-events:none;inset:0;z-index:5;transition:background 1.4s linear}.unified-shell .map-panel[data-light="0"] .island-view:after{background:#eab66d12}.unified-shell .map-panel[data-light="1"] .island-view:after{background:transparent}.unified-shell .map-panel[data-light="2"] .island-view:after{background:#b8513438}.unified-shell .map-panel[data-light="3"] .island-view:after{background:#16244e6e}
 @media(max-width:680px){.unified-shell #catalog-panel:not([hidden]){top:66px;max-height:36dvh;width:min(300px,calc(100vw - 28px))}.unified-shell[data-workspace=build] .map-detail-drawer{left:8px}.unified-shell #throne-workspace{padding:10px}}
+
+.walking-map .island-view,.walking-map .island-view .island-tile{cursor:grab}.walking-map .island-view.map-dragging,.walking-map .island-view.map-dragging *{cursor:grabbing!important}.walking-map .island-view.map-dragging #land-grid{transition:none;user-select:none}.tier-preview{display:flex;gap:6px;margin:8px 0}.tier-sample{position:relative;width:62px;height:68px;background:#dfd1a5;border:1px solid #a48b55;border-radius:4px;text-align:center}.tier-sample .pixel-sprite{inset:3px 6px 16px}.tier-sample span:last-child{position:absolute;bottom:2px;left:0;right:0;font-size:11px}.tier-current{outline:2px solid #567b4a;background:#dbe6ad}
+.map#land-grid .island-tile.weather-cloud:after{background:#3849651d}.map#land-grid .island-tile.weather-fog:after{background:linear-gradient(4deg,#e6efea77,#c1d6d329,transparent)}.map#land-grid .island-tile.weather-wind:after{background:repeating-linear-gradient(168deg,transparent 0 14px,#efdcb956 15px 16px,transparent 17px 29px);background-position:0 0;animation:windAcross 2.8s linear infinite}.map#land-grid .island-tile.weather-heat:after{background:linear-gradient(#efa8534b,#edb55a0a);animation:heatGlow 4s ease-in-out infinite alternate}.map#land-grid .island-tile.weather-dust:after{background:repeating-linear-gradient(170deg,#c6975938 0 12px,#e7b67833 13px 15px,transparent 16px 31px);animation:windAcross 3.3s linear infinite}.map#land-grid .island-tile.weather-storm:after{background:repeating-linear-gradient(123deg,#27385c33 0 10px,#c5deed83 11px 12px,#27385c33 13px 19px);background-size:38px 38px;animation:weatherFall 1s linear infinite,stormGlow 8s linear infinite}
+@keyframes windAcross{to{background-position:132px 0}}@keyframes stormGlow{0%,92%,100%{opacity:.68}94%{opacity:.94}}@keyframes heatGlow{from{opacity:.4}to{opacity:.9}}
+.pixel-farm-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAApElEQVR4nGNgGAWjYBSMglGABwRMjv4PwoTEyBFHAV/P9fwH4cnJTmDctTMcjvGJkSMOswurA+5vq6Q5xuoAZBdOTnYBY/N0Hzgbnxjp4gi7sDpgW00wGIM0w9j4xEgVJ+gAZNfCEhAhMdLEiXAAagJywSlGjjjRITBgaWDAHUCvREgwG9I6EeJ1AD0S4YAXRIPXAYMgEdIHM2ADA2r5KBgFAwUA6elRxPxRc0MAAAAASUVORK5CYII=)}
+.pixel-farm-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA30lEQVR4nGNgGAWjYBTgAQGTo/9TgoemA8zTff7TCg8NByADbEGJK3hJFUcBX8/1/AfhyclOYNy1MxyO8YmRIw6zC6sD7m+rpDnG6gBkF05OdgFjUJzB2PjESBdH2IXVAdtqgsEYpBnGxidGqjhBByC7FpaACImRJk6EA0AJ5/2hdDCGaUROVMhyqInNBS6HLo4sR1QIoDsAOU7R5ZDjGlkOPQ2Q5IBhnwgJZkNaJ0K8DsCWgLCJkSNOdAjQOhEOXgcMgkRIH8yADaArgtVc1MAELccGqOkAoi0dBSMOAAB8JmDIZQBXrAAAAABJRU5ErkJggg==)}
+.pixel-mine-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAsElEQVR4nGNgGAWjYBSMAhJBWFT6f2IwzR3Q2taDgWnuCGTDsTkAm2Poavm6javhmOqOIMcBVHMEKUFP1ehAT1Rf768gGxPtCGxZCuYTShxAdEhgC+r72yrheHKyExibOtsRhZH1EuWIAXUAroQ2rBwAc8SAOwDDEciWIxcoIDyyHADCtHIAUbUlyEJ0RwwbB2C1EFduQHYQJZhoByS2uP+HYZAD8PEpxUSHxCgYEQAA3cg3YelMGu0AAAAASUVORK5CYII=)}
+.pixel-mine-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA4ElEQVR4nGNgGAWjYBSMAhJBWFT6f2IwzR3Q2taDgdEd8fX+Cuo6BNlgbA5Axu8PQdSBaKpajmwwuqXrNq6G4wF3AIgPUkeVNIEcrzCDCUUBtrRBkcWwuCcXE+0IbFkK5hNKHEB0SGDLZve3VcLx5GQnMDZ1tiMKI+slyhHY4pqaDoBFB0HLkVM7tRxAMGsOKgfAggtkGbUcANKHM0cgWw4rTGCWUdMBIDy4HQDCA+IAGABZjOwIEKaWA4hqM9DSAVgtxJUbkB1ECSbaAYkt7v9hGOQAfHxKMdEhMQpGBAAA5CJRiRbXwXwAAAAASUVORK5CYII=)}
+.pixel-bakery-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA8ElEQVR4nGNgGAWjYDiCyclO/2GY6oaX2jv/x4dp6gCYJasDfbFimDxNHEDIcmRHUN0BxFoOw1R1ALrl9ysScGKaOYBYn2NzACxh0s1yqjmAXMtx5QyyLccX58SkB5IdQS2fkxUShEq5r/dXEI0JlZYkOQAWrDDDSeGT5ABcjqCmA4hKBzAAykakWojOf763mfwCCaQRZEBEQiEKhhmKjkHi6Oqp5oD3h9LBGNlQ5KBFdwC62qHpgK6d4f9hGFuw4nMACCPrJzsE0OMXhvE5AFkNRbXigDkgscX9PwhjS+nkYpiZJDmAFnhoOGAU0BMAAEPdPXx3rsJUAAAAAElFTkSuQmCC)}
+.pixel-bakery-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA+0lEQVR4nGNgGAWjYDiCyclO/2GY6oaX2jv/x4dp5oD3h9L/k4qp6gCYD1cH+uLFIDVUDwFiLYdhqjoA3fL7FQk4MU0cQE7cI2NYwiTb98QGO64oINsB5FqOLVGS7Ahi45yY9ECyI6jlc7JCglAp9/X+CqIxodKSJAfAghVmOCl8khyAyxHUdABR6QAGQNmIVAvR+c/3NpNfIIE0ggyISChEwTBD0TFIHF091RwAK9mQDUUOWnQHoKsdOg6AWQRid+0M/w/D2IIVnwNAGFk/utlEOQBb/MIwPgcgq0GuFUlyACmFDrF4aDgABBJb3P/TChO0fFA4YBTQEwAAO865OYFn2NkAAAAASUVORK5CYII=)}
+.pixel-cottage-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAtklEQVR4nGNgGAWjYCiBUnvn/8Rgmlp8vyKBIKaaQ0i1mKqOINbir/dXwDFVHUKsrwk5gCxHkBvsVIkSWlhOsgOobTnRjsDme2LimJS0gdMRuIJ+wB1At2ggxgHIviKE8VmOMx0QW9ZTigkmwgFzACEwOdmJ6CgAqSXbImIdAOIj41EHUN0BXTvD/8MwOQ5A10+Wj2GYHAeg6x/aDkhscccwlBRMlgNAAGQxpZhsyweFA0YBrQEApUWz2eJ5taoAAAAASUVORK5CYII=)}
+.pixel-cottage-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAyElEQVR4nGNgGAWjYCiBUnvn/8Rgmlp8vyKBIKaaQ5Atfn8onWRMkSOI9fHX+yvgmKqhQWxwE3IAWY4gJb6JxUQ7At1ycuIeGZPlAGr6nKRQwBb0xMQxKWkDpyNwxfuAO4Bu0UCMA5B9RQjjsxxnOiC2rKcUE0yEA+YAQmByshPRUQBSS7ZFxDoAxEfGow6gigNgZTiI3bUz/D8Mk+MAdP3IZhPlAGTDyXEAun6SHEBKoUMsHhoOQAeJLe7/KcUkWTjoHDAKaA0ASQgpxGmNsmYAAAAASUVORK5CYII=)}
+.pixel-cafe-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA8ElEQVR4nGNgGAWjYDiCyclO/2GY6oaX2jv/x4dp6gCYJVPKFmHFMHmaOICQ5ciOoLoDiLUchqnqAHTL71ck4MQ0cwCxPsfmAFjCpJvlVHMAuZbjyhlkW44vzolJDyQ7glo+JyskCJVyX++vIBoTKi1JcgDMFzDDSeGT5ABcjqCmA4hKBzAAykakWojOf763mfwCCaQRZEBEQiEKhhmKjkHi6Oqp5oD3h9LBGNlQ5KBFdwC62qHpgK6d4f9hGFuw4nMACCPrJzsE0OMXhvE5AFkNRbXigDkgscX9PwhjS+nkYpiZJDmAFnhoOGAU0BMAAJEtYZSy3uhXAAAAAElFTkSuQmCC)}
+.pixel-cafe-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA+0lEQVR4nGNgGAWjYDiCyclO/2GY6oaX2jv/x4dp5oD3h9L/k4qp6gCYD6eULcKLQWqoHgLEWg7DVHUAuuX3KxJwYpo4gJy4R8awhEm274kNdlxRQLYDyLUcW6Ik2RHExjkx6YFkR1DL52SFBKFS7uv9FURjQqUlSQ6A+QJmOCl8khyAyxHUdABR6QAGQNmIVAvR+c/3NpNfIIE0ggyISChEwTBD0TFIHF091RwAK9mQDUUOWnQHoKsdOg6AWQRid+0M/w/D2IIVnwNAGFk/utlEOQBb/MIwPgcgq0GuFUlyACmFDrF4aDgABBJb3P/TChO0fFA4YBTQEwAA4K3WW962j/IAAAAASUVORK5CYII=)}
+.pixel-shop-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA5klEQVR4nGNgGAWjYBSQCErtnf/jw3SxPGByNFZMU0cQspymjiDWcpo4At3y+xUJODFNHEGKz6keEpRYTrEDKLWcIkcQG+c0SQ8ghV/vr4BrBrGpySdoOT4HwNjEYFwOwBsShBxADT7BqCBU1lOKiUoHMDA52YmkYMeGn+9t/g8yhySLkR0AMiAioRAFwwxFxyBxdPVUc8D7Q+lgjGwoctCiOwBdLdkOgFkMY9PVAV07w//DMMgQ9GDF5wAQRtZPdghgi2NCDkBWA8NDywGJLe7/QRhbSicXw8wkyQG0wEPDAaOAngAAJA4r/8abAdIAAAAASUVORK5CYII=)}
+.pixel-shop-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA8UlEQVR4nGNgGAWjYBSQCErtnf/jwzSz+P2h9P+kYqo6AObDgMnReDFNQoJYy2niCHTL71ck4MQ0cQQ5cY+MKXIEKcFO9aig1HKKHEFsnNMkPYAUfr2/Aq4ZxKYmn6Dl+BwAYxODcTkAb0gQcgA1+ASjglBZTykmKh3AwORkJ5KCHRt+vrf5P8gckixGdgDIgIiEQhQMMxQdg8TR1VPNAbCSDdlQ5KBFdwC6WrIdALMYxqa5A5Dr8q6d4f9hGGQIerDicwAII+tHN5soB+CKY0IOQFYDwyQ7gNLUjw0PDQeAQGKL+39aYYKWDwoHjAJ6AgAyn64UG8fZKgAAAABJRU5ErkJggg==)}
+.pixel-hospital-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA7ElEQVR4nGNgGAWjYBSQCErtnf/jw3SxfN3G1VgxTR2BbPnX+yvgeHWgLwqfJo5A9zk+B1A9JNAtv1+RALcYHcMcQFVHYItzQiFANUfgSnB0cQC+1I5sITqmSs5Aj3NyMNmOwOdzSjBRjiBUyuELenRMVmlJyAHUwhSFAk0tRweTk51ICnZs+Pne5v8gc0iyGNkBIAMiEgpRMMxQdAwSR1dPNQe8P5QOxsiGIgctugPQ1Q5NB3TtDP8Pw9iCFZ8DQBhZP9khgB6/MIzPAchqYHhoOSCxxf0/CGNL6eRimJkkOYAWeGg4YBTQEwAARmxcWPb5XVsAAAAASUVORK5CYII=)}
+.pixel-hospital-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA+klEQVR4nO2Vrw7CMBCH92YkIFAIFMgRBBpBggeF5SVIlpAgERheZBKJQnc5ccvtl9Ku/whLeskntt3uvl6Xrihy5MjhGLvRRJlI1vj93ChXogrwCq+3Sn3qS0s1n3Wuk0xCNrcJ0POoEti83pdtY4QFokr47L0kSEKuXGLbgihT+NYcBRDM9ZLAPffBW8K08hB6SdhOOdPoEa/T0iYQi6ApJG2OcV6Pncau4/U4KKrj1FgKUIFlue3ARRG6j/nRBPhkk0XlaFEAc4cjIP/lp/tCMbqxmgQI+T7W7iWg21/GJCBzGGeB0K9fxzAEKFbHqUqFtflfCOT4ZTQHXMujQZMPVwAAAABJRU5ErkJggg==)}
+.pixel-school-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA9ElEQVR4nO2UMQ7CMAxFezMkGDgCjEUMzAwgdphY4QRMXIGBhYt0ZGRiDnIlV8ZKE+I4kSJq6Q20xv/VqVpVQ5Vcr8fKIP8ncN5eDBWA31mCN6NJF/purh1ZNgHhPgG4nzQcVo3wIwCwL3l4n4C6BA9vdnWLS0BVwvbkvg2oSbjCfyFKIDY8SsJ25qGIJbSeXLQJbOqDfnh8uOaIBbSI2kLScF6n5Tho7Tae972BOUHBVAAGzOv1FziUA9d5v5oAfvHoULpaLsB7yxQ43mYGsa3VJQDQ/4s3wM8XcQnQHqQsgcVhagDbmy4FZwYJpKAMgaFy1gcg12FNqDjoPQAAAABJRU5ErkJggg==)}
+.pixel-school-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA+UlEQVR4nO2VoQ7CQAyG92YkIHgEkCMINAKCB4WFJ0DxCggMLzKJRKGPdEmX0nS33bW3sLAmn2Ap7Xf/kZFlQ/W5Xo+VQ/5P4Ly9OCoAnztZvBlNqqXv4lqRPAl62raYCsDJAYga4VcAYF/y5XUC5hJ8ebHLS3wCphIxd09RSUixh6BKQbtcJSHdeSjRElYnj0oCm+qgb74mfHOiBaxQpZB0Oa/TchwUu8TzvncwJ2gxFYAB83z9BQ7lwHPebyaAbzY6lEbLBXhvfwTof/nxNnOIFKtPAKDf57NbCUj3i/gEaA8SLKD99Uv0QwBqcZi6VDQu/wmBobqsD1ci08KHbICjAAAAAElFTkSuQmCC)}
+.pixel-gym-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA70lEQVR4nGNgGAWjYBSQCErtnf/jw3Sx3HvyUqyYpo4Ii0r/D8Igi5DZ6Bgmh6yHYstBviLVAch6KLYc2TBiMVUdgOwzYjF6dFBkOXqwExMFFDsAPbVT4gCScway5fcrEsjCZGdPfPmcEkyUIwiVcl/vryAak1VaEnIAtTBFoUBTy9HB5GQnkoIdG36+t/k/yBySLEZ2AMiAiIRCFAwzFB2DxNHVU80B7w+lgzGyochBi+4AdLVD0wFdO8P/wzC2YMXnABBG1k92CKDHLwzjcwCyGhgeWg5IbHH/D8LYUjq5GGYmSQ6gBR4aDhgF9AQAaDQVmJoD47oAAAAASUVORK5CYII=)}
+.pixel-gym-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA+ElEQVR4nGNgGAWjYBSQCErtnf/jwzSz+P2h9P+kYqo6ICwq/T8Ie09e+h+ZjY5hcsh6KLYcFLSkOgBZD8WWIxtGLKaaA8iJe2RMkQNAvkAPWmKjAD09UGQ5pQ4gOXsiW36/IoEsjOwoksoIdJ9TCxPlCEKl3Nf7K4jGZJWWhBxALUxRKNDUcnQwOdmJpGDHhp/vbf4PMocki5EdADIgIqEQBcMMRccgcXT1VHMArGRDNhQ5aNEdgK526DgAuS7v2hn+H4axBSs+B4Awsn50s4lyALb4hWF8DkBWA8MkO4DS1I8NDw0HgEBii/t/WmGClg8KB4wCegIAaAGWSu7SFMsAAAAASUVORK5CYII=)}
+.pixel-henu-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABCklEQVR4nGNgGAWjYCgBUwff/8Rgmlm+buNqojDVHQHzma+TH1GYqiFBquXoDhkQiylyBLUsJsshtLKcaIeAJFvbeohO7eRgnAmU2DxOLYxquYX9/4HAWKNhcrLTf1dLy/8g2t3GGQXvbAgGi+90hmCQOmxsdH3IZhJMiOgOeH8oHc4mxQHI+oh2QKm98//7FQn/QTQxDvh6fwVWNjYHIJs99B0ACk5cGJs+shwQMDkaBZPqABBGN4OgA0CuhmGQQcgYZDmxDkBWi4xhZuNNiCAAM4jaDiBoMQiAimJsDkC2AESDEh02jK4WGYPMJsoBtMSD3wG0rAlBGKfFiS3u/+mJRx1AMC2MGAAAnH8A0k3rCOUAAAAASUVORK5CYII=)}
+.pixel-henu-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABHElEQVR4nO2VMQrCMBSGeynBglBpkU4VwdFFcfAEgqODOrn1EoIgOHb1Ij2Ck3Pkrzx4CalNbVMt9sFHg0nf/6lp6jhdddWm6g0jAfaHYy6YtxZ+uZ4zEHS/rSRIAPO1S9A3X3uBEbS+1vDIHxsLYC2oJMGDq1Baoq7gj0RshRuL0CNGu90GuRuUJppCDu974hto/4Z46YuR6wpcw0EgkWyn2edJ8ALrdGP1Pt6zcCOqAjjlaFxGgN9nLIBDJN3Ms8PEROCRnrRjnQDv3X4B/Jx56O4zFuBvt0k8kygrANQevH+hABpxEG4qwNdyCgWoqFHdAm9DqXAU6wR4AK7YdDrUtRz0NhKwye8L2HwTgtzgxS4UTdIJFO6Fv6knqSER39g8TmMAAAAASUVORK5CYII=)}
+.pixel-sora-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABGklEQVR4nGNgGAWjYCgBUwff/8Rgmlm+buNqojDVHQHzmXt4BlGYqiFBquXoDhkQiylyBLUsJsshtLKcaIeAJFvbeohO7eRgnAmU2DxOLYxquYX9/4HAOKPC1dLy/+Rkp//uNs4o+MH5NWBxk+g2MAapw8ZG1wfSA5InmAixOeD9oXQ4mxQHIOtDd4B5us9/EKbYAV/vr8DKxucAkMUBk6PBGKcjaOUAZMthmCwHgORxYWz6QDSy5V07w+EYpwPQXUqqA0AY3QySHAAyCBmDLCfWAchqkfGgcQDeNAAqirE5ANkCEA1KdNgwulqyHEBtjC31D14H0KIG9J689D+s9EPHcIsTW9z/0xIPuAOQMXLCHDwOoCcYVA4AAC3MVI3X4343AAAAAElFTkSuQmCC)}
+.pixel-sora-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABN0lEQVR4nO2VPQrCMBiGeyhFBUFRpIMKbg5O4qAX8AbqIG49gyAogqOrF/AIegMn58hb+ORrSOxf0lZo4KHB/LxP28/UccpWtn9q1fZQgPVmpwXj1sLPl6MPgl63eQASwLhxCbrzZasbCZpvNNwdLyILYC5IJcGD0xBbwlRwIhFb4ZFF6C9G1W4DbYHSQFYEw+stkQfaV9FrNIQ36wi32Q3wvJ/83yuTjQ/mqfryOqzBeGgRqgRwylE/jgBfJwvU5gMBUgu8Hwdl/5cAgkfexEcrYUuAhxOJBDCuQ7UOVx6+vY6/BIL51002jSsA5D34/qEC2IiD8KgCfC4nVEB+BaYF5CeirAEcxSoBHoArik6FPDeRgGlU1V9cARtfwL63F3T6yXyDpytX2CR3AQ4vzOIIZNkKJfABarRrldvR7LoAAAAASUVORK5CYII=)}
+.pixel-flowers-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA6UlEQVR4nO2TsQ3CMBBFsxU9NUMgUWQDBGIESpiAigkYgCUoMwIVtdGP+NFxsY3jhADivvQl22fff3aUojCZTKZf1q06Ovj/ABh8PZe1RwdJBWC9V9hls3Uwm8mGr27+MQC513cuKxjjSTl7aoK5XNsvDw7OBmADOARQrea1YwD6JZJuvFtMnQTAHCYIxhKAc1jfXM/ZA44CNCGndWMeRChqbEoQ7AkBELAXAJsw0AdAM7h19jFmRh4A1zzBXwPQ2qtqzPBCyKKvQWrIIAAxM6RrTTv6GXIBUh38E7q8xODB74ZIDjeZxtYd7zhctiLofYsAAAAASUVORK5CYII=)}
+.pixel-flowers-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA+UlEQVR4nO2TvQ3CMBCFsxU9NQU9DRJFNkAgRqAME1AxAQOwBGVGoKI2ekgPXczZOQcchOQnvcK53L3v8lNVRUVFRf+sebNw8E+C7+2p49FAuLUGkBWCARaz53apHZwlGDVuH7rvY4DQUNYlQKiHEMkg192+MwjnST3rDMFZXjusjw4eDMABcAig3SyftgKYP8xmNXUSwB+CugTgGWYPN/X7AU9HAV4h5+0bAEJRYwhBcG8fgIQwAfjNcnMNgCaItgBmMGMYAIOUYA1Ag8gOwG+iD0CFkEVteCgkpWYGiJkhqTXf0dcwFMDq4J+Q8iS+HpwbwhxeVDS2HtMyYVDn4SDfAAAAAElFTkSuQmCC)}
+.pixel-fountain-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAlElEQVR4nGNgGAWjYBQMZVB6eP9/EB45DvCevPQ/CMMsRsfIaqhu+bqNq/+TgoefA4h1CM0sHjQOgIHWtp7/yJhuFg9vB4RFpf8nFqM7gFh9Q8MBxORzdAcQowevI5BdCdMAK1axYXQH4FOL7gCsjhhyDiAFE+UAUtMAOZjqOYFcjNcBtHYEQctp6QiiLR8Fo4CeAACJcyLwlZ/n2wAAAABJRU5ErkJggg==)}
+.pixel-fountain-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAn0lEQVR4nGNgGAWjgAJQenj/fxAeWQ6AWYoLD38HYHMM3Sz0nrz0Pwjj8z1MDdUtX7dx9X9S8PBzALEOoZnFg8YBMNDa1vMfGdPN4uHtgLCo9P/EYnQHEKtvaDiAmHyO7gBi9OB1BLIrYRpgxSo2jO4AfGrRHYDVEUPOAaRgohwAc8TX+ytoiqmaE8jFeB1Aa0cQtJyWjiDa8lEwCugJAHRGZNKjIf2hAAAAAElFTkSuQmCC)}
+.pixel-road-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAcElEQVR4nGNgGAWjYKDB/W2V/+mNB9wBKI4YdA74eq6HZhirI+jpAKyOGHQOIITxGUZWWhioREhXB5CdBoaNAwY8CujiAHJDbvg4YMCjgOYOoFXuGHwOmJzsRFM8+BwwKFtFdHfAQDiC6s37UTBkAQAw+IXLLrk89wAAAABJRU5ErkJggg==)}
+.pixel-road-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAhUlEQVR4nGNgGAWjYKDB/W2V/+mNB9wBKI4YdA74eq6HZhirI+jpAKyOGHQOIITxGUZWWhioRIjhgK/3V6BgaouBQw2LOpwOwKWBZg6gVRwPnTRAKSY35AaPA2idC3CJDR4H0CqIqZYG6OaAyclONMWDzwGDslVEdwcMhCOo3rwfBUMWAAAovq2FKS/iYwAAAABJRU5ErkJggg==)}
+.pixel-citadel-tier-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADDklEQVR4nO2Yv2sUQRTH819ZChaCImghRLBM9KIgBuXkrhKCjVoEjYgxjZBCrxBEOCUIKgmYlDapVFLZJoI/2pW3MMdk7s2b9+bHztzdDnwId7v75vs+2dlZbm4u87h5ZrnKnSHrAAEHKy+c5M6ZbLQCZllA/+RiNbMCoHklAP7mztP4mGkBqvkPCw9HAiZCQu9SN3h96s3rxJIQI2Oy4rbmY0pILsD3WlfzsSSEZCRH9/RS1YQAJSFHRmdxwOdaSfMhEkIyOgt/vL1RI53Ap3kfCSEZkxUPaV4qIZkAvbBkAqz5n6sDJz4SfDM2IiAWWQRghTkTxG6ekuCbMakANV7dul/9/bETBNRImbEV4FOYOwEmYLN37xiuY5SAGBmzCHj5ZViDCTCPZRHAKcyZwCbg6uP1GkyAecwmIFbGVgBW2IcmBcTM2AqwjfVOtzr8+pYEzgGeLfVRYgmw1ZdkFDUvFXC0/x4l1jZoq9+ogOfDN9X8jV6NXvz3/qOscDK2AlIKkC4Bn1dh7hLIKsBcv0oAteYxzPOVAKx+cQL011j1X6JefW0COHWKFKBvYXpw7HsbkjrJBbgeQCUI4GZsBfgIkLwIlbAEsr4JtgKQbYr6/s75a2NI6xQlQIpNgISJFIA17isiuQDJLuAr4NfwSZCAYrZBiYDN63dHgAD9c1ECUi2BmAIm8hkwVQJOdM7V7G08ZcERwK2FZVR5GhEAE11Yu1zDlZBSgJknWACFPplEQmwBrjzq+MXls3wJcDK3+Qdb8yPUpArsl1yOANuvwNivwpI87OaB3dd9K9SE+qT6NX++fRZDZfDJ47wLOM0D+m2mJvv3fYskRICrNpZHF8CSwG0eW2sABLkyGKDAMbj24J0MXQDU6e58GsMUYEMXgEqILcAMmkvA0XanxhQwJkE/UKoA290VRYApwSaCEkARKoD7DKBuf3IJSCVw0a/zFcBZllzYOwElYaoF2CTYWFs4dQzqXKkASQ5uHmfzUgmTJIDd/DQKEDUvGeaE1LlSAanzND6aEFD0mHkBJY7/30WBadxLsYkAAAAASUVORK5CYII=)}
+.pixel-citadel-tier-3{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADRElEQVR4nO2Zv2sUQRTH819ZCnaKEAshgo0Q9VQQo3ByVwliYywkRsRoo6TQKwRRTgkWigGT0iaVhkuT1gj+aFdmZY65uXlvvm925nbusgPfIje73/d9n9vZ2dvMzdU8rh1fKurOUMso9p4XWoPbz4pB5xykunNHGw2ABkADYAige/T87DSGjkMNQDVsA5gKCJ0z7f/r1ZLEQzf7YfHeiGJBiJExmTnVfEwIyQGEnutrPhaEKhnZcX2+WyiFno8C0BDqyJjMXNJ8FQjJAGjjkAIhzYdAqJIRMh+svC0lMa/SvBRCaEbI2DZHCria37/f8yoEQmhGGIA2lhDWAGIpRUaoecqcKxC7eQ5CaEYYgG0sIfzyxt3iz+5mJSmPlBkbAJyxz9xXwAVgvXNnRL45DkCMjCwAyhglTAF48aVfygXAnvMBqJqRNEbNuQIUgIsP1kq5ANhzFIBYGUkAPmOEcGoAMTIGk0UIpwIQMyMJQKo6AMTISI61Vrv48fUNK3WM0uNLXadiAaD8JRlFzUsBHOy8dyrWNkj5TxTAk/7rYuFqp5Rp/mtnpVYhGRsAKQFIl0DIozC6BGoFYK9fDYBb8y7Zx2sALv/sAJiPsfpb4h59KQCIT5YAzC3MDO76nJLEJzkA3w0oBwBoxgZACAB1CZn/xLSVAwA0YwMgFAD6KOzaprjPb85fHpPUJ/vfAi5x35YW6tUASA1Asgugsi/7n/2HzqWAAshmG5QAWL9yaygFwPw7KwAplkBsAFN3D5g5AEdaJ0ttP30ECQGAerky6jwTAaAKnVo9WwqFkBKAnacyAE5mMQmE2AB8efT86aUTOAR1MNr88sbCULqolutNLgKAegvseissyQM3r7T1qkuKK2gWNc/5/e2TWFyGkDzeqwBpXsm8zHSxv983WFUB4PN25TEBQBDQ5l1rTUkFudDrOaXm1LmDdzKZAJRPe/PjmGwAlEwATgixAdhB6wJw8LlVygYwBsGcyBUAdXVFAWBDoEBwADhVBYDeA7jLn10CUgiozPNCASDLEhW8E3AQZhoABYHS6uKxEXHHSgFIcqB5vM1LIUwTALj5WQQgal4y7ILcsVIAqfNMfEwCQNbj0APIcfwDjcwDKEpt19UAAAAASUVORK5CYII=)}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div class="header-resources"><div id="resources" class="resources"></div><button type="button" class="button unlimited-toggle" id="unlimited-toggle" data-action="toggle-unlimited" aria-pressed="false">∞ 无限资源</button></div></header>
 <main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
@@ -246,14 +280,14 @@ const jobs=[{title:'播下第一颗种子',desc:'建造一座猫草农场。',do
 const mapWidth=8, mapHeight=9, radius=9;
 const climatePeriod=45_000;
 const climateProfiles={
- meadow:{name:'温带草原',icon:'🌿',weather:['晴朗','细雨','多云']},
- coast:{name:'海岸沙滩',icon:'🐚',weather:['海风','晴朗','海雾']},
+ meadow:{name:'温带草原',icon:'🌿',weather:['晴朗','细雨','多云','晨雾','大风','雷雨','晴间云']},
+ coast:{name:'海岸沙滩',icon:'🐚',weather:['海风','晴朗','海雾','雷雨','大风']},
  ocean:{name:'近海',icon:'🌊',weather:['海风','海雾','暴雨']},
  alpine:{name:'高山雪岭',icon:'🏔️',weather:['晴朗','飘雪','寒潮']},
  tundra:{name:'寒带冻原',icon:'❄️',weather:['寒潮','多云','飘雪']},
- desert:{name:'干旱沙漠',icon:'🏜️',weather:['晴朗','沙尘','热浪']},
+ desert:{name:'干旱沙漠',icon:'🏜️',weather:['晴朗','沙尘','热浪','大风']},
  steppe:{name:'半干旱草原',icon:'🌾',weather:['干风','多云','短时阵雨']},
- rainforest:{name:'热带雨林',icon:'🌴',weather:['闷热','阵雨','季风暴雨']},
+ rainforest:{name:'热带雨林',icon:'🌴',weather:['闷热','阵雨','季风暴雨','雷雨','晨雾']},
  wetland:{name:'河谷湿地',icon:'🪷',weather:['晨雾','阴雨','晴朗']},
  volcanic:{name:'火山丘陵',icon:'🌋',weather:['地热雾','干风','灰雾']}
 };
@@ -291,7 +325,7 @@ for(let r=-radius;r<=radius;r++){
 }
 const citadelTile=36;
 const mansionName='聂萌的粉色梦想豪宅';
-const mansionEntrance=34;
+state.mansionGrade??=1;
 const citadelGround=new Set([27,28,29,35,36,37,43,44,45]);
 function installCitadel(){
  if(state.citadelVersion===1)return false;
@@ -330,7 +364,32 @@ const animals={
  giraffe:{name:'栗糖长颈鹿',home:island.find(hex=>hex.biome==='rainforest').id,sound:'栗糖低下长脖子，轻轻碰了碰你的手。'}
 };
 let mapActor=null, stageMenu=false, stageToastUntil=0, stageOpeningView=true;
-let facing=0;
+let facing=0, cameraPan={x:0,y:0}, mapDrag=null, suppressMapClickUntil=0;
+function setupMapDrag(){
+ const view=$('island-view');
+ view.addEventListener('pointerdown',event=>{
+  if(!exploreMode||event.button!==0||event.pointerType!=='mouse')return;
+  mapDrag={id:event.pointerId,x:event.clientX,y:event.clientY,panX:cameraPan.x,panY:cameraPan.y,moved:false};
+ });
+ view.addEventListener('pointermove',event=>{
+  if(!mapDrag||event.pointerId!==mapDrag.id)return;
+  const dx=event.clientX-mapDrag.x,dy=event.clientY-mapDrag.y;
+  if(!mapDrag.moved&&Math.hypot(dx,dy)<5)return;
+  if(!mapDrag.moved){mapDrag.moved=true;view.setPointerCapture(event.pointerId);view.classList.add('map-dragging');}
+  cameraPan={x:mapDrag.panX-dx,y:mapDrag.panY-dy};
+  focusCamera();
+ });
+ const finish=event=>{
+  if(!mapDrag||event.pointerId!==mapDrag.id)return;
+  if(mapDrag.moved)suppressMapClickUntil=Date.now()+260;
+  mapDrag=null;view.classList.remove('map-dragging');
+ };
+ window.addEventListener('pointerup',finish);
+ window.addEventListener('pointercancel',finish);
+ view.addEventListener('click',event=>{
+  if(Date.now()<suppressMapClickUntil){event.preventDefault();event.stopImmediatePropagation();}
+ },true);
+}
 const moveKeys={arrowright:0,d:0,arrowdown:1,s:1,arrowleft:2,a:2,arrowup:3,w:3};
 let lastKeyStep=-Infinity;
 function isExploring(){return exploreMode&&(workspace==='map'||workspace==='build')}
@@ -350,8 +409,8 @@ function focusCamera(){
  const frameCastle=stageOpeningView&&Math.hypot(xTile-9.5,yTile-9.5)<5;
  const centerX=(frameCastle?xTile*.35+9.5*.65:xTile)*grid.clientWidth/size;
  const centerY=(frameCastle?yTile*.35+9.5*.65:yTile)*grid.clientHeight/size;
- const x=Math.max(0,Math.min(grid.clientWidth-view.clientWidth,centerX-view.clientWidth/2));
- const y=Math.max(0,Math.min(grid.clientHeight-view.clientHeight,centerY-view.clientHeight/2));
+ const x=Math.max(0,Math.min(grid.clientWidth-view.clientWidth,centerX-view.clientWidth/2+cameraPan.x));
+ const y=Math.max(0,Math.min(grid.clientHeight-view.clientHeight,centerY-view.clientHeight/2+cameraPan.y));
  grid.style.transform='translate('+(-x)+'px,'+(-y)+'px)';
  const previous=grid.querySelector('.facing-tile');
  if(previous)previous.classList.remove('facing-tile','placement-preview');
@@ -364,11 +423,10 @@ function focusCamera(){
 function moveWalker(direction){
  if(!isExploring())return;
  const id=walkingActor();
- stageOpeningView=false;
+ stageOpeningView=false;cameraPan={x:0,y:0};
  facing=direction;
  selected=null;
  $('inspect').classList?.remove('map-detail-drawer');
- delete actorRoutes[id];
  const next=facingTile();
  if(walkable(next)){
   state.actorPositions??={};
@@ -385,7 +443,7 @@ function interactFacing(){
  const id=facingTile();
  if(id===undefined)return;
  if(!plan&&movingBuilding===null)selected=id;
- tileClick(id,true);
+ tileClick(id);
 }
 function onExploreKey(event){
  if(event.key==='Escape'){
@@ -405,26 +463,10 @@ function onExploreKey(event){
   event.preventDefault();location.hash='build';
  }
 }
-const actorRoutes={};
 const feet=new Map();
 let lastAnimalStep=0;
 function walkable(id){return island[id]&&!water(id)&&!locked(id)&&!citadelGround.has(id)}
 function actorPosition(id){return state.actorPositions?.[id]??(id==='hero'?10:id==='advisor'?18:animals[id].home)}
-function actorPath(start,goal){
- if(!walkable(goal))return [];
- const previous=new Map([[start,null]]);
- const queue=[start];
- for(let i=0;i<queue.length&&!previous.has(goal);i++){
-  for(const next of adjacentTiles(queue[i])){
-   if(!walkable(next)||previous.has(next))continue;
-   previous.set(next,queue[i]);queue.push(next);
-  }
- }
- if(!previous.has(goal))return [];
- const route=[];
- for(let i=goal;i!==start;i=previous.get(i))route.push(i);
- return route.reverse();
-}
 function actorMarkup(){
  const ids=['hero','advisor',...Object.keys(animals)];
  return ids.map(id=>{
@@ -442,20 +484,6 @@ function updateActorPosition(id){
  node.style.setProperty('--y',r+radius);
 }
 function stepActors(now){
- const routeActors=Object.keys(actorRoutes);
- if(routeActors.length){
-  state.actorPositions??={};
-  for(const id of routeActors){
-   state.actorPositions[id]=actorRoutes[id].shift();
-   updateActorPosition(id);
-   if(isExploring()&&id===walkingActor())focusCamera();
-   if(!actorRoutes[id].length){
-    delete actorRoutes[id];
-    if(mapActor===id)renderActorToolbar();
-    save();
-   }
-  }
- }
  if(now-lastAnimalStep<2600)return;
  lastAnimalStep=now;
  state.actorPositions??={};
@@ -496,8 +524,8 @@ function renderActorToolbar(){
  target.innerHTML='<div class="actions">'+button('👑 聂萌','actor-command-hero',false,mapActor==='hero')+
  button('📜 刘博文','actor-command-advisor',false,mapActor==='advisor')+
  (isRoyal&&!isExploring()?button('退出角色操作','actor-clear'):'')+'</div>'+
- (isRoyal?'<p class="muted">点击陆地让'+people[mapActor].name+'走过去。</p><div class="actions">'+
- (mapActor==='hero'?button('在这里督工','actor-supervise',!working||!!actorRoutes.hero):button('安抚民心','actor-comfort',state.counselDay===state.day||!!actorRoutes.advisor))+'</div>':
+ (isRoyal?'<p class="muted">用方向键移动'+people[mapActor].name+'。</p><div class="actions">'+
+ (mapActor==='hero'?button('在这里督工','actor-supervise',!working):button('安抚民心','actor-comfort',state.counselDay===state.day))+'</div>':
  '<p class="muted">点击动物可以和它互动。</p>')+
  (isExploring()?'<div class="walk-controls" aria-label="探索与建造控制"><div class="actions">'+
  ['→','↓','←','↑'].map((arrow,i)=>button(arrow,'walk-'+i)).join('')+
@@ -505,9 +533,9 @@ function renderActorToolbar(){
  '<p class="muted">方向键 / WASD 移动 · E '+(plan?'摆放所选建筑':'查看前方地块')+' · B 打开建造手册</p></div>':'');
 }
 const weatherTone={
- '晴朗':'sun','海风':'sun','细雨':'rain','阴雨':'rain','阵雨':'rain','季风暴雨':'rain','暴雨':'rain','短时阵雨':'rain',
- '飘雪':'snow','寒潮':'snow','海雾':'fog','晨雾':'fog','地热雾':'fog','灰雾':'fog','多云':'fog',
- '沙尘':'dust','热浪':'dust','干风':'dust','闷热':'dust'
+ '晴朗':'sun','晴间云':'cloud','海风':'wind','大风':'wind','雷雨':'storm','细雨':'rain','阴雨':'rain','阵雨':'rain','季风暴雨':'rain','暴雨':'rain','短时阵雨':'rain',
+ '飘雪':'snow','寒潮':'snow','海雾':'fog','晨雾':'fog','地热雾':'fog','灰雾':'fog','多云':'cloud',
+ '沙尘':'dust','热浪':'heat','干风':'dust','闷热':'dust'
 };
 function climatePhase(now=Date.now()){
  return Math.floor(Math.max(0,now-state.climateEpoch)/climatePeriod);
@@ -523,7 +551,7 @@ function weatherBonus(type,id){
  const biome=island[id]?.biome;
  if(!biome||id<mapWidth*mapHeight)return 0;
  const tone=weatherTone[weatherFor(biome)];
- if(type==='farm'&&(biome==='rainforest'||biome==='wetland')&&tone==='rain')return 1;
+ if(type==='farm'&&(biome==='rainforest'||biome==='wetland')&&(tone==='rain'||tone==='storm'))return 1;
  if(type==='mine'&&(biome==='alpine'||biome==='volcanic')&&tone==='sun')return 1;
  return 0;
 }
@@ -531,7 +559,7 @@ function renderClimate(){
  const tile=island[selected]??island[10];
  const current=weatherFor(tile.biome);
  $('climate-panel').innerHTML='<div class="climate-top"><strong>'+climateProfiles[tile.biome].icon+' '+climateProfiles[tile.biome].name+' · '+current+'</strong><span id="weather-timer"></span><div class="actions">'+
- button(isExploring()?'全岛视图':'跟随角色','toggle-explore',false,isExploring())+button('回到豪宅','map-center')+(typeof $('map-panel').classList!=='undefined'&&$('map-panel').classList.contains('map-overlay')
+ button(isExploring()?'全岛视图':'跟随角色','toggle-explore',false,isExploring())+button('定位豪宅','map-center')+(typeof $('map-panel').classList!=='undefined'&&$('map-panel').classList.contains('map-overlay')
   ?button('退出全屏','close-map-overlay')
   :button(document.fullscreenElement?'退出全屏':'全屏看地图','map-fullscreen'))+'</div></div>'+
  '<div class="climate-legend" aria-label="定位气候区域">'+Object.entries(climateProfiles).map(([id,c])=>button(c.icon+' '+c.name,'climate-focus-'+id,false,tile.biome===id)).join('')+'</div>';
@@ -596,14 +624,20 @@ function renderThrone(){
 function choiceToggle(label,action,active,disabled=false){
  return '<button class="button" data-action="'+action+'" aria-pressed="'+active+'"'+(disabled?' disabled':'')+'>'+label+'</button>';
 }
+const mansionUpgradeCost=()=>({gold:100*state.mansionGrade,wood:18*state.mansionGrade,ore:8*state.mansionGrade});
 function renderRoyalPanel(){
  $('throne-workspace').innerHTML=renderThrone()+
+ '<section class="castle-card report-area"><h3>'+mansionName+' · Lv.'+state.mansionGrade+'</h3>'+gradePreview('citadel',state.mansionGrade)+
+ (state.mansionGrade<3?button('升级豪宅 · '+format(mansionUpgradeCost()),'royal-upgrade-mansion',!can(mansionUpgradeCost()),true):'')+'</section>'+
  '<p class="royal-judgment">公库 '+format({gold:resourceBalance('gold')})+' · 劳动民心 '+state.labor.morale+'/100</p>'+
  reportList('royal','王室政务记录');
 }
 function royalAction(a){
  let report;
- if(a==='royal-relief'&&state.reliefDay!==state.day&&state.labor.morale<100&&can(royalRelief)){
+ if(a==='royal-upgrade-mansion'&&state.mansionGrade<3&&can(mansionUpgradeCost())){
+  add(mansionUpgradeCost(),-1);state.mansionGrade++;
+  report=mansionName+'升到了 '+state.mansionGrade+' 级。';
+ }else if(a==='royal-relief'&&state.reliefDay!==state.day&&state.labor.morale<100&&can(royalRelief)){
   add(royalRelief,-1);state.reliefDay=state.day;
   const prior=state.labor.morale;
   adjustMorale(15);
@@ -651,6 +685,15 @@ function batchProgress(t,now=Date.now()){
 function startBatch(t){
  t.ready=state.day+1;
  t.batchStart=Date.now();
+}
+function buildingSprite(name,grade=1){return pixelSprite(grade===1?name:name+'-tier-'+grade)}
+function upgradeCost(t){
+ const def=catalog[t.type];
+ if(def.yield)return {gold:25*t.grade,ore:2*t.grade};
+ return {gold:Math.max(4,Math.ceil(constructionCost(def).gold/2))*t.grade,wood:t.grade};
+}
+function gradePreview(type,grade){
+ return '<div class="tier-preview" aria-label="建筑等级外观">'+[1,2,3].map(n=>'<div class="tier-sample '+(n===grade?'tier-current':'')+'">'+buildingSprite(type,n)+'<span>Lv.'+n+'</span></div>').join('')+'</div>';
 }
 function pixelSprite(name){return '<span class="pixel-sprite pixel-'+name+'" aria-hidden="true"></span>'}
 function workProgress(t){
@@ -719,7 +762,7 @@ function render(){
   const {id:i,q,r,biome}=hex;
   const t=state.tiles[i],def=t&&catalog[t.type],closed=locked(i),wet=water(i);
   const name=citadelGround.has(i)?mansionName:t?(def?.name??'建筑'):closed?'待开放'+expansionAt(i).title:wet?'水域':climateProfiles[biome].name+'空地';
-  const content=i===citadelTile?pixelSprite('citadel'):closed?(i%5===0?pixelSprite('lock'):''):t?pixelSprite(t.type):'';
+  const content=i===citadelTile?'<span class="citadel-size">'+buildingSprite('citadel',state.mansionGrade)+'</span>':closed?(i%5===0?pixelSprite('lock'):''):t?buildingSprite(t.type,t.grade):'';
   const terrain=wet?'water water-'+(i>=originalTiles?32:i):'terrain-'+((i*7+Math.floor(i/8))%4);
   const weather=weatherFor(biome);
   const progress=def?.yield?'<span class="tile-progress" aria-hidden="true"><i data-tile-progress="'+i+'" style="width:'+batchProgress(t)+'%"></i></span>':'';
@@ -745,8 +788,8 @@ function render(){
   const bonus=weatherBonus(t.type,selected);
   if(bonus)detail+=' 当前天气使首项产物 +'+bonus+'。';
   if(def.yield)detail+=' 驻派奴仆 '+crew+'/'+maxCrew+' 人，每 '+crewSize+' 人使每批首项产物 +1。';
-  const upgrade={gold:25*t.grade,ore:2*t.grade};
-  $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p>'+(def.yield?workProgress(t):'')+'<div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!can({diamonds:1})):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+(movingBuilding===selected?button('取消移动','building-cancel'):(demolishingBuilding===selected?button('确认拆除','building-confirm-remove',false,true)+button('取消','building-cancel'):button('移动建筑','building-move')+button('拆除建筑','building-remove')))+'</div>'+(def.yield?laborControls(selected):'')+(t.type==='shop'?'<div class="royal-judgment"><strong>商店货架</strong><div class="actions">'+Object.entries(shopGoods).map(([id,item])=>button('买 '+item.amount+names[id]+' · '+item.price+' 金币','shop-buy-'+id,!can({gold:item.price}))).join('')+'</div></div>':'');
+  const upgrade=upgradeCost(t);
+  $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+' · Lv.'+t.grade+'</h3>'+gradePreview(t.type,t.grade)+'<p class="muted">'+detail+'</p>'+(def.yield?workProgress(t):'')+'<div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+(work||person!=='hero'?button(work?'撤回 '+people[work[0]].name:'委派 '+people[person].name,'assign'):'')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!can({diamonds:1})):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+(t.grade<3?button('升级 · '+format(upgrade),'upgrade',!can(upgrade),true):'')+(movingBuilding===selected?button('取消移动','building-cancel'):(demolishingBuilding===selected?button('确认拆除','building-confirm-remove',false,true)+button('取消','building-cancel'):button('移动建筑','building-move')+button('拆除建筑','building-remove')))+'</div>'+(def.yield?laborControls(selected):'')+(t.type==='shop'?'<div class="royal-judgment"><strong>商店货架</strong><div class="actions">'+Object.entries(shopGoods).map(([id,item])=>button('买 '+item.amount+names[id]+' · '+item.price+' 金币','shop-buy-'+id,!can({gold:item.price}))).join('')+'</div></div>':'');
  }else if(citadelGround.has(selected)){
   $('inspect').innerHTML='<h3>'+mansionName+'</h3><p class="muted"><a href="#throne">进入王座厅</a></p>';
  }else{
@@ -768,7 +811,7 @@ function render(){
   return '<button class="choice" data-plan="'+id+'" aria-pressed="'+(id===plan)+'" '+(!unlocked?'disabled':'')+'>'+pixelSprite(id)+'<strong>'+d.name+'</strong><small>'+format(cost)+'</small><small>'+status+'</small></button>';
  }).join(''):'<p class="muted">此类别暂无可建造设施。</p>';
 }
-function tileClick(i,interact=false){
+function tileClick(i){
  if(movingBuilding!==null){
   const source=movingBuilding;
   if(i===source||!walkable(i)||state.tiles[i]){tell('请选择一块开放的空地。');return}
@@ -785,16 +828,6 @@ function tileClick(i,interact=false){
   if(typeof location!=='undefined')location.hash='throne';
   else setWorkspace('throne');
   return;
- }
- if(!interact&&!plan&&((workspace==='map'&&(mapActor==='hero'||mapActor==='advisor'))||(isExploring()&&!state.tiles[i]))){
-  if(isExploring())mapActor=walkingActor();
-  if(!walkable(i)){tell('这块地目前走不到，请选择开放的陆地。');return}
-  const route=actorPath(actorPosition(mapActor),i);
-  if(!route.length)return;
-  stageOpeningView=false;
-  actorRoutes[mapActor]=route;
-  renderActorToolbar();
-  return
  }
  selected=i;
  if(!plan){message='查看右侧地块详情。';render();return}
@@ -851,25 +884,28 @@ function act(a){
    if(first){state.pettedDay[id]=state.day;add({joy:1})}
    tell(animal.sound+(first?' 快乐值 +1。':''));
   }else if((workspace==='map'||isExploring())&&(id==='hero'||id==='advisor')){
-   mapActor=id;stageOpeningView=false;if(workspace!=='build')plan=null;render();focusHex(actorPosition(id));
+   mapActor=id;stageOpeningView=false;cameraPan={x:0,y:0};if(workspace!=='build')plan=null;render();focusHex(actorPosition(id));
   }
   return
  }
  if(a==='actor-clear'){mapActor=null;render();return}
- if(a==='actor-supervise'&&mapActor==='hero'&&!actorRoutes.hero){
+ if(a==='actor-supervise'&&mapActor==='hero'){
   selected=actorPosition('hero');
   act('labor-supervise');return;
  }
- if(a==='actor-comfort'&&mapActor==='advisor'&&!actorRoutes.advisor){
+ if(a==='actor-comfort'&&mapActor==='advisor'){
   person='advisor';act('counsel-festival');return;
  }
  if(a==='map-center'){
-  if(isExploring()){
-   const id=walkingActor(), route=actorPath(actorPosition(id),mansionEntrance);
-   if(route.length)actorRoutes[id]=route;
-   renderActorToolbar();
-  }else{selected=citadelTile;render();focusHex(citadelTile);}
-  return;
+  selected=null;stageOpeningView=false;
+  if(exploreMode){
+   const target=island[citadelTile],from=island[actorPosition(walkingActor())],grid=$('land-grid');
+   const size=radius*2+1;
+   const dx=target.q+Math.floor(target.r/2)-from.q-Math.floor(from.r/2);
+   cameraPan={x:dx*grid.clientWidth/size,y:(target.r-from.r)*grid.clientHeight/size};
+  }else cameraPan={x:0,y:0};
+  if(workspace==='climate'&&typeof location!=='undefined')location.hash='map';
+  render();return;
  }
  if(a==='map-fullscreen'){
   const panel=$('map-panel');
@@ -948,6 +984,11 @@ function act(a){
  if(a==='invite'&&t?.type==='cottage'&&!state.people.rabbit){state.people.rabbit={bond:0,mood:75,last:0,job:null};person='rabbit';state.xp++;tell('栗栗搬进了蘑菇小屋。');return}
  if(a==='greet'&&p.last!==state.day){p.last=state.day;p.bond++;p.mood=Math.min(100,p.mood+5);add({joy:3});if(p.bond%4===0)add({stars:1});tell(who.name+'向你打招呼，快乐值 +3。');return}
  if(a==='gift'&&can({[who.gift]:1})&&p.giftDay!==state.day){p.giftDay=state.day;add({[who.gift]:1},-1);const before=Math.floor(p.bond/4);p.bond+=3;p.mood=Math.min(100,p.mood+12);add({joy:4,stars:Math.floor(p.bond/4)-before});tell(who.name+'很喜欢这份礼物，快乐值 +4。');return}
+ if(a==='upgrade'&&d&&t.grade<3){
+  const cost=upgradeCost(t);
+  if(can(cost)){add(cost,-1);t.grade++;tell(d.name+'升到了 '+t.grade+' 级。')}
+  return;
+ }
  if(!d?.yield)return;
  const crew=t.crew??0;
  if(a.startsWith('labor-')){
@@ -979,8 +1020,7 @@ function act(a){
   else return;
   tell(worker?'居民已撤回。':who.name+'已开始工作，首项产物 +'+workerBonus(person)+'。');return
  }
- if(a==='upgrade'&&t.grade<3){const cost={gold:25*t.grade,ore:2*t.grade};if(can(cost)){add(cost,-1);t.grade++;tell(d.name+'升到了 '+t.grade+' 级。')}return}
- if(a==='harvest'&&isReady(t)){
+  if(a==='harvest'&&isReady(t)){
   const adjacent=adjacentTiles(selected);
   const worker=Object.entries(state.people).find(([,resident])=>resident.job===selected);
   const bonus=Number(adjacent.some(i=>['flowers','fountain'].includes(state.tiles[i]?.type)))+(worker?workerBonus(worker[0]):0)+t.grade-1+crew/crewSize;
@@ -1028,6 +1068,7 @@ if(typeof location!=='undefined'){
  document.addEventListener('fullscreenchange',()=>{renderClimate();focusCamera();});
  window.addEventListener('resize',focusCamera);
  window.addEventListener('keydown',onExploreKey);
+ setupMapDrag();
  window.addEventListener('hashchange',()=>{
   syncWorkspace();
   window.scrollTo(0,0);
