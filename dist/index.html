@@ -45,13 +45,14 @@
 .pixel-gym{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA3UlEQVR4nGNgGAWjYBSQCErtnf/jw3Sx3HvyUqyYpo4Ii0r/D8Igi5DZ6Bgmh6yHYstBviLVAch6KLYc2TBiMVUdgOwzYjF6dFBkOXqwExMFFDsAPbVT4gCScway5fcrEsjCZGdPfPmcEkyUIwiVctTCg9cB9HAEUekABiYnO/3/en8FRfj53ub/IHNIshjZASADIhIKUTDMUHQMEkdXTzUHvD+UDsbIhiIHLboD0NUOfQdgC1Z8DqBqFGDD+ByATe3QckBii/t/EMaW0snFMDNJcgAt8NBwwCigJwAA42ILzdwlE2AAAAAASUVORK5CYII=)}
 .pixel-henu{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA4klEQVR4nGNgGAWjYBSQCErtnf/jw3SxfHWgL1ZMU0cQspymjiDWcpo4At3y+xUJWPHX+yto4whcPke3EJ1PFUfgC3aaOwCb5abOdiRhsh2BK87JcQDJjiAmtRNrMcnRQaiUg2FCDiC7tCTWAZRiqoQCTSxHd8j7Q+lgDMpi5OLne5v/I5tFlgMiEgpRMMjQyclOGBgkDsLoaqniAGQ2zAHIQYvuAGS1ZDsAhqnhALIKJJihuKIAnwPQ1ZJkMboDsGF8DsCmdmg5ILHF/T8IY0vp5GKYmSQ5gBZ4aDhgFNATAAAgLAbzwxloOAAAAABJRU5ErkJggg==)}
 .pixel-sora{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA5ElEQVR4nGNgGAWjYBSQCErtnf/jw3SxfErZIqyYpo4gZDlNHUGs5TRxBLrl9ysSsOKv91fQxhG4fI5uITqfKo7AF+w0dwA2y02d7UjCZDsCV5yT4wCSHUFMaifWYpKjg1ApB8OEHEB2aUmsAyjFVAkFmliO4ZDD+8EYlMXIxc/3Nv9HNossB0QkFKJgkKGTk50wMEgchNHVUsUB7w+lgzGyA5CDFt0ByGrJdwAUU8UB5BRIMENxRQE+B6CrJclidAdgw/gcgE3t0HJAYov7fxDGltLJxTAzSXIALfDQcMAooCcAAFGWIsvCf7yqAAAAAElFTkSuQmCC)}
+.map-supplies{padding:0 17px 12px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.map-supplies .muted{margin:0 3px 0 0}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div id="resources" class="resources"></div></header>
 <main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
 <nav class="realm-nav" aria-label="王国工作区">
 <a href="#map" data-view="map" aria-current="page">🗺️ 王国地图</a><a href="#build" data-view="build">🛠️ 建造手册</a><a href="#castle" data-view="castle">🏰 王家城堡</a><a href="#throne" data-view="throne">👑 王座厅</a>
 </nav>
-<div class="layout workspace" id="land-workspace"><section class="panel map-panel"><div class="map-top"><span>王国地图</span><span><a href="#build">打开建造手册</a> · <span id="area"></span></span></div><div class="landscape"><div class="map" id="land-grid" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
+<div class="layout workspace" id="land-workspace"><section class="panel map-panel"><div class="map-top"><span>王国地图</span><span><a href="#build">打开建造手册</a> · <span id="area"></span></span></div><div class="map-supplies" id="map-supplies" aria-label="每日免费资源"></div><div class="landscape"><div class="map" id="land-grid" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
 <aside class="side"><section class="panel card quest" id="quest"></section><section class="panel card" id="inspect"></section><section class="panel card" id="residents"></section></aside>
 <section class="panel catalog" id="catalog-panel" hidden><div class="catalog-head"><h3>建造手册</h3><span class="muted">王室减免已计入建造费用</span><div class="tabs" id="tabs"></div></div><div id="build-controls" class="build-controls"></div><p id="build-plan" class="build-plan"></p><div class="choices" id="choices"></div></section>
 </div><section class="panel castle workspace" id="castle-workspace" aria-label="王家城堡" hidden></section>
@@ -83,6 +84,10 @@ const idleRetinue=()=>royalRetinue-Object.values(state.tiles).reduce((sum,t)=>su
 const constructionCost=def=>({...def.cost,gold:Math.ceil(def.cost.gold*0.8)});
 const fresh=()=>({day:1,xp:0,expanded:false,tiles:{10:{type:'hall',grade:1},18:{type:'road',grade:1}},stock:{gold:115,wood:30,ore:0,joy:0,stars:0,grass:0,treat:0,diamonds:0},people:{hero:{bond:0,mood:100,last:0,job:null}},total:{built:0,harvest:0,greet:0},quest:0,daily:0,week:0,award:false});
 const key='niemeng-kingdom-v1';
+const fieldActivities={
+ wood:{label:'拾取木材',reward:{wood:10}},
+ joy:{label:'举办溪谷小聚',reward:{joy:6}}
+};
 const views=['map','build','castle','throne'];
 let workspace='map', affordableOnly=false, repeatBuild=false;
 function setWorkspace(view){
@@ -423,6 +428,10 @@ function render(){
  progressReadySignature=Object.entries(state.tiles).filter(([,t])=>isReady(t)).map(([i])=>i).join(',');
  renderCastle();
  $('resources').innerHTML=Object.keys(names).map(k=>'<span title="'+names[k]+'">'+icons[k]+' '+state.stock[k]+'</span>').join('');
+ $('map-supplies').innerHTML='<span class="muted">每日免费</span>'+Object.entries(fieldActivities).map(([id,activity])=>{
+  const claimed=state.fieldActivityDay?.[id]===state.day;
+  return button(activity.label+(claimed?' · 今日已完成':' · +'+format(activity.reward)),'field-'+id,claimed);
+ }).join('');
  $('calendar').textContent=season()+'季 · 第 '+state.day+' 天 · 王国 Lv.'+level()+' · 👑 国王聂萌 · 无敌';
  $('area').textContent='东侧花坡 '+(state.expanded?'已开放':'待开放')+' · 南岸新区 '+(state.southExpanded?'已开放':'待开放');
  $('hint').textContent=message;
@@ -480,6 +489,16 @@ function tileClick(i){
  tell(d.name+'建成了！');
 }
 function act(a){
+ if(a.startsWith('field-')){
+  const id=a.slice(6), activity=fieldActivities[id];
+  state.fieldActivityDay??={};
+  if(activity&&state.fieldActivityDay[id]!==state.day){
+   state.fieldActivityDay[id]=state.day;
+   add(activity.reward);
+   tell(activity.label+'完成，获得 '+format(activity.reward)+'。');
+  }
+  return
+ }
  if(a==='build-affordable'){affordableOnly=!affordableOnly;render();return}
  if(a==='build-repeat'){repeatBuild=!repeatBuild;render();return}
  if(a.startsWith('castle-')){castleAction(a);return}
