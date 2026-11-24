@@ -32,14 +32,20 @@ const key='niemeng-kingdom-v1';
 let state=fresh(),persistent=true;
 try{const saved=localStorage.getItem(key);if(saved)state=JSON.parse(saved)}catch{persistent=false}
 state.people.hero.mood=100;
+state.people.advisor??={bond:0,mood:90,last:0,job:null};
 let selected=null,plan=null,group='生产',person='hero',message='从建造手册选择猫草农场，再点击空地。';
-const people={hero:{name:'国王聂萌',icon:'👑',gift:'treat',line:'苔芽溪谷由我守护。传令下去，让新的工坊开工吧。'},rabbit:{name:'栗栗',icon:'🐰',gift:'grass',line:'我想沿着小路种满花，这样就不会迷路啦！'}};
+const people={hero:{name:'国王聂萌',icon:'👑',gift:'treat',line:'苔芽溪谷由我守护。今天想修五座喷泉。预算？让刘博文想想办法。'},advisor:{name:'宰相刘博文',icon:'📜',gift:'treat',line:'陛下尽管开口。粮仓、工坊和国库，臣都记着呢。'},rabbit:{name:'栗栗',icon:'🐰',gift:'grass',line:'我想沿着小路种满花，这样就不会迷路啦！'}};
 const jobs=[{title:'播下第一颗种子',desc:'建造一座猫草农场。',done:()=>Object.values(state.tiles).some(t=>t.type==='farm'),reward:{gold:20}},
  {title:'溪谷的第一篮收成',desc:'结束今天，第二天收割猫草。',done:()=>state.total.harvest>=1,reward:{gold:25,wood:8}},
  {title:'给栗栗留一扇窗',desc:'建造蘑菇小屋，邀请栗栗入住。',done:()=>!!state.people.rabbit,reward:{gold:25}},
  {title:'把好心情分享出去',desc:'通过问候、送礼或经营取得 12 快乐值。',done:()=>state.stock.joy>=12||state.expanded,reward:{stars:1,gold:25}},
  {title:'越过溪谷的边界',desc:'攒满 60 金币、12 木材和 12 快乐值，开放东侧花坡。',done:()=>state.expanded,reward:{diamonds:1}}];
 const expandCost={gold:60,wood:12};
+const counsel={
+ supplies:{name:'整理国库',reward:{gold:18,wood:4},report:'臣已清点仓库，拨出一笔建造物资。'},
+ festival:{name:'安抚民心',reward:{joy:4},report:'臣替陛下走了一趟溪谷，居民们安心多了。'}
+};
+const workerBonus=id=>id==='advisor'?2:1;
 const $=id=>document.getElementById(id);
 const level=()=>state.xp>=5?3:state.xp>=2?2:1;
 const season=()=>['春','夏','秋','冬'][Math.floor((state.day-1)/7)%4];
@@ -75,14 +81,14 @@ function render(){
  }else if(def){
   let detail=def.yield?(isReady(t)?'产物可以收取。':planted(t)?'下次产出在第 '+t.ready+' 天。':'需要投入 '+format(def.input)+'。'):(t.type==='cottage'?'小屋提供 1 个居民名额。':t.type==='road'?'连接溪谷里的设施。':'相邻生产设施可额外产出 1 份首项产物。');
   const work=Object.entries(state.people).find(([,p])=>p.job===selected);
-  if(work)detail+=' '+people[work[0]].name+'在这里'+(work[0]==='hero'?'督工':'工作')+'。';
+  if(work)detail+=' '+people[work[0]].name+'在此'+(work[0]==='hero'?'督工':'协助生产')+'，每批首项产物 +'+workerBonus(work[0])+'。';
   const crew=t.crew??0;
   if(def.yield)detail+=' 驻派奴仆 '+crew+'/'+maxCrew+' 人，每 '+crewSize+' 人使每批首项产物 +1。';
   const upgrade={gold:25*t.grade,ore:2*t.grade};
   $('inspect').innerHTML='<h3>'+def.icon+' '+def.name+'</h3><p class="muted">'+detail+'</p><div class="actions">'+(def.yield?(isReady(t)?button('收取产物','harvest',false,true):!planted(t)?button('开始制作','start',!can(def.input),true):'')+button(work?'撤回 '+people[work[0]].name:person==='hero'?'国王督工':'委派 '+people[person].name,'assign')+button('派驻 '+crewSize+' 名奴仆','send-crew',idleRetinue()<crewSize||crew>=maxCrew)+(crew?button('召回 '+crewSize+' 名奴仆','recall-crew'):'')+button('升级 · '+format(upgrade),'upgrade',t.grade>=3||!can(upgrade))+(planted(t)&&!isReady(t)?button('加速 · 💎1','speed',!state.stock.diamonds):''):'')+(t.type==='cottage'&&!state.people.rabbit?button('邀请栗栗','invite',false,true):'')+((t.type==='road'||def.group==='装饰')?button('移除','remove'):'')+'</div>';
  }else{ $('inspect').innerHTML='<h3>'+(t?'🏰 王宫':'🧭 地块详情')+'</h3><p class="muted">'+(t?'聂萌的王座设在这里。建造由王室奴仆协助，金币费用减免 20%（向上取整）。':selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击东侧锁格查看拓地条件。')+'</p>'; }
  const p=state.people[person],who=people[person];
- $('residents').innerHTML='<h3>👑 王室与居民</h3><p class="muted">王室奴仆 '+royalRetinue+' 人 · '+idleRetinue()+' 人待命</p><div class="tabs">'+Object.keys(state.people).map(id=>button(people[id].name,'person-'+id,false,id===person)).join('')+'</div><div class="resident"><div class="portrait">'+who.icon+'</div><div><strong>'+who.name+'</strong><p class="muted">羁绊 Lv.'+(1+Math.floor(p.bond/4))+' · 心情 '+p.mood+(person==='hero'?' · 无限体力':' · 体力 '+(p.last===state.day?2:3)+'/3')+'</p></div></div>'+(p.bond>=4?'<p class="muted">「'+who.line+'」</p>':'')+'<div class="actions">'+button('打招呼','greet',p.last===state.day,true)+button('送礼 · '+icons[who.gift]+names[who.gift],'gift',!state.stock[who.gift]||p.giftDay===state.day)+'</div>';
+ $('residents').innerHTML='<h3>👑 王室与居民</h3><p class="muted">王室奴仆 '+royalRetinue+' 人 · '+idleRetinue()+' 人待命</p><div class="tabs">'+Object.keys(state.people).map(id=>button(people[id].name,'person-'+id,false,id===person)).join('')+'</div><div class="resident"><div class="portrait">'+who.icon+'</div><div><strong>'+who.name+'</strong>'+(person==='advisor'?'<p class="muted">忠诚 100% · 王国宰相</p>':'')+'<p class="muted">羁绊 Lv.'+(1+Math.floor(p.bond/4))+' · 心情 '+p.mood+(person==='hero'?' · 无限体力':' · 体力 '+(p.last===state.day?2:3)+'/3')+'</p></div></div>'+((p.bond>=4||person==='advisor')?'<p class="muted">「'+who.line+'」</p>':'')+(person==='advisor'?'<p class="muted">'+(state.counselDay===state.day?'今日奏报已处理。':'每日可采纳一项奏报。')+'</p><div class="actions">'+Object.entries(counsel).map(([id,item])=>button(item.name+' · '+format(item.reward),'counsel-'+id,state.counselDay===state.day,true)).join('')+'</div>':'')+'<div class="actions">'+button('打招呼','greet',p.last===state.day,true)+button('送礼 · '+icons[who.gift]+names[who.gift],'gift',!state.stock[who.gift]||p.giftDay===state.day)+'</div>';
  $('tabs').innerHTML=['生产','居住','商业','装饰'].map(g=>button(g,'group-'+g,false,g===group)).join('')+(plan?button('取消建造','cancel'):'');
  $('choices').innerHTML=Object.entries(catalog).filter(([,d])=>d.group===group).map(([id,d])=>'<button class="choice" data-plan="'+id+'" aria-pressed="'+(id===plan)+'" '+(level()<d.level?'disabled':'')+'><i>'+d.icon+'</i><strong>'+d.name+'</strong><small>'+format(constructionCost(d))+'</small><small>'+(level()<d.level?'王国 Lv.'+d.level+' 解锁':d.yield?'产出 '+format(d.yield):'')+'</small></button>').join('');
 }
@@ -101,6 +107,14 @@ function act(a){
  const t=state.tiles[selected],d=t&&catalog[t.type],p=state.people[person],who=people[person],q=jobs[state.quest];
  if(a.startsWith('group-')){group=a.slice(6);plan=null;render();return}
  if(a.startsWith('person-')){person=a.slice(7);render();return}
+ if(a.startsWith('counsel-')){
+  const item=counsel[a.slice(8)];
+  if(person==='advisor'&&item&&state.counselDay!==state.day){
+   state.counselDay=state.day;add(item.reward);
+   tell('刘博文奏报：'+item.report+' 获得 '+format(item.reward)+'。');
+  }
+  return
+ }
  if(a==='cancel'){plan=null;tell('建造已取消。');return}
  if(a==='quest'&&q?.done()){add(q.reward);state.quest++;state.xp++;tell('已领取手记奖励。');return}
  const week=Math.floor((state.day-1)/7)+1;
@@ -127,12 +141,13 @@ function act(a){
  if(a==='assign'){
   const worker=Object.values(state.people).find(r=>r.job===selected);
   if(worker)worker.job=null;else p.job=selected;
-  tell(worker?'居民已撤回。':who.name+(person==='hero'?'亲自督工':'已开始工作')+'，首项产物 +1。');return
+  tell(worker?'居民已撤回。':who.name+(person==='hero'?'亲自督工':'已开始工作')+'，首项产物 +'+workerBonus(person)+'。');return
  }
  if(a==='upgrade'&&t.grade<3){const cost={gold:25*t.grade,ore:2*t.grade};if(can(cost)){add(cost,-1);t.grade++;tell(d.name+'升到了 '+t.grade+' 级。')}return}
  if(a==='harvest'&&isReady(t)){
   const adjacent=[selected-8,selected+8,...(selected%8?[selected-1]:[]),...(selected%8<7?[selected+1]:[])];
-  const bonus=Number(adjacent.some(i=>['flowers','fountain'].includes(state.tiles[i]?.type)))+Number(Object.values(state.people).some(r=>r.job===selected))+t.grade-1+crew/crewSize;
+  const worker=Object.entries(state.people).find(([,resident])=>resident.job===selected);
+  const bonus=Number(adjacent.some(i=>['flowers','fountain'].includes(state.tiles[i]?.type)))+(worker?workerBonus(worker[0]):0)+t.grade-1+crew/crewSize;
   const output={...d.yield},first=Object.keys(output)[0];output[first]+=bonus;add(output);state.xp++;state.total.harvest++;
   state.weekHarvest??={};state.weekHarvest[week]=(state.weekHarvest[week]??0)+1;
   if(d.input)delete t.ready;else t.ready=state.day+1;
