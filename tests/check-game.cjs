@@ -781,3 +781,8 @@ assert.equal(room('nearbyEntrance()'),'mansion');
 action('walk-interact');
 assert.equal(room('roomType()'),'mansion');
 console.log('E enters underfoot and facing buildings, prioritizes doorways over paths, and opens the mansion');
+assert.match(room('actorMarkup()'),/actor-name-tag[^>]*>聂萌<\/span>/);
+assert.match(room('actorMarkup()'),/actor-name-tag[^>]*>刘博文<\/span>/);
+assert.equal(room("actorNameTag('cat')"),'');
+assert.match(elements.get('henu-room').innerHTML,/actor-name-tag[^>]*>聂萌<\/span>/);
+console.log('Floating player and advisor names follow map and indoor sprites');
