@@ -13,6 +13,14 @@ function validSave(save) {
     Object.values(save.stock).every(amount => Number.isFinite(amount) && amount >= 0);
 }
 
+function safeFields(value, depth = 0) {
+  if (depth > 24) return false;
+  if (typeof value === 'string') return /^[\p{L}\p{N} _.,:！!，。·：；、？（）()/+-]*$/u.test(value);
+  if (!value || typeof value !== 'object') return true;
+  return Object.entries(value).every(([key, field]) =>
+    /^[a-zA-Z0-9_-]+$/.test(key) && !['__proto__','constructor','prototype'].includes(key) && safeFields(field, depth + 1));
+}
+
 async function readSave(db, userId) {
   const row = await db.prepare('SELECT revision, payload, updated_at FROM kingdom_saves WHERE user_id = ?').bind(userId).first();
   return row ? { revision: row.revision, save: JSON.parse(row.payload), updatedAt: row.updated_at } :
@@ -20,10 +28,21 @@ async function readSave(db, userId) {
 }
 
 async function saveRequest(request, env) {
-  const userId = request.headers.get('oai-authenticated-user-id');
-  if (!userId) return json({ error: 'sign_in_required' }, 401);
+  const viewer = request.headers.get('oai-authenticated-user-id');
+  const owner = !!viewer && !!env.KINGDOM_OWNER_EMAIL &&
+    request.headers.get('oai-authenticated-user-email')?.toLowerCase() === env.KINGDOM_OWNER_EMAIL.toLowerCase();
+  const userId = 'shared:kingdom:v1';
   if (!env.DB) return json({ error: 'storage_unavailable' }, 503);
-  if (request.method === 'GET') return json(await readSave(env.DB, userId));
+  if (request.method === 'GET') {
+    let shared = await readSave(env.DB, userId);
+    if (!shared.save && owner) {
+      await env.DB.prepare('INSERT OR IGNORE INTO kingdom_saves (user_id, revision, payload, updated_at) SELECT ?, 1, payload, updated_at FROM kingdom_saves WHERE user_id = ?').bind(userId, viewer).run();
+      shared = await readSave(env.DB, userId);
+    }
+    if (!shared.save && !owner) return json({ error: 'awaiting_owner' }, 503);
+    return json({ ...shared, canWrite: !!viewer });
+  }
+  if (!viewer) return json({ error: 'sign_in_required' }, 401);
   if (request.method !== 'PUT') return json({ error: 'method_not_allowed' }, 405);
 
   const origin = request.headers.get('Origin');
@@ -42,10 +61,12 @@ async function saveRequest(request, env) {
   let body;
   try { body = JSON.parse(new TextDecoder().decode(bytes)); }
   catch { return json({ error: 'invalid_json' }, 400); }
-  if (!Number.isSafeInteger(body?.revision) || body.revision < 0 || !validSave(body.save)) {
+  if (body?.world !== 'shared-v1' || !Number.isSafeInteger(body?.revision) || body.revision < 0 || !validSave(body.save)) {
     return json({ error: 'invalid_save' }, 400);
   }
 
+  if (!body.revision && !owner) return json({ error: 'owner_initialization_required' }, 403);
+  if (!safeFields(body.save)) return json({ error: 'invalid_fields' }, 400);
   const updatedAt = new Date().toISOString();
   const payload = JSON.stringify(body.save);
   const change = body.revision === 0

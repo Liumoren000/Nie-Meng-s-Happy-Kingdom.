@@ -21,8 +21,9 @@ const key = 'niemeng-kingdom-v1';
 function fetchFor(userId) {
   return (path, options = {}) => {
     const headers = new Headers(options.headers);
+    if(userId==='main-user')headers.set('oai-authenticated-user-email','owner@example.test');
     if (userId) headers.set('oai-authenticated-user-id', userId);
-    return worker.fetch(new Request(new URL(path, endpoint), { ...options, headers }), { DB });
+    return worker.fetch(new Request(new URL(path, endpoint), { ...options, headers }), { DB, KINGDOM_OWNER_EMAIL:"owner@example.test" });
   };
 }
 function device(entries, cloud, id = 'main-user') {
@@ -50,15 +51,15 @@ async function settled(device) {
 
 const offline = device([], false);
 offline.run("state.stock.gold=300;save()");
-assert.equal((await fetchFor(null)('/api/save')).status, 401);
+assert.equal((await fetchFor(null)('/api/save')).status, 503);
 const initial = device(offline.storage, true);
 await settled(initial);
 assert.equal(initial.run('cloud.revision'), 1);
-const second = device([], true);
+const second = device([], true,'another-builder');
 await settled(second);
 assert.equal(second.run('state.stock.gold'), 300);
 assert.equal(second.run('cloud.revision'), 1);
-assert.equal((await (await fetchFor('different-user')('/api/save')).json()).save, null);
+assert.equal((await (await fetchFor('different-user')('/api/save')).json()).save.stock.gold, 300);
 
 initial.run("state.stock.gold=350;save()");
 await initial.run('syncCloudSave()');
@@ -79,8 +80,30 @@ assert.equal(initial.run('cloud.revision'), 3);
 
 const legacyConflict = device(offline.storage, true);
 await settled(legacyConflict);
-assert.equal(legacyConflict.run('cloud.conflict.revision'), 3);
-legacyConflict.run('resolveCloudChoice(true)');
-await legacyConflict.run('syncCloudSave()');
-assert.equal((await (await fetchFor('main-user')('/api/save')).json()).save.stock.gold, 300);
-console.log('Cloud API authentication, migration, cross-device updates, compare-and-swap and conflict backup passed');
+assert.equal(legacyConflict.run('state.stock.gold'),400);
+assert.equal((await (await fetchFor(null)('/api/save')).json()).save.stock.gold,400);
+assert.equal((await fetchFor(null)('/api/save',{method:'PUT'})).status,401);
+const visitor = device([], true, null);
+await settled(visitor);
+visitor.run("state.actorPositions={hero:10}; state.dayClock-=gameDayLength; refreshDayClock()");
+const visitorDay = visitor.run('state.day');
+await visitor.run('syncCloudSave()');
+assert.equal(visitor.run('state.day'),visitorDay);
+second.run("state.stock.gold=410;save()");
+await second.run('syncCloudSave()');
+await visitor.run('syncCloudSave()');
+assert.equal(visitor.run('actorPosition("hero")'),10);
+second.run("act('map-time-3')");
+await second.run('syncCloudSave()');
+await initial.run('syncCloudSave()');
+assert.equal(initial.run('localGameTime().phase'),3);
+db.prepare("DELETE FROM kingdom_saves WHERE user_id=?").run('shared:kingdom:v1');
+db.prepare("INSERT INTO kingdom_saves VALUES (?,7,?,?)").run('main-user',initial.run('JSON.stringify(state)'),new Date().toISOString());
+assert.equal((await fetchFor('another-builder')('/api/save')).status,503);
+assert.equal((await (await fetchFor('main-user')('/api/save')).json()).save.stock.gold,410);
+const reportDevice=device([],true);
+await settled(reportDevice);
+reportDevice.run("state.castle={...state.castle,report:'西翼防守失利（8 / 10），损失 10 金币。'};save()");
+await reportDevice.run('syncCloudSave()');
+assert.equal((await (await fetchFor(null)('/api/save')).json()).save.castle.report,'西翼防守失利（8 / 10），损失 10 金币。');
+console.log('Owner migration, shared reads, multi-user saves and revision conflict protection passed');

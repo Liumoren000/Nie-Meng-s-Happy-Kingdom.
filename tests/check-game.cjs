@@ -229,7 +229,7 @@ vm.runInContext(code,progressReload);
 assert.equal(vm.runInContext('batchProgress(state.tiles[9])',progressReload),50);
 simulatedTime+=30_000;
 tile(9);
-assert.match(elements.get('inspect').innerHTML,/可收取/);
+assert.match(elements.get('inspect').innerHTML,/自动入库/);
 action('harvest');
 assert.equal(vm.runInContext('state.stock.ore',progressReload),5);
 assert.equal(vm.runInContext('batchProgress(state.tiles[9])',progressReload),0);
@@ -555,7 +555,7 @@ assert.equal(roadState('roadNetwork().has(12)'),true);
 action('building-remove');
 action('building-confirm-remove');
 assert.equal(roadState('roadNetwork().has(12)'),false);
-assert.match(html,/data-light="3"\] \.lane-lamp/);
+assert.match(html,/\.lane-lamp:after\{opacity:var\(--lamp-level/);
 const missed=roadState('{const prior=state.tiles;const gaps=[];for(const {id} of island){if(walkable(id)&&id!==34){state.tiles={[id]:{type:"farm",grade:1}};if(!roadNetwork().has(id))gaps.push(id)}}state.tiles=prior;gaps}');
 assert.deepEqual([...missed],[]);
 console.log('Road routes to every currently buildable tile, moving, demolition and night lamps passed');
@@ -592,7 +592,7 @@ const stopped=motion("actorPosition('hero')");
 walkingNow+=900;
 motion('tickMotion()');
 assert.equal(motion("actorPosition('hero')"),stopped);
-assert.equal(motion('Object.keys(animalPace).length'),7);
+assert.equal(motion('Object.keys(animalPace).length'),12);
 assert.ok(motion('animalPace.dog.stride<animalPace.cow.stride'));
 assert.match(html,/actor-walking/);
 assert.match(html,/data-face=north/);
@@ -665,10 +665,10 @@ vm.runInContext(code,town);
 const townState=expression=>vm.runInContext(expression,town);
 assert.equal(townState('island.length'),1084);
 assert.equal(townState('radius'),19);
-assert.equal(townState('districtMarkers.size'),4);
-assert.ok(townState('[...districtMarkers.keys()].every(id=>id>=271&&walkable(id))'));
-assert.match(elements.get('land-grid').innerHTML,/settlement settlement-village[^]*?pixel-cottage[^]*?西林村/);
-assert.match(elements.get('land-grid').innerHTML,/settlement settlement-town[^]*?pixel-inn[^]*?南湾集镇/);
+assert.equal(townState('districtMarkers.size'),5);
+assert.ok(townState('[...districtMarkers.keys()].every(id=>(id>=271||id===eiffelTile)&&walkable(id))'));
+assert.match(elements.get('land-grid').innerHTML,/settlement settlement-village[^]*?西林村/);
+assert.match(elements.get('land-grid').innerHTML,/settlement settlement-town[^]*?南湾集镇/);
 townState("Object.assign(state.stock,{gold:900,wood:140,ore:100,produce:3,grass:20});state.xp=5");
 build('glasshouse',9);
 build('bread',11);action('start');
@@ -831,3 +831,50 @@ assert.equal(room('selected'),13);
 action('find-landmark-9');
 assert.equal(room('selected'),9);
 console.log('Guide locates roaming animals and existing landmarks');
+
+room("state.tiles={9:{type:'shop',grade:1,ready:state.day},11:{type:'bakery',grade:1}};state.stock.grass=2;state.unlimitedResources=false");
+const beforeHarvest=room('state.total.harvest');
+room('runProduction(Date.now())');
+assert.equal(room('state.total.harvest'),beforeHarvest+1);
+assert.equal(room('state.stock.grass'),0);
+assert.equal(room('planted(state.tiles[11])'),true);
+room('state.tiles[11].ready=state.day;runProduction(Date.now());runProduction(Date.now())');
+assert.equal(room('state.total.harvest'),beforeHarvest+2);
+assert.equal(room('planted(state.tiles[11])'),false);
+room('state.stock.grass=2;runProduction(Date.now())');
+assert.equal(room('planted(state.tiles[11])'),true);
+console.log('Automatic collection, ingredient consumption, waiting and resumption passed');
+
+const sunlight = room("(()=>{const p=$('map-panel');const old=p.style;const values={};p.style={setProperty:(key,value)=>values[key]=parseFloat(value)};const samples=[360,390,720,1080,1320].map(minutes=>{updateSunlight(minutes);return {...values}});p.style=old;return samples})()");
+assert.ok(sunlight[0]['--lamp-level']>sunlight[1]['--lamp-level']);
+assert.ok(sunlight[0]['--shadow-x']>0&&sunlight[3]['--shadow-x']<0);
+assert.equal(sunlight[2]['--night-shade'],0);
+assert.equal(sunlight[4]['--lamp-level'],1);
+console.log('Continuous sunlight, moving shadows and gradual lamps passed');
+
+assert.ok(room('harborCoast.q===-radius&&!water(harborTile)&&seaRoutes.every(({x,from,to})=>island.every(tile=>tile.r<from||tile.r>to||Math.abs(x-(tile.q+Math.floor(tile.r/2)))>1))'));
+assert.ok(room('groundElevation(northernPeak)>500'));
+assert.match(elements.get('land-grid').innerHTML,/class="ocean-liner"/);
+assert.match(elements.get('land-grid').innerHTML,/class="northern-peak"/);
+
+assert.equal(room("animals.gull.home"),room('harborTile'));
+for(const animal of ['tiger','gnu','rhino','elephant','gull']){
+ assert.match(elements.get('land-grid').innerHTML,new RegExp('pixel-actor-'+animal));
+}
+
+assert.equal((room('offshoreMarkup(0)').match(/ocean-liner/g)||[]).length,6);
+assert.equal((room('offshoreMarkup(0)').match(/gull-flock/g)||[]).length,3);
+
+assert.match(elements.get('land-grid').innerHTML,/class="eiffel-scene"/);
+assert.equal(room('eiffelGround.size'),4);
+assert.ok(room('[...eiffelGround].every(id=>walkable(id)&&!canZoneTile(id))'));
+room("tileClick([...eiffelGround].at(-1))");
+assert.equal(room('selected'),room('eiffelTile'));
+
+assert.equal(room("Object.hasOwn(districts,'park')"),false);
+assert.equal(room('canZoneTile(hexes.get(hexKey(6,-11)))'),true);
+
+for(const type of room('parkRideNames')){
+ room("state.tiles[9]={type:"+JSON.stringify(type)+",grade:1};render()");
+ assert.match(elements.get('land-grid').innerHTML,new RegExp('ride-standalone '+type));
+}
