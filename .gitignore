@@ -1,3 +1,5 @@
 art-build/
 .DS_Store
 Thumbs.db
+
+dist/server/

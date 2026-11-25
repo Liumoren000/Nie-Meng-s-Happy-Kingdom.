@@ -219,13 +219,15 @@ body.game-stage{overflow:hidden;background:#2b483d}.game-stage>header,.game-stag
 .path-arm.path-stairs{z-index:1;background:repeating-linear-gradient(90deg,#b39a75 0 4px,#e4caa2 4px 6px,#806448 6px 7px);box-shadow:inset 0 1px #f0ce94,inset 0 -1px #654e3e}
 .path-north.path-stairs,.path-south.path-stairs{background:repeating-linear-gradient(#b39a75 0 4px,#e4caa2 4px 6px,#806448 6px 7px);box-shadow:inset 1px 0 #e3b783,inset -1px 0 #654e3e}
 .path-stairs:after{display:none}
+
+.cloud-save-conflict{position:absolute;z-index:14;top:70px;left:50%;transform:translateX(-50%);width:min(365px,calc(100vw - 30px));padding:13px 15px;background:#f9ecd0;border:3px solid #957246;border-radius:6px;box-shadow:0 4px 18px #263b4277}.cloud-save-conflict p,.cloud-save-status{font-size:13px;margin-top:4px}.cloud-save-status{color:#ead6a7;margin-bottom:8px}
 </style></head><body>
 <header><h1>🌿 聂萌的快乐王国</h1><div class="header-resources"><div id="resources" class="resources"></div><button type="button" class="button unlimited-toggle" id="unlimited-toggle" data-action="toggle-unlimited" aria-pressed="false">∞ 无限资源</button></div></header>
 <main><div class="heading"><div><h2>不文明城市</h2><p id="calendar"></p></div><button class="button primary" id="sleep">☀️ 结束今天</button></div>
 <nav class="realm-nav" aria-label="王国工作区">
 <a href="#map" data-view="map" aria-current="page">🗺️ 王国地图</a><a href="#build" data-view="build">🛠️ 建造手册</a><a href="#throne" data-view="throne">👑 王座厅</a>
 </nav>
-<div class="layout workspace" id="land-workspace"><section class="panel map-panel" id="map-panel"><div id="stage-hud" class="stage-hud"></div><div class="map-top"><span>王国地图</span><span><a href="#build">打开建造手册</a> · <span id="area"></span></span></div><div class="map-supplies" id="map-supplies" aria-label="每日免费资源"></div><div id="climate-panel" class="climate-panel"></div><div id="actor-toolbar" class="actor-toolbar" aria-label="地图角色操作"></div><div class="landscape island-view" id="island-view" aria-label="六边形岛屿方格地图"><div class="map" id="land-grid" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
+<div class="layout workspace" id="land-workspace"><section class="panel map-panel" id="map-panel"><div id="stage-hud" class="stage-hud"></div><div class="cloud-save-conflict" id="cloud-save-conflict" hidden></div><div class="map-top"><span>王国地图</span><span><a href="#build">打开建造手册</a> · <span id="area"></span></span></div><div class="map-supplies" id="map-supplies" aria-label="每日免费资源"></div><div id="climate-panel" class="climate-panel"></div><div id="actor-toolbar" class="actor-toolbar" aria-label="地图角色操作"></div><div class="landscape island-view" id="island-view" aria-label="六边形岛屿方格地图"><div class="map" id="land-grid" aria-label="王国地图"></div></div><p class="hint" id="hint" role="status"></p></section>
 <aside class="side"><section class="panel card quest" id="quest"></section><section class="panel card" id="inspect"></section><section class="panel card" id="residents"></section></aside>
 <section class="panel catalog" id="catalog-panel" hidden><div class="catalog-head"><h3>建造手册</h3><span class="muted">王室减免已计入建造费用</span><div class="tabs" id="tabs"></div></div><div id="build-controls" class="build-controls"></div><p id="build-plan" class="build-plan"></p><div class="choices" id="choices"></div></section>
 </div>
@@ -313,8 +315,114 @@ function renderWorkspace(){
   }
  }
 }
-let state=fresh(),persistent=true;
-try{const saved=localStorage.getItem(key);if(saved)state=JSON.parse(saved)}catch{persistent=false}
+let state=fresh(),persistent=true, hadLocalSave=false;
+const cloudEnabled=typeof window!=='undefined'&&window.__KINGDOM_CLOUD__===true;
+const cloudMetaKey=key+'-cloud';
+let previousCloud={};
+try{
+ const saved=localStorage.getItem(key);
+ if(saved){state=JSON.parse(saved);hadLocalSave=true;}
+ if(cloudEnabled){
+  previousCloud=JSON.parse(localStorage.getItem(cloudMetaKey)||'{}');
+  if(previousCloud?.automaticSeed)hadLocalSave=false;
+ }
+}catch{persistent=false}
+const cloud={
+ revision:Number.isSafeInteger(previousCloud?.revision)?previousCloud.revision:null,
+ dirty:previousCloud?.dirty===true, serial:0, ready:false, busy:false, timer:null, conflict:null,
+ status:'正在连接云存档…'
+};
+function persistCloudMeta(){
+ try{localStorage.setItem(cloudMetaKey,JSON.stringify({revision:cloud.revision,dirty:cloud.dirty,automaticSeed:!hadLocalSave&&!cloud.dirty&&cloud.revision===null}));}catch{}
+}
+function queueCloudSync(delay=900){
+ if(!cloudEnabled||cloud.conflict||cloud.timer!==null)return;
+ cloud.timer=setTimeout(()=>{cloud.timer=null;syncCloudSave();},delay);
+}
+function drawCloudStatus(){
+ if(!cloudEnabled)return;
+ const status=$('stage-hud').querySelector('[data-cloud-save-status]');
+ if(status)status.textContent=cloud.status;
+ const dialog=$('cloud-save-conflict');
+ dialog.hidden=!cloud.conflict;
+ if(!cloud.conflict){dialog.innerHTML='';return;}
+ dialog.innerHTML='<h3>存档在两台设备上都有修改</h3><p>请选择要继续的进度。本机版本会留一份备份。</p><div class="actions">'+
+ button('使用云端进度','cloud-keep-remote',false,true)+button('使用本机进度','cloud-keep-local')+'</div>';
+}
+function cloudConflict(remote){
+ cloud.conflict=remote;
+ cloud.status='存档有冲突，等待选择';
+ drawCloudStatus();
+}
+function adoptCloud(remote){
+ state=remote.save;
+ cloud.revision=remote.revision;
+ cloud.dirty=false;
+ cloud.status='云存档已同步';
+ selected=null;plan=null;movingBuilding=null;demolishingBuilding=null;
+ if(!state.people[person])person='hero';
+ persistCloudMeta();
+ save(false);
+ render();
+}
+async function syncCloudSave(){
+ if(!cloudEnabled||cloud.busy||cloud.conflict)return;
+ cloud.busy=true;
+ try{
+  if(!cloud.ready||!cloud.dirty){
+   const response=await fetch('/api/save',{cache:'no-store',signal:AbortSignal.timeout(8000)});
+   if(!response.ok)throw new Error('read');
+   const remote=await response.json();
+   if(!cloud.ready){
+    cloud.ready=true;
+    if(!remote.save){
+     cloud.revision=0;
+     cloud.dirty=hadLocalSave||cloud.dirty;
+    }else if((cloud.revision===null&&hadLocalSave)||cloud.dirty){
+     if(JSON.stringify(remote.save)===JSON.stringify(state))adoptCloud(remote);
+     else if(cloud.revision!==remote.revision){cloudConflict(remote);return;}
+    }else adoptCloud(remote);
+    persistCloudMeta();
+   }else if(remote.save&&remote.revision>cloud.revision){
+    if(cloud.dirty){cloudConflict(remote);return;}
+    adoptCloud(remote);
+   }
+  }
+  if(cloud.dirty){
+   const serial=cloud.serial;
+   const response=await fetch('/api/save',{
+    method:'PUT',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({revision:cloud.revision,save:state}),
+    signal:AbortSignal.timeout(8000)
+   });
+   if(response.status===409){cloudConflict(await response.json());return;}
+   if(!response.ok)throw new Error('write');
+   const remote=await response.json();
+   cloud.revision=remote.revision;
+   cloud.dirty=serial!==cloud.serial;
+   persistCloudMeta();
+  }
+  cloud.status='云存档已同步';
+ }catch{
+  cloud.status='云端暂不可用，本机继续保存';
+ }finally{
+  cloud.busy=false;
+  drawCloudStatus();
+ }
+}
+function resolveCloudChoice(preferLocal){
+ if(!cloud.conflict)return;
+ const remote=cloud.conflict;
+ try{localStorage.setItem(key+'-conflict-backup',JSON.stringify(state));}catch{}
+ cloud.conflict=null;
+ if(!preferLocal&&remote.save){adoptCloud(remote);return;}
+ cloud.revision=remote.revision;
+ cloud.dirty=true;
+ cloud.status='正在上传本机进度…';
+ persistCloudMeta();
+ drawCloudStatus();
+ queueCloudSync(0);
+}
 state.stock.happiness??=0;
 for(const id of ['produce','mushroom','shell'])state.stock[id]??=0;
 state.crops??={};
@@ -451,6 +559,7 @@ function localGameTime(now=Date.now()){
  return {phase,label:String(hour).padStart(2,'0')+':'+String(minute).padStart(2,'0'),days:Math.floor(elapsed/gameDayLength)};
 }
 function refreshDayClock(now=Date.now()){
+ if(cloudEnabled&&!cloud.ready)return false;
  const time=localGameTime(now);
  if(time.days){
   state.dayClock+=time.days*gameDayLength;
@@ -895,7 +1004,7 @@ function renderStageHud(){
  '<div class="stage-hotbar"><a href="#build" class="button"><kbd>B</kbd> 建造</a>'+button('<kbd>E</kbd> '+(movingBuilding!==null?'移动到此':'互动'),'walk-interact')+
  (movingBuilding!==null?button('取消移动','building-cancel'):button(walkingActor()==='hero'?'👑 聂萌':'📜 刘博文','stage-switch'))+'<a class="button" href="#throne">王座厅</a></div>'+
  '<div class="stage-dpad">'+['→','↓','←','↑'].map((arrow,index)=>button(arrow,'walk-'+index)).join('')+'</div>'+
- (stageMenu?'<div class="stage-menu"><h3>王国手记</h3><div class="stage-wallet">'+Object.keys(names).map(id=>'<span title="'+names[id]+'">'+icons[id]+' '+(state.unlimitedResources?'∞':state.stock[id])+'</span>').join('')+'</div>'+
+ (stageMenu?'<div class="stage-menu"><h3>王国手记</h3>'+(cloudEnabled?'<p class="cloud-save-status" data-cloud-save-status>'+cloud.status+'</p>':'')+'<div class="stage-wallet">'+Object.keys(names).map(id=>'<span title="'+names[id]+'">'+icons[id]+' '+(state.unlimitedResources?'∞':state.stock[id])+'</span>').join('')+'</div>'+
  '<div class="actions">'+button('∞ 无限资源 '+(state.unlimitedResources?'开':'关'),'toggle-unlimited')+button('寻找采集点','life-locate')+button('寿喜锅夜市','life-locate-market')+button(exploreMode?'查看全岛':'跟随角色','stage-overview')+
  '<a class="button" href="#throne">王座厅</a><a class="button" href="#residents">居民</a><a class="button" href="#journal">任务</a><a class="button" href="#climate">地形与街区</a></div><div class="actions">'+
  Object.entries(fieldActivities).map(([id,item])=>button(item.label,'field-'+id,state.fieldActivityDay?.[id]===state.day)).join('')+
@@ -998,10 +1107,11 @@ function recordReport(kind,report){
  entries.unshift({day:state.day,report});
  if(entries.length>6)entries.pop();
 }
+function escapeHtml(text){return String(text).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[c])}
 function reportList(kind,title){
  const entries=state.reports?.[kind]??[];
  return '<section class="castle-card report-area"><h3>'+title+'</h3>'+
- (entries.length?'<ol class="report-list">'+entries.map(entry=>'<li><time>第 '+entry.day+' 天</time>'+entry.report+'</li>').join('')+'</ol>':'<p class="muted">暂无记录。</p>')+'</section>';
+ (entries.length?'<ol class="report-list">'+entries.map(entry=>'<li><time>第 '+entry.day+' 天</time>'+escapeHtml(entry.report)+'</li>').join('')+'</ol>':'<p class="muted">暂无记录。</p>')+'</section>';
 }
 const anySpellToday=()=>state.royalSpell?.day===state.day;
 function royalJudgment(){
@@ -1165,8 +1275,15 @@ function refreshWorkProgress(){
   detail.querySelector('label span').textContent=value+'%';
  }
 }
-function save(){try{localStorage.setItem(key,JSON.stringify(state));persistent=true}catch{persistent=false}}
-function tell(text){message=text;stageToastUntil=Date.now()+4200;save();render()}
+function save(sync=true){
+ try{localStorage.setItem(key,JSON.stringify(state));persistent=true}catch{persistent=false}
+ if(cloudEnabled&&sync){
+  cloud.dirty=true;cloud.serial++;
+  persistCloudMeta();
+  queueCloudSync();
+ }
+}
+function tell(text,sync=true){message=text;stageToastUntil=Date.now()+4200;save(sync);render()}
 function button(label,action,disabled=false,primary=false){return '<button class="button '+(primary?'primary':'')+'" data-action="'+action+'" '+(disabled?'disabled':'')+'>'+label+'</button>'}
 function laborControls(index){
  const {royalSite,mode,morale}=state.labor;
@@ -1185,6 +1302,7 @@ function render(){
  renderClimate();
  renderActorToolbar();
  renderStageHud();
+ drawCloudStatus();
  progressReadySignature=Object.entries(state.tiles).filter(([,t])=>isReady(t)).map(([i])=>i).join(',');
  renderRoyalPanel();
  $('resources').innerHTML=Object.keys(names).map(k=>'<span title="'+names[k]+'">'+icons[k]+' '+(state.unlimitedResources?'∞':state.stock[k])+'</span>').join('');
@@ -1306,6 +1424,7 @@ function tileClick(i){
  tell(d.name+'建成了！');
 }
 function act(a){
+ if(a==='cloud-keep-remote'||a==='cloud-keep-local'){resolveCloudChoice(a==='cloud-keep-local');return}
  if(a==='terrain-chop'){
   if(terrainObstacle(selected)==='tree'&&!locked(selected)){
    state.clearedTerrain[selected]=true;add({wood:8});
@@ -1516,7 +1635,7 @@ function advanceDay(days=1){
   state.day+=days;
   adjustMorale(4*days);
   if(state.people.rabbit)state.people.rabbit.mood=Math.max(35,state.people.rabbit.mood-2*days);
-  tell('新的一天开始了，去看看有哪些产物可以收取。');
+  tell('新的一天开始了，去看看有哪些产物可以收取。',false);
 }
 document.addEventListener('click',e=>{
  const b=e.target.closest('button');if(!b||b.disabled)return;
@@ -1536,7 +1655,7 @@ for(const t of Object.values(state.tiles)){
 const removedOldPalace=state.tiles[10]?.type==='hall';
 if(removedOldPalace)delete state.tiles[10];
 const terrainMigrated=buildTerrainCover();
-if(installCitadel()||terrainMigrated||removedOldPalace||batchesMigrated||newClimate||newClock)save();
+if(installCitadel()||terrainMigrated||removedOldPalace||batchesMigrated||newClimate||newClock)save(false);
 if(typeof location!=='undefined'){
  exploreMode=true;
  document.addEventListener('fullscreenchange',()=>{renderClimate();focusCamera();});
@@ -1551,5 +1670,6 @@ if(typeof location!=='undefined'){
  });
  syncWorkspace();
 }else render();
+if(cloudEnabled){if(!hadLocalSave&&cloud.revision===null)persistCloudMeta();syncCloudSave();setInterval(syncCloudSave,6000);window.addEventListener('online',syncCloudSave);document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncCloudSave();});}
 if(typeof setInterval==='function'){refreshDayClock();setInterval(refreshWorkProgress,500);setInterval(tickMotion,38);}
 </script></body></html>
