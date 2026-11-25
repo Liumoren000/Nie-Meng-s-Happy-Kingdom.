@@ -1054,12 +1054,27 @@ function moveWalker(direction){
  renderStageHud();
  focusCamera();
 }
+function nearbyEntrance(){
+ const foot=actorPosition(walkingActor()), face=facingTile();
+ const own=state.tiles[foot]?.type, ahead=state.tiles[face]?.type;
+ if(own&&Object.hasOwn(roomScenes,own)&&catalog[own]?.group!=='装饰')return foot;
+ if(citadelGround.has(face))return 'mansion';
+ if(ahead&&Object.hasOwn(roomScenes,ahead))return face;
+ if(own&&Object.hasOwn(roomScenes,own))return foot;
+ return null;
+}
 function interactFacing(){
  if(!isExploring())return;
+ if(!plan&&movingBuilding===null){
+  const entrance=nearbyEntrance();
+  if(entrance!==null){
+   heldMoveKeys.clear();
+   openBuildingRoom(entrance);
+   return;
+  }
+ }
  const id=facingTile();
- if(id===undefined)return;
- if(!plan&&movingBuilding===null)selected=id;
- tileClick(id);
+ if(id!==undefined)tileClick(id);
 }
 function onExploreKey(event){
  if(event.key==='Escape'){
@@ -1149,7 +1164,7 @@ function renderStageHud(){
  $('stage-hud').innerHTML='<div class="stage-top"><div class="stage-date"><strong>'+season()+'季 · 第 '+state.day+' 天</strong><small><span id="stage-clock">'+dayPhases[time.phase]+' '+time.label+'</span> · '+weatherFor(island[actorPosition(walkingActor())].biome)+'</small></div>'+
  '<div class="stage-top-right"><div class="stage-date stage-location" aria-label="城市和地形"><strong>'+cityName+'</strong><small>'+terrainIcon+' '+terrainName+'</small></div>'+
  (panel?'<a href="#explore" class="button stage-close">关闭'+panel+' ×</a>':button(stageMenu?'关闭菜单':'☰','stage-menu',false,true))+'</div></div>'+
- '<div class="stage-hotbar"><a href="#build" class="button"><kbd>B</kbd> 建造</a>'+button('<kbd>E</kbd> '+(movingBuilding!==null?'移动到此':'互动'),'walk-interact')+
+ '<div class="stage-hotbar"><a href="#build" class="button"><kbd>B</kbd> 建造</a>'+button('<kbd>E</kbd> '+(movingBuilding!==null?'移动到此':plan?'摆放':isExploring()&&nearbyEntrance()!==null?'进门':'互动'),'walk-interact')+
  (movingBuilding!==null?button('取消移动','building-cancel'):button(walkingActor()==='hero'?'👑 聂萌':'📜 刘博文','stage-switch'))+'<a class="button" href="#throne">王座厅</a></div>'+
  '<div class="stage-dpad">'+['→','↓','←','↑'].map((arrow,index)=>button(arrow,'walk-'+index)).join('')+'</div>'+
  (stageMenu?'<div class="stage-menu"><h3>王国手记</h3>'+(cloudEnabled?'<p class="cloud-save-status" data-cloud-save-status>'+cloud.status+'</p>':'')+'<div class="stage-wallet">'+Object.keys(names).map(id=>'<span title="'+names[id]+'">'+icons[id]+' '+(state.unlimitedResources?'∞':state.stock[id])+'</span>').join('')+'</div>'+
@@ -1171,8 +1186,8 @@ function renderActorToolbar(){
  '<p class="muted">点击动物可以和它互动。</p>')+
  (isExploring()?'<div class="walk-controls" aria-label="探索与建造控制"><div class="actions">'+
  ['→','↓','←','↑'].map((arrow,i)=>button(arrow,'walk-'+i)).join('')+
- button(plan?'摆放 '+catalog[plan].name:'查看前方','walk-interact',false,true)+'</div>'+
- '<p class="muted">方向键 / WASD 移动 · E '+(plan?'摆放所选建筑':'查看前方地块')+' · B 打开建造手册</p></div>':'');
+ button(plan?'摆放 '+catalog[plan].name:nearbyEntrance()!==null?'进门':'查看前方','walk-interact',false,true)+'</div>'+
+ '<p class="muted">方向键 / WASD 移动 · E '+(plan?'摆放所选建筑':'进门 / 查看前方地块')+' · B 打开建造手册</p></div>':'');
 }
 const weatherTone={
  '晴朗':'sun','晴间云':'cloud','海风':'wind','大风':'wind','雷雨':'storm','细雨':'rain','阴雨':'rain','阵雨':'rain','季风暴雨':'rain','暴雨':'rain','短时阵雨':'rain',
@@ -1522,7 +1537,7 @@ function render(){
   $('inspect').innerHTML='<h3>🧭 地块详情</h3><p class="muted">'+(selected!==null&&water(selected)?'溪水流过这里，选择草地建造。':'点击地图上的建筑查看产出，点击地图上的锁格查看拓地条件。')+'</p>';
  }
  const inspect=$('inspect');
- if(def&&Object.hasOwn(roomScenes,t.type))inspect.innerHTML+='<div class="actions">'+button((outdoorRooms.has(t.type)?'进入场地':'进入')+def.name,'room-enter',false,true)+'</div>';
+ if(def&&Object.hasOwn(roomScenes,t.type))inspect.innerHTML+='<p class="muted">走到这里或站在旁边面向建筑，按 E 进入。</p>';
  if(def)inspect.innerHTML+=renderNightMarket(t.type);
  const openDetails=(workspace==='map'||workspace==='build')&&selected!==null;
  inspect.className='panel card'+(openDetails?' map-detail-drawer':'');
@@ -1574,7 +1589,6 @@ function tileClick(i){
  tell(d.name+'建成了！');
 }
 function act(a){
- if(a==='room-enter'&&Object.hasOwn(roomScenes,state.tiles[selected]?.type)){openBuildingRoom(selected);return}
  if(a==='room-enter-mansion'){openBuildingRoom('mansion');return}
  if(workspace==='interior'){
   if(a==='room-open-menu'||a==='room-close-menu'){roomMenu=a==='room-open-menu';render();return}

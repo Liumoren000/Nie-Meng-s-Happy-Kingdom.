@@ -737,8 +737,10 @@ room("setWorkspace('interior')");
 assert.equal(room('workspace'),'map');
 room("state.xp=5;Object.assign(state.stock,{gold:500,wood:90,ore:30,grass:6})");
 build('henu',9);
-assert.match(elements.get('inspect').innerHTML,/进入禾牛社/);
-action('room-enter');
+assert.match(elements.get('inspect').innerHTML,/按 E 进入/);
+action('toggle-explore');
+room("state.actorPositions={hero:9}");
+action('walk-interact');
 assert.equal(room('workspace'),'interior');
 assert.equal(elements.get('henu-room').hidden,false);
 assert.equal(room('roomCell(5,1)'), 'C');
@@ -770,3 +772,12 @@ for(const type of [...room('Object.keys(catalog)'), 'mansion']){
   room("setWorkspace('map')");
 }
 console.log('All buildable facilities and mansion have enterable rooms, artwork and reachable service areas');
+room("state.actorPositions={hero:10};state.tiles[10]={type:'road',grade:1};state.tiles[9]={type:'henu',grade:1};facing=2");
+assert.equal(room('nearbyEntrance()'),9);
+room("onExploreKey({key:'e',preventDefault(){}})");
+assert.equal(room('roomType()'),'henu');
+room("setWorkspace('map');state.actorPositions.hero=34;facing=0");
+assert.equal(room('nearbyEntrance()'),'mansion');
+action('walk-interact');
+assert.equal(room('roomType()'),'mansion');
+console.log('E enters underfoot and facing buildings, prioritizes doorways over paths, and opens the mansion');
