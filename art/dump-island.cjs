@@ -1,0 +1,10 @@
+const fs=require('node:fs');
+const path=require('node:path');
+const root=path.join(__dirname,'..');
+fs.mkdirSync(path.join(root,'art-build'),{recursive:true});
+const vm=require('node:vm');
+const source=fs.readFileSync(path.join(root,'dist','index.html'),'utf8').match(/<script>([\s\S]*)<\/script>/)[1];
+const sandbox=vm.createContext({localStorage:{getItem:()=>null,setItem:()=>{}},document:{getElementById:()=>({}),addEventListener:()=>{}}});
+vm.runInContext(source,sandbox);
+const data=vm.runInContext('island.map(({id,q,r,biome})=>({id,x:q+Math.floor(r/2)+radius,y:r+radius,biome:water(id)?"water":biome,elevation:groundElevation(id)}))',sandbox);
+fs.writeFileSync(path.join(root,'art-build','island-terrain.json'),JSON.stringify(data));
